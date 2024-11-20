@@ -18,7 +18,8 @@ include_directories(3rd/cjson/include
                     3rd/clog/include
                     3rd/s2j/include
                     3rd/nanopb/include
-                    3rd/libev/include)
+                    3rd/libev/include
+                    3rd/csv_parser/include)
 
 add_subdirectory(3rd)
 add_subdirectory(csv-json-config-sys)
