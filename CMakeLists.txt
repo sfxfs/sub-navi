@@ -4,6 +4,8 @@ project(sub-navi)
 set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 
+set(CMAKE_C_STANDARD 11)
+
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/output)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/output/lib)
 
@@ -19,7 +21,8 @@ include_directories(3rd/cjson/include
                     3rd/s2j/include
                     3rd/nanopb/include
                     3rd/libev/include
-                    3rd/csv_parser/include)
+                    3rd/csv_parser/include
+                    3rd/jsonrpc-c/include)
 
 add_subdirectory(3rd)
 add_subdirectory(csv-json-config-sys)
