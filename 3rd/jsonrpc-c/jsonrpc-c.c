@@ -36,7 +36,6 @@ static int send_response(struct jrpc_connection * conn, char *response) {
 	if (conn->debug_level > 1)
 		printf("JSON Response:\n%s\n", response);
 	ret += write(fd, response, strlen(response));
-	ret += write(fd, "\n", 1);
 	return ret;
 }
 
@@ -87,7 +86,10 @@ static void connection_cb(struct ev_loop *loop, ev_io *w, int revents) {
 				free(str_result);
 			}
 
-			cJSON *ret_json = mjrpc_process_cjson(&server->rpc_handler, root, NULL);
+			int ret_code;
+			cJSON *ret_json = mjrpc_process_cjson(&server->rpc_handler, root, &ret_code);
+			if (server->debug_level > 1)
+				printf("Return Code: %d, ret json == NULL?%s\n", ret_code, ret_json == NULL ? "true" : "false");
 			if (ret_json) {
 				char *ret_str = cJSON_PrintUnformatted(ret_json);
 				if (ret_str) {
@@ -113,7 +115,9 @@ static void connection_cb(struct ev_loop *loop, ev_io *w, int revents) {
 							conn->buffer);
 				}
 
-				char *ret_str = mjrpc_process_str(&server->rpc_handler, conn->buffer, NULL);
+				char *ret_str = cJSON_PrintUnformatted(
+					mjrpc_response_error(JSON_RPC_2_0_INVALID_REQUEST,
+                                    strdup("Valid request received."), cJSON_CreateNull()));
 				if (ret_str) {
 					send_response(conn, ret_str);
 					free(ret_str);

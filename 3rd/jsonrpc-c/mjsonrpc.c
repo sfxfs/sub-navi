@@ -108,7 +108,10 @@ static cJSON *rpc_handle_obj_req(mjrpc_handler_t *handler, cJSON *request)
     if (id->type == cJSON_NULL || id->type == cJSON_String || id->type == cJSON_Number)
     {
         cJSON *id_copy = NULL;
-        id_copy = (id->type == cJSON_String) ? cJSON_CreateString(id->valuestring) : cJSON_CreateNumber(id->valueint);
+        if (id->type == cJSON_NULL)
+            id_copy = cJSON_CreateNull();
+        else
+            id_copy = (id->type == cJSON_String) ? cJSON_CreateString(id->valuestring) : cJSON_CreateNumber(id->valueint);
 
         version = cJSON_GetObjectItem(request, "jsonrpc");
         if (version == NULL || version->type != cJSON_String || strcmp("2.0", version->valuestring) != 0)
@@ -123,11 +126,12 @@ static cJSON *rpc_handle_obj_req(mjrpc_handler_t *handler, cJSON *request)
             return invoke_callback(handler, method->valuestring, params, id_copy);
         }
         return mjrpc_response_error(JSON_RPC_2_0_INVALID_REQUEST,
-                                    strdup("Valid request received: No 'method' member"), id_copy);
+                                    strdup("Valid request received: No 'method' member."), id_copy);
     }
     else
         // Invalid id type
-        return NULL;
+        return mjrpc_response_error(JSON_RPC_2_0_INVALID_REQUEST,
+                                    strdup("Valid request received: 'id' member type error."), cJSON_CreateNull());;
 }
 
 static cJSON *rpc_handle_ary_req(mjrpc_handler_t *handler, cJSON *request)

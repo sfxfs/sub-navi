@@ -27,11 +27,11 @@
 
 #include "cJSON.h"
 
-#define JSON_RPC_2_0_PARSE_ERROR        -32700
-#define JSON_RPC_2_0_INVALID_REQUEST    -32600
-#define JSON_RPC_2_0_METHOD_NOT_FOUND   -32601
-#define JSON_RPC_2_0_INVALID_PARAMS     -32603
-#define JSON_RPC_2_0_INTERNAL_ERROR     -32693
+#define JSON_RPC_2_0_PARSE_ERROR -32700
+#define JSON_RPC_2_0_INVALID_REQUEST -32600
+#define JSON_RPC_2_0_METHOD_NOT_FOUND -32601
+#define JSON_RPC_2_0_INVALID_PARAMS -32603
+#define JSON_RPC_2_0_INTERNAL_ERROR -32693
 // -32000 to -32099 Reserved for implementation-defined server-errors.
 
 /**
@@ -57,8 +57,8 @@ typedef struct
 } mjrpc_ctx_t;
 
 typedef cJSON *(*mjrpc_func)(mjrpc_ctx_t *context,
-                                 cJSON *params,
-                                 cJSON *id);
+                             cJSON *params,
+                             cJSON *id);
 
 /**
  * @brief jsonrpc callback function
@@ -105,8 +105,8 @@ cJSON *mjrpc_response_error(int code, char *message, cJSON *id);
  * @return mjrpc_error_return
  */
 int mjrpc_add_method(mjrpc_handler_t *handler,
-                        mjrpc_func function_pointer,
-                        char *method_name, void *arg2func);
+                     mjrpc_func function_pointer,
+                     char *method_name, void *arg2func);
 
 /**
  * @brief delete a method from jsonrpc handler
@@ -124,8 +124,8 @@ int mjrpc_del_method(mjrpc_handler_t *handler, char *method_name);
  * @return response string (need to be free)
  */
 char *mjrpc_process_str(mjrpc_handler_t *handler,
-                            const char *reqeust_str,
-                            int *ret_code);
+                        const char *reqeust_str,
+                        int *ret_code);
 
 /**
  * @brief process a cjson typed jsonrpc request
@@ -135,7 +135,7 @@ char *mjrpc_process_str(mjrpc_handler_t *handler,
  * @return response cjson pointer (need to be free)
  */
 cJSON *mjrpc_process_cjson(mjrpc_handler_t *handler,
-                            cJSON *request_cjson,
-                            int *ret_code);
+                           cJSON *request_cjson,
+                           int *ret_code);
 
 #endif
