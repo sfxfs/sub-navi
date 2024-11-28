@@ -13,6 +13,9 @@ static int field_cb(csv_parser_t *parser, const char *data, size_t length, int r
 {
     frame_factor_t *frame_factor = parser->data;
 
+    if (col > FRAME_FACTOR_COL_MAX || row > FRAME_FACTOR_ROW_MAX)
+        return -1;
+
     // ignore header
     if (row >= 1 && col >= 1)
         frame_factor->value[row - 1][col - 1] = atof(data);

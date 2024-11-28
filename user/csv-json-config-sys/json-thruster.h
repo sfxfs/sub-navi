@@ -6,21 +6,6 @@
 
 #include "navi-config.h"
 
-enum thruster_index
-{
-    THRUSTER_0 = 0,
-    THRUSTER_1,
-    THRUSTER_2,
-    THRUSTER_3,
-    THRUSTER_4,
-    THRUSTER_5,
-#if SUB_NAVI_CONFIG_USE_EIGHT_THRUSTERS
-    THRUSTER_6,
-    THRUSTER_7,
-#endif
-    THRUSTER_MAX
-};
-
 // all the parameters are > 0
 // p stands for positive throttle (not about actual thruster forward, or the robot movement)
 // n stands for negative
@@ -37,7 +22,16 @@ typedef struct
 
 typedef struct
 {
-    thruster_attr thrusters[THRUSTER_MAX];
+    thruster_attr thruster_0;
+    thruster_attr thruster_1;
+    thruster_attr thruster_2;
+    thruster_attr thruster_3;
+    thruster_attr thruster_4;
+    thruster_attr thruster_5;
+#if SUB_NAVI_CONFIG_USE_EIGHT_THRUSTERS
+    thruster_attr thruster_6;
+    thruster_attr thruster_7;
+#endif
 } thrusters_params;
 
 

@@ -6,7 +6,7 @@
 #include "json-thruster.h"
 
 static const thrusters_params default_params = {
-    .thrusters[0] = {
+    .thruster_0 = {
         .channel = 0,
         .enabled = true,
         .reversed = false,
@@ -15,7 +15,7 @@ static const thrusters_params default_params = {
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
-    .thrusters[1] = {
+    .thruster_1 = {
         .channel = 1,
         .enabled = true,
         .reversed = false,
@@ -24,7 +24,7 @@ static const thrusters_params default_params = {
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
-    .thrusters[2] = {
+    .thruster_2 = {
         .channel = 2,
         .enabled = true,
         .reversed = false,
@@ -33,7 +33,7 @@ static const thrusters_params default_params = {
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
-    .thrusters[3] = {
+    .thruster_3 = {
         .channel = 3,
         .enabled = true,
         .reversed = false,
@@ -42,7 +42,7 @@ static const thrusters_params default_params = {
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
-    .thrusters[4] = {
+    .thruster_4 = {
         .channel = 4,
         .enabled = true,
         .reversed = false,
@@ -51,7 +51,7 @@ static const thrusters_params default_params = {
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
-    .thrusters[5] = {
+    .thruster_5 = {
         .channel = 5,
         .enabled = true,
         .reversed = false,
@@ -61,7 +61,7 @@ static const thrusters_params default_params = {
         .power_nLimit = 0.5,
     },
 #if SUB_NAVI_CONFIG_USE_EIGHT_THRUSTERS
-    .thrusters[6] = {
+    .thruster_6 = {
         .channel = 6,
         .enabled = true,
         .reversed = false,
@@ -70,7 +70,7 @@ static const thrusters_params default_params = {
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
-    .thrusters[7] = {
+    .thruster_7 = {
         .channel = 7,
         .enabled = true,
         .reversed = false,
@@ -112,23 +112,23 @@ void *thruster_s2j (thrusters_params *params)
     s2j_create_json_obj(json_params);
 
     s2j_json_set_struct_element_by_func(json_params, params,
-                                        thruster_attr, thrusters[0]);
+                                        thruster_attr, thruster_0);
     s2j_json_set_struct_element_by_func(json_params, params,
-                                        thruster_attr, thrusters[1]);
+                                        thruster_attr, thruster_1);
     s2j_json_set_struct_element_by_func(json_params, params,
-                                        thruster_attr, thrusters[2]);
+                                        thruster_attr, thruster_2);
     s2j_json_set_struct_element_by_func(json_params, params,
-                                        thruster_attr, thrusters[3]);
+                                        thruster_attr, thruster_3);
 
     s2j_json_set_struct_element_by_func(json_params, params,
-                                        thruster_attr, thrusters[4]);
+                                        thruster_attr, thruster_4);
     s2j_json_set_struct_element_by_func(json_params, params,
-                                        thruster_attr, thrusters[5]);
+                                        thruster_attr, thruster_5);
 #if SUB_NAVI_CONFIG_USE_EIGHT_THRUSTERS
     s2j_json_set_struct_element_by_func(json_params, params,
-                                        thruster_attr, thrusters[6]);
+                                        thruster_attr, thruster_6);
     s2j_json_set_struct_element_by_func(json_params, params,
-                                        thruster_attr, thrusters[7]);
+                                        thruster_attr, thruster_7);
 #endif
 
     return json_params;
@@ -155,23 +155,23 @@ thrusters_params *thruster_j2s (void *json)
     (void)json_temp;
 
     s2j_struct_get_struct_element_by_func(params_struct, json,
-                                          thruster_attr, thrusters[0]);
+                                          thruster_attr, thruster_0);
     s2j_struct_get_struct_element_by_func(params_struct, json,
-                                          thruster_attr, thrusters[1]);
+                                          thruster_attr, thruster_1);
     s2j_struct_get_struct_element_by_func(params_struct, json,
-                                          thruster_attr, thrusters[2]);
+                                          thruster_attr, thruster_2);
     s2j_struct_get_struct_element_by_func(params_struct, json,
-                                          thruster_attr, thrusters[3]);
+                                          thruster_attr, thruster_3);
 
     s2j_struct_get_struct_element_by_func(params_struct, json,
-                                          thruster_attr, thrusters[4]);
+                                          thruster_attr, thruster_4);
     s2j_struct_get_struct_element_by_func(params_struct, json,
-                                          thruster_attr, thrusters[5]);
+                                          thruster_attr, thruster_5);
 #if SUB_NAVI_CONFIG_USE_EIGHT_THRUSTERS
     s2j_struct_get_struct_element_by_func(params_struct, json,
-                                          thruster_attr, thrusters[6]);
+                                          thruster_attr, thruster_6);
     s2j_struct_get_struct_element_by_func(params_struct, json,
-                                          thruster_attr, thrusters[7]);
+                                          thruster_attr, thruster_7);
 #endif
 
     return params_struct;
