@@ -16,7 +16,8 @@ endif()
 set(CMAKE_C_FLAGS_DEBUG   "-O0 -g -Wall")
 set(CMAKE_C_FLAGS_RELEASE "-O3 -w -DNDEBUG")
 
-include_directories(3rd/cjson/include
+include_directories(config_header
+                    3rd/cjson/include
                     3rd/clog/include
                     3rd/s2j/include
                     3rd/nanopb/include
@@ -25,7 +26,4 @@ include_directories(3rd/cjson/include
                     3rd/jsonrpc-c/include)
 
 add_subdirectory(3rd)
-add_subdirectory(csv-json-config-sys)
-add_subdirectory(json-rpc-server)
-add_subdirectory(protobuf-commu)
-add_subdirectory(main-ctrl)
+add_subdirectory(user)
