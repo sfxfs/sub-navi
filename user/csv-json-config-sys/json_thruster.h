@@ -12,7 +12,7 @@
 typedef struct
 {
     bool enabled;
-    bool reversed;  // 先乘反转后再乘其他值
+    bool reversed; // 先乘反转后再乘其他值
     uint16_t channel;
     uint16_t deadzone_p;
     uint16_t deadzone_n;
@@ -34,11 +34,10 @@ typedef struct
 #endif
 } thrusters_params;
 
+thrusters_params *thruster_create_with_init_val(void);
 
-thrusters_params *thruster_create_with_init_val (void);
+void *thruster_s2j(thrusters_params *params);
 
-void *thruster_s2j (thrusters_params *params);
-
-thrusters_params *thruster_j2s (void *json);
+thrusters_params *thruster_j2s(void *json);
 
 #endif

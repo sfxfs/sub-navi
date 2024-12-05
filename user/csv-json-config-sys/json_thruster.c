@@ -3,7 +3,7 @@
 #include "cJSON.h"
 #include "s2j.h"
 
-#include "json-thruster.h"
+#include "json_thruster.h"
 
 static const thrusters_params default_params = {
     .thruster_0 = {
@@ -82,7 +82,7 @@ static const thrusters_params default_params = {
 #endif
 };
 
-thrusters_params *thruster_create_with_init_val (void)
+thrusters_params *thruster_create_with_init_val(void)
 {
     thrusters_params *params_struct = calloc(1, sizeof(thrusters_params));
 
@@ -107,7 +107,7 @@ static cJSON *struct_to_json_thruster_attr(thruster_attr *attr_struct)
     return attr_json;
 }
 
-void *thruster_s2j (thrusters_params *params)
+void *thruster_s2j(thrusters_params *params)
 {
     s2j_create_json_obj(json_params);
 
@@ -149,7 +149,7 @@ static thruster_attr *json_to_struct_thruster_attr(cJSON *attr_json)
     return attr_struct;
 }
 
-thrusters_params *thruster_j2s (void *json)
+thrusters_params *thruster_j2s(void *json)
 {
     s2j_create_struct_obj(params_struct, thrusters_params);
     (void)json_temp;
