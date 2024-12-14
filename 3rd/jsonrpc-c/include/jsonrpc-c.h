@@ -15,7 +15,7 @@ struct jrpc_server {
 	int port_number;
 	struct ev_loop *loop;
 	ev_io listen_watcher;
-	mjrpc_handler_t rpc_handler;
+	mjrpc_handle_t rpc_handle;
 	int debug_level;
 };
 
@@ -28,7 +28,9 @@ struct jrpc_connection {
 	int debug_level;
 };
 
-int jrpc_server_init(struct jrpc_server *server, int port_number);
+#define GET_RPC_HANDLE(server_ptr) ((server_ptr)->rpc_handle)
+
+int jrpc_server_init(struct jrpc_server *server, int port_number, int debug_level);
 
 void jrpc_server_run(struct jrpc_server *server);
 

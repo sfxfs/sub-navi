@@ -27,11 +27,11 @@
 
 #include "cJSON.h"
 
-#define JSON_RPC_2_0_PARSE_ERROR -32700
-#define JSON_RPC_2_0_INVALID_REQUEST -32600
-#define JSON_RPC_2_0_METHOD_NOT_FOUND -32601
-#define JSON_RPC_2_0_INVALID_PARAMS -32603
-#define JSON_RPC_2_0_INTERNAL_ERROR -32693
+#define JSON_RPC_CODE_PARSE_ERROR       -32700
+#define JSON_RPC_CODE_INVALID_REQUEST   -32600
+#define JSON_RPC_CODE_METHOD_NOT_FOUND  -32601
+#define JSON_RPC_CODE_INVALID_PARAMS    -32603
+#define JSON_RPC_CODE_INTERNAL_ERROR    -32693
 // -32000 to -32099 Reserved for implementation-defined server-errors.
 
 /**
@@ -44,6 +44,7 @@ enum mjrpc_error_return
     MJRPC_RET_ERROR_NOT_FOUND,
     MJRPC_RET_ERROR_EMPTY_REQUEST,
     MJRPC_RET_ERROR_PARSE_FAILED,
+    MJRPC_RET_ERROR_HANDLE_NOT_INITIALIZED,
 };
 
 /**
@@ -71,13 +72,13 @@ struct mjrpc_cb
 };
 
 /**
- * @brief mjrpc handler
+ * @brief mjrpc handle
  */
-typedef struct mjrpc_handler
+typedef struct mjrpc_handle
 {
     int cb_count;
     struct mjrpc_cb *cb_array;
-} mjrpc_handler_t;
+} mjrpc_handle_t;
 
 /**
  * @brief build a jsonrpc response with result
@@ -97,44 +98,44 @@ cJSON *mjrpc_response_ok(cJSON *result, cJSON *id);
 cJSON *mjrpc_response_error(int code, char *message, cJSON *id);
 
 /**
- * @brief add a method to jsonrpc handler
- * @param handler mjrpc handler
+ * @brief add a method to jsonrpc handle
+ * @param handle mjrpc handle
  * @param function_pointer callback function
  * @param method_name method name
  * @param arg2func argument to callback function
  * @return mjrpc_error_return
  */
-int mjrpc_add_method(mjrpc_handler_t *handler,
+int mjrpc_add_method(mjrpc_handle_t *handle,
                      mjrpc_func function_pointer,
                      char *method_name, void *arg2func);
 
 /**
- * @brief delete a method from jsonrpc handler
- * @param handler mjrpc handler
+ * @brief delete a method from jsonrpc handle
+ * @param handle mjrpc handle
  * @param method_name method name
  * @return mjrpc_error_return
  */
-int mjrpc_del_method(mjrpc_handler_t *handler, char *method_name);
+int mjrpc_del_method(mjrpc_handle_t *handle, char *method_name);
 
 /**
  * @brief process a string typed jsonrpc request
- * @param handler mjrpc handler
+ * @param handle mjrpc handle
  * @param reqeust_str request string
  * @param ret_code return code
  * @return response string (need to be free)
  */
-char *mjrpc_process_str(mjrpc_handler_t *handler,
+char *mjrpc_process_str(mjrpc_handle_t *handle,
                         const char *reqeust_str,
                         int *ret_code);
 
 /**
  * @brief process a cjson typed jsonrpc request
- * @param handler mjrpc handler
+ * @param handle mjrpc handle
  * @param request_cjson request cjson
  * @param ret_code return code
  * @return response cjson pointer (need to be free)
  */
-cJSON *mjrpc_process_cjson(mjrpc_handler_t *handler,
+cJSON *mjrpc_process_cjson(mjrpc_handle_t *handle,
                            cJSON *request_cjson,
                            int *ret_code);
 

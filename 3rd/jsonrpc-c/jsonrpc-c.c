@@ -87,9 +87,10 @@ static void connection_cb(struct ev_loop *loop, ev_io *w, int revents) {
 			}
 
 			int ret_code;
-			cJSON *ret_json = mjrpc_process_cjson(&server->rpc_handler, root, &ret_code);
+			cJSON *ret_json = mjrpc_process_cjson(&server->rpc_handle, root, &ret_code);
 			if (server->debug_level > 1)
-				printf("Return Code: %d, ret json == NULL?%s\n", ret_code, ret_json == NULL ? "true" : "false");
+				printf("Return Code: %d, ret json == NULL?%s\n", ret_code,
+												ret_json == NULL ? "true" : "false");
 			if (ret_json) {
 				char *ret_str = cJSON_PrintUnformatted(ret_json);
 				if (ret_str) {
@@ -116,7 +117,7 @@ static void connection_cb(struct ev_loop *loop, ev_io *w, int revents) {
 				}
 
 				char *ret_str = cJSON_PrintUnformatted(
-					mjrpc_response_error(JSON_RPC_2_0_INVALID_REQUEST,
+					mjrpc_response_error(JSON_RPC_CODE_INVALID_REQUEST,
                                     strdup("Valid request received."), cJSON_CreateNull()));
 				if (ret_str) {
 					send_response(conn, ret_str);
@@ -162,17 +163,13 @@ static void accept_cb(struct ev_loop *loop, ev_io *w, int revents) {
 	}
 }
 
-int jrpc_server_init(struct jrpc_server *server, int port_number) {
+int jrpc_server_init(struct jrpc_server *server, int port_number, int debug_level) {
     memset(server, 0, sizeof(struct jrpc_server));
 	server->loop = EV_DEFAULT;
 	server->port_number = port_number;
-	char * debug_level_env = getenv("JRPC_DEBUG");
-	if (debug_level_env == NULL)
-		server->debug_level = 0;
-	else {
-		server->debug_level = strtol(debug_level_env, NULL, 10);
+	server->debug_level = debug_level;
+	if (server->debug_level)
 		printf("JSONRPC-C Debug level %d\n", server->debug_level);
-	}
 	return __jrpc_server_start(server);
 }
 
