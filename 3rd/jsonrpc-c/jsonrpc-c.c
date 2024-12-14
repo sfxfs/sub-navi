@@ -258,7 +258,6 @@ void jrpc_server_run(struct jrpc_server *server){
 	EV_RUN(server->loop, 0);
 }
 
-int jrpc_server_stop(struct jrpc_server *server) {
+void jrpc_server_stop(struct jrpc_server *server) {
 	EV_BREAK(server->loop, EVBREAK_ALL);
-	return 0;
 }

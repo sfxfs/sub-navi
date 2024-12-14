@@ -176,6 +176,11 @@ int mjrpc_add_method(mjrpc_handle_t *handle,
                      mjrpc_func function_pointer,
                      char *method_name, void *arg2func)
 {
+    if (handle == NULL)
+        return MJRPC_RET_ERROR_HANDLE_NOT_INITIALIZED;
+    if (function_pointer == NULL || method_name == NULL)
+        return MJRPC_RET_ERROR_INVALID_PARAM;
+
     int i = handle->cb_count++;
     if (!handle->cb_array)
     {
@@ -214,11 +219,22 @@ static void cb_info_destroy(struct mjrpc_cb *info)
 
 int mjrpc_del_method(mjrpc_handle_t *handle, char *name)
 {
-    int i;
+    if (handle == NULL)
+        return MJRPC_RET_ERROR_HANDLE_NOT_INITIALIZED;
+
+    if (name == NULL)
+    {
+        for (int i = 0; i < handle->cb_count; i++)
+            cb_info_destroy(&(handle->cb_array[i]));
+        handle->cb_count = 0;
+        free(handle->cb_array);
+        handle->cb_array = NULL;
+    }
+
     int found = 0;
     if (handle->cb_array)
     {
-        for (i = 0; i < handle->cb_count; i++)
+        for (int i = 0; i < handle->cb_count; i++)
         {
             if (found)
             {

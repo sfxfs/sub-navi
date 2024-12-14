@@ -45,6 +45,7 @@ enum mjrpc_error_return
     MJRPC_RET_ERROR_EMPTY_REQUEST,
     MJRPC_RET_ERROR_PARSE_FAILED,
     MJRPC_RET_ERROR_HANDLE_NOT_INITIALIZED,
+    MJRPC_RET_ERROR_INVALID_PARAM,
 };
 
 /**
@@ -112,7 +113,7 @@ int mjrpc_add_method(mjrpc_handle_t *handle,
 /**
  * @brief delete a method from jsonrpc handle
  * @param handle mjrpc handle
- * @param method_name method name
+ * @param method_name method name if NULL, delete all methods
  * @return mjrpc_error_return
  */
 int mjrpc_del_method(mjrpc_handle_t *handle, char *method_name);
