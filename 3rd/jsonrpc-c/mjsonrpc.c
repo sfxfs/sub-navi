@@ -60,7 +60,7 @@ cJSON *mjrpc_response_error(int code, char *message, cJSON *id)
         return NULL;
     }
 
-    cJSON_AddNumberToObject(error_root, "code", code);
+    cJSON_AddIntToObject(error_root, "code", code);
     if (message)
     {
         cJSON_AddStringToObject(error_root, "message", message);
@@ -111,7 +111,7 @@ static cJSON *rpc_handle_obj_req(mjrpc_handle_t *handle, cJSON *request)
     if (id == NULL)
         // No id, this is a notification
         return NULL;
-    if (id->type == cJSON_NULL || id->type == cJSON_String || id->type == cJSON_Number)
+    if (id->type == cJSON_NULL || id->type == cJSON_String || id->type == cJSON_Int)
     {
         cJSON *id_copy = NULL;
         if (id->type == cJSON_NULL)

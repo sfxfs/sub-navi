@@ -11,7 +11,7 @@ static const thrusters_params default_params = {
         .enabled = true,
         .reversed = false,
         .deadzone_p = 25,
-        .deadzone_n = -25,
+        .deadzone_n = 25,
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
@@ -20,7 +20,7 @@ static const thrusters_params default_params = {
         .enabled = true,
         .reversed = false,
         .deadzone_p = 25,
-        .deadzone_n = -25,
+        .deadzone_n = 25,
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
@@ -29,7 +29,7 @@ static const thrusters_params default_params = {
         .enabled = true,
         .reversed = false,
         .deadzone_p = 25,
-        .deadzone_n = -25,
+        .deadzone_n = 25,
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
@@ -38,7 +38,7 @@ static const thrusters_params default_params = {
         .enabled = true,
         .reversed = false,
         .deadzone_p = 25,
-        .deadzone_n = -25,
+        .deadzone_n = 25,
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
@@ -47,7 +47,7 @@ static const thrusters_params default_params = {
         .enabled = true,
         .reversed = false,
         .deadzone_p = 25,
-        .deadzone_n = -25,
+        .deadzone_n = 25,
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
@@ -56,7 +56,7 @@ static const thrusters_params default_params = {
         .enabled = true,
         .reversed = false,
         .deadzone_p = 25,
-        .deadzone_n = -25,
+        .deadzone_n = 25,
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
@@ -66,7 +66,7 @@ static const thrusters_params default_params = {
         .enabled = true,
         .reversed = false,
         .deadzone_p = 25,
-        .deadzone_n = -25,
+        .deadzone_n = 25,
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
@@ -75,7 +75,7 @@ static const thrusters_params default_params = {
         .enabled = true,
         .reversed = false,
         .deadzone_p = 25,
-        .deadzone_n = -25,
+        .deadzone_n = 25,
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
@@ -96,8 +96,8 @@ static cJSON *struct_to_json_thruster_attr(thruster_attr *attr_struct)
 {
     s2j_create_json_obj(attr_json);
 
-    s2j_json_set_basic_element(attr_json, attr_struct, bool, reversed);
-    s2j_json_set_basic_element(attr_json, attr_struct, bool, enabled);
+    s2j_json_set_basic_element(attr_json, attr_struct, int, reversed);
+    s2j_json_set_basic_element(attr_json, attr_struct, int, enabled);
     s2j_json_set_basic_element(attr_json, attr_struct, int, channel);
     s2j_json_set_basic_element(attr_json, attr_struct, int, deadzone_p);
     s2j_json_set_basic_element(attr_json, attr_struct, int, deadzone_n);
