@@ -20,6 +20,41 @@
 #include "mjsonrpc.h"
 #include "jsonrpc-c.h"
 
+static char *_strstr(const char *p1, int len, const char *p2)
+{
+    if (p1 == NULL || p2 == NULL)
+        return NULL;
+    if (*p2 == '\0' || *p1 == '\0')
+        return (char *)p1;
+
+    char *s1 = NULL;
+    char *s2 = NULL;
+    char *current = (char *)p1;
+
+    for (; *current != '\0'; current++)
+    {
+        if (len == 0)
+            return NULL;
+
+        s1 = current;
+        s2 = (char *)p2;
+
+        while ((*s1 != '\0') && (*s2 != '\0') && (*s1 == *s2))
+        {
+            s1++;
+            s2++;
+        }
+
+        if (*s2 == '\0')
+            return current;
+        if (*s1 == '\0')
+            return NULL;
+
+        len--;
+    }
+    return NULL;
+}
+
 static int __jrpc_server_start(struct jrpc_server *server);
 
 // get sockaddr, IPv4 or IPv6:
@@ -30,14 +65,27 @@ static void *get_in_addr(struct sockaddr *sa) {
 	return &(((struct sockaddr_in6*) sa)->sin6_addr);
 }
 
+#define HTTP_HEADER_BUF_SIZE 128
+
 static int send_response(struct jrpc_connection * conn, char *response) {
 	ssize_t ret = 0;
 	int fd = conn->fd;
 	if (conn->debug_level > 1)
 		printf("JSON Response:\n%s\n", response);
-	ret += write(fd, response, strlen(response));
+	int jresp_len = strlen(response);
+	char *resp = calloc(jresp_len + HTTP_HEADER_BUF_SIZE, sizeof(char));
+	sprintf(resp,
+            "HTTP/1.1 200 OK\r\n"
+            "Content-Type: application/json; charset=UTF-8\r\n"
+            "Accept: application/json\r\n"
+            "Content-Length: %d\r\n\r\n%s",
+            jresp_len, response);
+	ret += write(fd, resp, strlen(resp));
+	free(resp);
 	return ret;
 }
+
+#undef HTTP_HEADER_BUF_SIZE
 
 static void close_connection(struct ev_loop *loop, ev_io *w) {
 	ev_io_stop(loop, w);
@@ -79,7 +127,12 @@ static void connection_cb(struct ev_loop *loop, ev_io *w, int revents) {
 		const char *end_ptr = NULL;
 		conn->pos += bytes_read;
 
-		if ((root = cJSON_ParseWithOpts(conn->buffer, &end_ptr, false)) != NULL) {
+		/* get body */
+		char *body = _strstr(conn->buffer, conn->buffer_size, "\r\n\r\n");
+		if (body != NULL)
+			body += 4;    // "\r\n\r\n"
+
+		if ((root = cJSON_ParseWithOpts(body, &end_ptr, false)) != NULL) {
 			if (server->debug_level > 1) {
 				char * str_result = cJSON_Print(root);
 				printf("Valid JSON Received:\n%s\n", str_result);

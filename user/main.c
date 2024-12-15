@@ -62,6 +62,7 @@ static int init(void)
         return -1;
     }
     navi_server_start();
+    log_info("rpc server started on port %d.", SUB_NAVI_CONFIG_RPC_SERVER_PORT);
 
     // end ...
     return 0;
