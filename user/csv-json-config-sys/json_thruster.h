@@ -1,6 +1,7 @@
 #ifndef SUB_NAVI_CFG_JSON_THRUSTER_H
 #define SUB_NAVI_CFG_JSON_THRUSTER_H
 
+#include <unistd.h>
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -33,6 +34,8 @@ typedef struct
     thruster_attr thruster_7;
 #endif
 } thrusters_params;
+
+#define thruster_check_file_exist() (access(SUB_NAVI_CONFIG_THRUSTER_CONFIG_FILE_PATH, F_OK) == 0)
 
 /// @brief get the default value of thruster parameters
 /// @return thrusters_params (need to free)

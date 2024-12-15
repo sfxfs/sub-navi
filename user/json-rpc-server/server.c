@@ -3,6 +3,8 @@
 #include "method_debug.h"
 #include "jsonrpc-c.h"
 
+#include "navi-config.h"
+
 #include "server.h"
 
 #define SERVER_DEBUG_LEVEL 0
@@ -14,9 +16,9 @@ static cJSON *empty_handler(mjrpc_ctx_t *ctx, cJSON *params, cJSON *id)
     return cJSON_CreateNull();
 }
 
-int navi_server_init(int port)
+int navi_server_init(void)
 {
-    if (jrpc_server_init(&server_handle, port, SERVER_DEBUG_LEVEL) != 0)
+    if (jrpc_server_init(&server_handle, SUB_NAVI_CONFIG_RPC_SERVER_PORT, SERVER_DEBUG_LEVEL) != 0)
         return -1;
 
     int ret = 0;
@@ -33,7 +35,7 @@ int navi_server_init(int port)
     return ret;
 }
 
-int navi_server_run(void)
+int navi_server_start(void)
 {
     jrpc_server_run(&server_handle);
     return 0;

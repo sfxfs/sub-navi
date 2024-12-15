@@ -189,8 +189,10 @@ int thruster_write_to_file(thrusters_params *params)
     cJSON *json = thruster_s2j(params);
     char *str = cJSON_Print(json);
     int ret = navi_write_to_file(SUB_NAVI_CONFIG_THRUSTER_CONFIG_FILE_PATH, str);
-    free(str);
-    cJSON_Delete(json);
+    if (str)
+        free(str);
+    if (json)
+        cJSON_Delete(json);
     return ret;
 }
 
@@ -199,7 +201,9 @@ thrusters_params *thruster_read_from_file()
     char *str = navi_read_from_file(SUB_NAVI_CONFIG_THRUSTER_CONFIG_FILE_PATH);
     cJSON *json = cJSON_Parse(str);
     thrusters_params *ret = thruster_j2s(json);
-    free(str);
-    cJSON_Delete(json);
+    if (str)
+        free(str);
+    if (json)
+        cJSON_Delete(json);
     return ret;
 }
