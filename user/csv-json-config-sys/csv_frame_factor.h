@@ -34,6 +34,6 @@ typedef struct
     float value[FRAME_FACTOR_ROW_MAX][FRAME_FACTOR_COL_MAX]; // row --, col |
 } frame_factor_t;
 
-frame_factor_t *frame_factor_get_from_file(const char *config_file_path);
+frame_factor_t *frame_factor_get_from_file(void);
 
 #endif

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "s2j.h"
+#include "json_file.h"
 
 #include "json_thruster.h"
 
@@ -10,8 +11,8 @@ static const thrusters_params default_params = {
         .channel = 0,
         .enabled = true,
         .reversed = false,
-        .deadzone_p = 25,
-        .deadzone_n = 25,
+        .deadzone_p = 0.0,
+        .deadzone_n = 0.0,
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
@@ -19,8 +20,8 @@ static const thrusters_params default_params = {
         .channel = 1,
         .enabled = true,
         .reversed = false,
-        .deadzone_p = 25,
-        .deadzone_n = 25,
+        .deadzone_p = 0.0,
+        .deadzone_n = 0.0,
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
@@ -28,8 +29,8 @@ static const thrusters_params default_params = {
         .channel = 2,
         .enabled = true,
         .reversed = false,
-        .deadzone_p = 25,
-        .deadzone_n = 25,
+        .deadzone_p = 0.0,
+        .deadzone_n = 0.0,
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
@@ -37,8 +38,8 @@ static const thrusters_params default_params = {
         .channel = 3,
         .enabled = true,
         .reversed = false,
-        .deadzone_p = 25,
-        .deadzone_n = 25,
+        .deadzone_p = 0.0,
+        .deadzone_n = 0.0,
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
@@ -46,8 +47,8 @@ static const thrusters_params default_params = {
         .channel = 4,
         .enabled = true,
         .reversed = false,
-        .deadzone_p = 25,
-        .deadzone_n = 25,
+        .deadzone_p = 0.0,
+        .deadzone_n = 0.0,
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
@@ -55,8 +56,8 @@ static const thrusters_params default_params = {
         .channel = 5,
         .enabled = true,
         .reversed = false,
-        .deadzone_p = 25,
-        .deadzone_n = 25,
+        .deadzone_p = 0.0,
+        .deadzone_n = 0.0,
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
@@ -65,8 +66,8 @@ static const thrusters_params default_params = {
         .channel = 6,
         .enabled = true,
         .reversed = false,
-        .deadzone_p = 25,
-        .deadzone_n = 25,
+        .deadzone_p = 0.0,
+        .deadzone_n = 0.0,
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
@@ -74,8 +75,8 @@ static const thrusters_params default_params = {
         .channel = 7,
         .enabled = true,
         .reversed = false,
-        .deadzone_p = 25,
-        .deadzone_n = 25,
+        .deadzone_p = 0.0,
+        .deadzone_n = 0.0,
         .power_pLimit = 0.5,
         .power_nLimit = 0.5,
     },
@@ -99,8 +100,8 @@ static cJSON *struct_to_json_thruster_attr(thruster_attr *attr_struct)
     s2j_json_set_basic_element(attr_json, attr_struct, int, reversed);
     s2j_json_set_basic_element(attr_json, attr_struct, int, enabled);
     s2j_json_set_basic_element(attr_json, attr_struct, int, channel);
-    s2j_json_set_basic_element(attr_json, attr_struct, int, deadzone_p);
-    s2j_json_set_basic_element(attr_json, attr_struct, int, deadzone_n);
+    s2j_json_set_basic_element(attr_json, attr_struct, double, deadzone_p);
+    s2j_json_set_basic_element(attr_json, attr_struct, double, deadzone_n);
     s2j_json_set_basic_element(attr_json, attr_struct, double, power_pLimit);
     s2j_json_set_basic_element(attr_json, attr_struct, double, power_nLimit);
 
@@ -109,6 +110,8 @@ static cJSON *struct_to_json_thruster_attr(thruster_attr *attr_struct)
 
 void *thruster_s2j(thrusters_params *params)
 {
+    if (params == NULL)
+        return NULL;
     s2j_create_json_obj(json_params);
 
     s2j_json_set_struct_element_by_func(json_params, params,
@@ -141,8 +144,8 @@ static thruster_attr *json_to_struct_thruster_attr(cJSON *attr_json)
     s2j_struct_get_basic_element(attr_struct, attr_json, int, reversed);
     s2j_struct_get_basic_element(attr_struct, attr_json, int, enabled);
     s2j_struct_get_basic_element(attr_struct, attr_json, int, channel);
-    s2j_struct_get_basic_element(attr_struct, attr_json, int, deadzone_p);
-    s2j_struct_get_basic_element(attr_struct, attr_json, int, deadzone_n);
+    s2j_struct_get_basic_element(attr_struct, attr_json, double, deadzone_p);
+    s2j_struct_get_basic_element(attr_struct, attr_json, double, deadzone_n);
     s2j_struct_get_basic_element(attr_struct, attr_json, double, power_pLimit);
     s2j_struct_get_basic_element(attr_struct, attr_json, double, power_nLimit);
 
@@ -151,6 +154,8 @@ static thruster_attr *json_to_struct_thruster_attr(cJSON *attr_json)
 
 thrusters_params *thruster_j2s(void *json)
 {
+    if (json == NULL)
+        return NULL;
     s2j_create_struct_obj(params_struct, thrusters_params);
     (void)json_temp;
 
@@ -175,4 +180,26 @@ thrusters_params *thruster_j2s(void *json)
 #endif
 
     return params_struct;
+}
+
+int thruster_write_to_file(thrusters_params *params)
+{
+    if (params == NULL)
+        return -1;
+    cJSON *json = thruster_s2j(params);
+    char *str = cJSON_Print(json);
+    int ret = navi_write_to_file(SUB_NAVI_CONFIG_THRUSTER_CONFIG_FILE_PATH, str);
+    free(str);
+    cJSON_Delete(json);
+    return ret;
+}
+
+thrusters_params *thruster_read_from_file()
+{
+    char *str = navi_read_from_file(SUB_NAVI_CONFIG_THRUSTER_CONFIG_FILE_PATH);
+    cJSON *json = cJSON_Parse(str);
+    thrusters_params *ret = thruster_j2s(json);
+    free(str);
+    cJSON_Delete(json);
+    return ret;
 }

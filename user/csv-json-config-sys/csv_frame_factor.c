@@ -22,9 +22,9 @@ static int field_cb(csv_parser_t *parser, const char *data, size_t length, int r
     return 0;
 }
 
-frame_factor_t *frame_factor_get_from_file(const char *config_file_path)
+frame_factor_t *frame_factor_get_from_file(void)
 {
-    int fd = open(config_file_path, O_RDONLY);
+    int fd = open(SUB_NAVI_CONFIG_FRAME_FACTOR_FILE_PATH, O_RDONLY);
     if (fd == -1)
         return NULL;
 

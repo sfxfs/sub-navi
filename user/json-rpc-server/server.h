@@ -1,5 +1,5 @@
-#ifndef SUB_NAVI_USER_SERVER_H
-#define SUB_NAVI_USER_SERVER_H
+#ifndef SUB_NAVI_USER_RPC_SERVER_H
+#define SUB_NAVI_USER_RPC_SERVER_H
 
 int navi_server_init(int port);
 

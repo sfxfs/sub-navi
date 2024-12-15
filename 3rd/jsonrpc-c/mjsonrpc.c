@@ -118,7 +118,7 @@ static cJSON *rpc_handle_obj_req(mjrpc_handle_t *handle, cJSON *request)
             id_copy = cJSON_CreateNull();
         else
             id_copy = (id->type == cJSON_String) ?
-                    cJSON_CreateString(id->valuestring) : cJSON_CreateNumber(id->valueint);
+                    cJSON_CreateString(id->valuestring) : cJSON_CreateInt(id->valueint);
 
         version = cJSON_GetObjectItem(request, "jsonrpc");
         if (version == NULL || version->type != cJSON_String || strcmp("2.0", version->valuestring) != 0)
