@@ -28,7 +28,7 @@ jobs:
     - name: Get toolchain
       run: |
           git clone https://github.com/LuckfoxTECH/luckfox-pico.git
-          source $(pwd)/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/env_install_toolchain.sh
+          echo "$(pwd)/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin" >> $GITHUB_PATH
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
