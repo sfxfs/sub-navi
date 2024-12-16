@@ -23,7 +23,8 @@ include_directories(config_header
                     3rd/nanopb/include
                     3rd/libev/include
                     3rd/csv_parser/include
-                    3rd/jsonrpc-c/include)
+                    3rd/jsonrpc-c/include
+                    3rd/linux_uart/include)
 
 add_subdirectory(3rd)
 add_subdirectory(user)
