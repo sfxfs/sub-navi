@@ -32,6 +32,7 @@
 #define __LUCKFOX_UART_
 
 #include <stdint.h>
+#include <unistd.h>
 #include <termios.h>
 
 /**
@@ -43,14 +44,16 @@ typedef struct UARTStruct
     struct termios config;
 } HARDWARE_UART;
 
-uint8_t navi_uart_begin(HARDWARE_UART *dev, char *UART_device);
-uint8_t navi_uart_end(HARDWARE_UART *dev);
+uint8_t navi_uart_begin(HARDWARE_UART *dev, const char *UART_device);
+#define navi_uart_end(dev) close(dev.fd)
 uint8_t navi_uart_setBaudrate(HARDWARE_UART *dev, uint32_t Baudrate);
 
-uint8_t navi_uart_write(HARDWARE_UART *dev, const char *buf, uint32_t len);
-uint8_t navi_uart_read(HARDWARE_UART *dev, char *buf, uint32_t len);
-uint8_t navi_uart_writeByte(HARDWARE_UART *dev, uint8_t buf);
-uint8_t navi_uart_readByte(HARDWARE_UART *dev);
+#define navi_uart_write(dev, buf, len) write(dev.fd, buf, len)
+#define navi_uart_read(dev, buf, len) read(dev.fd, buf, len)
+#define navi_uart_writeByte(dev, buf) write(dev.fd, buf, 1)
+#define navi_uart_flush(dev) tcflush(dev.fd, TCIOFLUSH)
+int navi_uart_data_avail(HARDWARE_UART dev);
+#define navi_uart_readByte(dev, buf) read(dev.fd, buf, 1)
 
 uint8_t navi_uart_Set(HARDWARE_UART *dev, int databits, int stopbits, int parity);
 

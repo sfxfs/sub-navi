@@ -61,8 +61,14 @@ static int init(void)
         // peripherals deinit ...
         return -1;
     }
-    navi_server_start();
-    log_info("rpc server started on port %d.", SUB_NAVI_CONFIG_RPC_SERVER_PORT);
+    if (navi_server_start_thread() == 0)
+        log_info("rpc server started on port %d.", SUB_NAVI_CONFIG_RPC_SERVER_PORT);
+    else
+    {
+        log_error("rpc server start failed!");
+        // peripherals deinit ...
+        return -1;
+    }
 
     // end ...
     return 0;

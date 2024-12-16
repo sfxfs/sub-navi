@@ -33,8 +33,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <fcntl.h>
-#include <unistd.h>
 #include <string.h>
+#include <sys/ioctl.h>
 #include "log.h"
 
 /******************************************************************************
@@ -45,7 +45,7 @@ Info:
     /dev/ttyTHS*
     The default baud rate is 9600, 8-bit data, 1 stop bit, no parity
 ******************************************************************************/
-uint8_t navi_uart_begin(HARDWARE_UART *dev, char *UART_device)
+uint8_t navi_uart_begin(HARDWARE_UART *dev, const char *UART_device)
 {
     // device
     if ((dev->fd = open(UART_device, O_RDWR | O_NOCTTY)) < 0)
@@ -59,21 +59,6 @@ uint8_t navi_uart_begin(HARDWARE_UART *dev, char *UART_device)
     }
     navi_uart_setBaudrate(dev, 115200);
     navi_uart_Set(dev, 8, 1, 'N');
-    return 0;
-}
-
-/******************************************************************************
-function:   Serial device End
-parameter:
-Info:
-******************************************************************************/
-uint8_t navi_uart_end(HARDWARE_UART *dev)
-{
-    if (close(dev->fd) != 0)
-    {
-        log_error("Failed to close UART device");
-        return 1;
-    }
     return 0;
 }
 
@@ -205,59 +190,14 @@ uint8_t navi_uart_setBaudrate(HARDWARE_UART *dev, uint32_t Baudrate)
     return 0;
 }
 
-/******************************************************************************
-function: Serial port sends one byte of data
-parameter:
-    buf :   Sent data
-Info:
-******************************************************************************/
-uint8_t navi_uart_writeByte(HARDWARE_UART *dev, uint8_t buf)
+int navi_uart_data_avail(HARDWARE_UART dev)
 {
-    uint8_t sbuf[1] = {0};
-    sbuf[0] = buf;
-    if (1 == write(dev->fd, sbuf, 1))
-        return 0;
-    return 1;
-}
+    int result;
 
-/******************************************************************************
-function: Serial port sends arbitrary length data
-parameter:
-    buf :   Sent Data buffer
-    len :   Number of bytes sent
-Info:
-******************************************************************************/
-uint8_t navi_uart_write(HARDWARE_UART *dev, const char *buf, uint32_t len)
-{
-    if (len == write(dev->fd, buf, len))
-        return 0;
-    return 1;
-}
+    if (ioctl(dev.fd, FIONREAD, &result) == -1)
+        return -1;
 
-/******************************************************************************
-function: The serial port reads a byte
-parameter:
-Info: Return read data
-******************************************************************************/
-uint8_t navi_uart_readByte(HARDWARE_UART *dev)
-{
-    uint8_t buf[1] = {0};
-    read(dev->fd, buf, 1);
-    return buf[0];
-}
-
-/******************************************************************************
-function: Serial port reads arbitrary byte length data
-parameter:
-    buf :   Read Data buffer
-    len :   Number of bytes Read
-Info:
-******************************************************************************/
-uint8_t navi_uart_read(HARDWARE_UART *dev, char *buf, uint32_t len)
-{
-    if (read(dev->fd, buf, len) >= 0)
-        return 0;
-    return 1;
+    return result;
 }
 
 /******************************************************************************

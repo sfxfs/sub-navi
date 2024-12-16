@@ -15,4 +15,13 @@ PB_BIND(ArmCommand, ArmCommand, AUTO)
 PB_BIND(Commands, Commands, AUTO)
 
 
+PB_BIND(DepthResponse, DepthResponse, AUTO)
+
+
+PB_BIND(CleanPressureResponse, CleanPressureResponse, AUTO)
+
+
+PB_BIND(Responses, Responses, AUTO)
+
+
 

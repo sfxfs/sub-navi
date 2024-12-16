@@ -3,7 +3,7 @@
 
 int navi_server_init(void);
 
-int navi_server_start(void);
+int navi_server_start_thread(void);
 
 int navi_server_stop(void);
 

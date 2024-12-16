@@ -40,6 +40,21 @@ typedef struct _Commands {
     ArmCommand msgAC;
 } Commands;
 
+typedef struct _DepthResponse {
+    float depth;
+} DepthResponse;
+
+typedef struct _CleanPressureResponse {
+    int32_t pressure;
+} CleanPressureResponse;
+
+typedef struct _Responses {
+    bool has_msgDR;
+    DepthResponse msgDR;
+    bool has_msgCPR;
+    CleanPressureResponse msgCPR;
+} Responses;
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,9 +64,15 @@ extern "C" {
 #define ThrusterCommand_init_default             {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
 #define ArmCommand_init_default                  {0}
 #define Commands_init_default                    {false, ThrusterCommand_init_default, false, ArmCommand_init_default}
+#define DepthResponse_init_default               {0}
+#define CleanPressureResponse_init_default       {0}
+#define Responses_init_default                   {false, DepthResponse_init_default, false, CleanPressureResponse_init_default}
 #define ThrusterCommand_init_zero                {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
 #define ArmCommand_init_zero                     {0}
 #define Commands_init_zero                       {false, ThrusterCommand_init_zero, false, ArmCommand_init_zero}
+#define DepthResponse_init_zero                  {0}
+#define CleanPressureResponse_init_zero          {0}
+#define Responses_init_zero                      {false, DepthResponse_init_zero, false, CleanPressureResponse_init_zero}
 
 /* Field tags (for use in manual encoding/decoding) */
 #define ThrusterCommand_throttle0_tag            1
@@ -65,6 +86,10 @@ extern "C" {
 #define ArmCommand_value_tag                     1
 #define Commands_msgTC_tag                       1
 #define Commands_msgAC_tag                       2
+#define DepthResponse_depth_tag                  1
+#define CleanPressureResponse_pressure_tag       1
+#define Responses_msgDR_tag                      1
+#define Responses_msgCPR_tag                     2
 
 /* Struct field encoding specification for nanopb */
 #define ThrusterCommand_FIELDLIST(X, a) \
@@ -92,19 +117,46 @@ X(a, STATIC,   OPTIONAL, MESSAGE,  msgAC,             2)
 #define Commands_msgTC_MSGTYPE ThrusterCommand
 #define Commands_msgAC_MSGTYPE ArmCommand
 
+#define DepthResponse_FIELDLIST(X, a) \
+X(a, STATIC,   REQUIRED, FLOAT,    depth,             1)
+#define DepthResponse_CALLBACK NULL
+#define DepthResponse_DEFAULT NULL
+
+#define CleanPressureResponse_FIELDLIST(X, a) \
+X(a, STATIC,   REQUIRED, INT32,    pressure,          1)
+#define CleanPressureResponse_CALLBACK NULL
+#define CleanPressureResponse_DEFAULT NULL
+
+#define Responses_FIELDLIST(X, a) \
+X(a, STATIC,   OPTIONAL, MESSAGE,  msgDR,             1) \
+X(a, STATIC,   OPTIONAL, MESSAGE,  msgCPR,            2)
+#define Responses_CALLBACK NULL
+#define Responses_DEFAULT NULL
+#define Responses_msgDR_MSGTYPE DepthResponse
+#define Responses_msgCPR_MSGTYPE CleanPressureResponse
+
 extern const pb_msgdesc_t ThrusterCommand_msg;
 extern const pb_msgdesc_t ArmCommand_msg;
 extern const pb_msgdesc_t Commands_msg;
+extern const pb_msgdesc_t DepthResponse_msg;
+extern const pb_msgdesc_t CleanPressureResponse_msg;
+extern const pb_msgdesc_t Responses_msg;
 
 /* Defines for backwards compatibility with code written before nanopb-0.4.0 */
 #define ThrusterCommand_fields &ThrusterCommand_msg
 #define ArmCommand_fields &ArmCommand_msg
 #define Commands_fields &Commands_msg
+#define DepthResponse_fields &DepthResponse_msg
+#define CleanPressureResponse_fields &CleanPressureResponse_msg
+#define Responses_fields &Responses_msg
 
 /* Maximum encoded size of messages (where known) */
 #define ArmCommand_size                          11
+#define CleanPressureResponse_size               11
 #define Commands_size                            103
+#define DepthResponse_size                       5
 #define NAVI_MASTER_PB_H_MAX_SIZE                Commands_size
+#define Responses_size                           20
 #define ThrusterCommand_size                     88
 
 #ifdef __cplusplus

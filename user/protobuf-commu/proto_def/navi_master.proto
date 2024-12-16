@@ -22,3 +22,19 @@ message Commands
     optional ThrusterCommand msgTC = 1;
     optional ArmCommand msgAC = 2;
 }
+
+message DepthResponse
+{
+    required float depth = 1;
+}
+
+message CleanPressureResponse
+{
+    required int32 pressure = 1;
+}
+
+message Responses
+{
+    optional DepthResponse msgDR = 1;
+    optional CleanPressureResponse msgCPR = 2;
+}

@@ -1,3 +1,4 @@
+#include <pthread.h>
 #include "method_info.h"
 #include "method_ctrl.h"
 #include "method_debug.h"
@@ -35,10 +36,19 @@ int navi_server_init(void)
     return ret;
 }
 
-int navi_server_start(void)
+static void *server_routine(void *arg)
 {
     jrpc_server_run(&server_handle);
-    return 0;
+    return NULL;
+}
+
+int navi_server_start_thread(void)
+{
+    pthread_t server_tid;
+    if (pthread_create(&server_tid, NULL, server_routine, NULL) == 0)
+        if (pthread_detach(server_tid) == 0)
+            return 0;
+    return -1;
 }
 
 int navi_server_stop(void)
