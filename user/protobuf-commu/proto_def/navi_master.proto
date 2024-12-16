@@ -1,0 +1,24 @@
+syntax = "proto2";
+
+message ThrusterCommand
+{
+    optional int32 throttle0 = 1;
+    optional int32 throttle1 = 2;
+    optional int32 throttle2 = 3;
+    optional int32 throttle3 = 4;
+    optional int32 throttle4 = 5;
+    optional int32 throttle5 = 6;
+    optional int32 throttle6 = 7;
+    optional int32 throttle7 = 8;
+}
+
+message ArmCommand
+{
+    required int32 value = 1;
+}
+
+message Commands
+{
+    optional ThrusterCommand msgTC = 1;
+    optional ArmCommand msgAC = 2;
+}
