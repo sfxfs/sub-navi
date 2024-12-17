@@ -2,11 +2,13 @@
 
 ## Introduction
 
-This project (SUB-NAVI) is a general-purpose underwater robot control program based on the Linux platform. It is designed to work in conjunction with [ESP-SUB-MASTER](https://github.com/sfxfs/esp-sub-master).
+This project (SUB-NAVI) is a general-purpose underwater robot control program based on the Linux platform. It is designed to work in conjunction with [ESP-SUB-MASTER](https://github.com/sfxfs/esp-sub-master) and [ROV-HOST](https://github.com/bohonghuang/rov-host).
+
+![](./doc/arch.png)
 
 SUB-NAVI can achieve the following functionalities:
 
-- Communication with a PC-based host using HTTP protocol and JSON-RPC 2.0 (using IO listening for improved performance)
+- Communication with a PC-based host (ROV-HOST) using HTTP protocol and JSON-RPC 2.0 (using IO listening for improved performance)
 - Serial communication with SUB-MASTER based on Protocol Buffers (for controlling underlying peripherals, thrusters, robotic arms, etc.)
 - External connection of sensors and other peripherals via serial port
 - Configuration management based on the file system (csv, json)
