@@ -2,6 +2,7 @@
 #define SUB_NAVI_USER_RPC_METHOD_CTRL_H
 
 #include <stdbool.h>
+
 #include "mjsonrpc.h"
 
 struct method_move
