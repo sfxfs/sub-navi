@@ -28,6 +28,7 @@
 # THE SOFTWARE.
 #
 ******************************************************************************/
+
 #include "linux_uart.h"
 
 #include <stdlib.h>
@@ -35,6 +36,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <sys/ioctl.h>
+
 #include "log.h"
 
 /******************************************************************************
@@ -94,81 +96,19 @@ uint8_t navi_uart_setBaudrate(HARDWARE_UART *dev, uint32_t Baudrate)
 
     switch (Baudrate) // Set the number of data bits
     {
-    case B230400:
-    case 230400:
-        baud = B230400;
-        break;
-    case B115200:
-    case 115200:
-        baud = B115200;
-        break;
-    case B57600:
-    case 57600:
-        baud = B57600;
-        break;
-    case B38400:
-    case 38400:
-        baud = B38400;
-        break;
-    case B19200:
-    case 19200:
-        baud = B19200;
-        break;
-    case B9600:
-    case 9600:
-        baud = B9600;
-        break;
-    case B4800:
-    case 4800:
-        baud = B4800;
-        break;
-    case B2400:
-    case 2400:
-        baud = B2400;
-        break;
-    case B1800:
-    case 1800:
-        baud = B1800;
-        break;
-    case B1200:
-    case 1200:
-        baud = B1200;
-        break;
-    case B600:
-    case 600:
-        baud = B600;
-        break;
-    case B300:
-    case 300:
-        baud = B300;
-        break;
-    case B200:
-    case 200:
-        baud = B200;
-        break;
-    case B150:
-    case 150:
-        baud = B150;
-        break;
-    case B134:
-    case 134:
-        baud = B134;
-        break;
-    case B110:
-    case 110:
-        baud = B110;
-        break;
-    case B75:
-    case 75:
-        baud = B75;
-        break;
-    case B50:
-    case 50:
-        baud = B50;
-        break;
-    default:
-        baud = B9600;
-        break;
+    case B230400:case 230400:baud = B230400;break;
+    case B115200:case 115200:baud = B115200;break;
+    case B57600:case 57600:baud = B57600;break;
+    case B38400:case 38400:baud = B38400;break;
+    case B19200:case 19200:baud = B19200;break;
+    case B9600:case 9600:baud = B9600;break;
+    case B4800:case 4800:baud = B4800;break;
+    case B2400:case 2400:baud = B2400;break;
+    case B1800:case 1800:baud = B1800;break;
+    case B1200:case 1200:baud = B1200;break;
+    case B600:case 600:baud = B600;break;
+    case B300:case 300:baud = B300;break;
+    default:baud = B9600;break;
     }
     log_debug("Baud rate setting");
     if (cfsetispeed(&dev->config, baud) != 0)
@@ -242,25 +182,21 @@ uint8_t navi_uart_Set(HARDWARE_UART *dev, int databits, int stopbits, int parity
 
     switch (parity) // Set check digit
     {
-    case 'n':
-    case 'N':
+    case 'n':case 'N':
         dev->config.c_cflag &= ~PARENB; // Clear check digit
         dev->config.c_iflag &= ~INPCK;  // enable parity checking
         break;
-    case 'o':
-    case 'O':
+    case 'o':case 'O':
         dev->config.c_cflag |= PARENB; // enable parity
         dev->config.c_cflag |= PARODD; // Odd parity
         dev->config.c_iflag |= INPCK;  // disable parity checking
         break;
-    case 'e':
-    case 'E':
+    case 'e':case 'E':
         dev->config.c_cflag |= PARENB;  // enable parity
         dev->config.c_cflag &= ~PARODD; // Even parity
         dev->config.c_iflag |= INPCK;   // disable pairty checking
         break;
-    case 's':
-    case 'S':
+    case 's':case 'S':
         dev->config.c_cflag &= ~PARENB; // Clear check digit
         dev->config.c_cflag &= ~CSTOPB;
         dev->config.c_iflag |= INPCK; // disable pairty checking

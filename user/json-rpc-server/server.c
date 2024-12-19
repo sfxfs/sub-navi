@@ -1,10 +1,11 @@
 #include <pthread.h>
+
+#include "jsonrpc-c.h"
+#include "navi-config.h"
+
 #include "method_info.h"
 #include "method_ctrl.h"
 #include "method_debug.h"
-#include "jsonrpc-c.h"
-
-#include "navi-config.h"
 
 #include "server.h"
 

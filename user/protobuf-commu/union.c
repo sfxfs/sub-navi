@@ -3,14 +3,13 @@
 #include <stdlib.h>
 #include <pthread.h>
 
-#include <pb_decode.h>
-#include <pb_encode.h>
-
-#include <ev.h>
-#include <log.h>
-
+#include "ev.h"
+#include "log.h"
+#include "pb_decode.h"
+#include "pb_encode.h"
 #include "linux_uart.h"
 #include "navi-config.h"
+
 #include "union.h"
 
 #include "proto_def/navi_master.pb.c"
