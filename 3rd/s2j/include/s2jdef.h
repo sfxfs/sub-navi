@@ -117,10 +117,13 @@ typedef struct {
     S2J_STRUCT_ARRAY_GET_##type##_ELEMENT_EX(to_struct, from_json, _element, index, _defval)
 
 #define S2J_JSON_SET_int_ELEMENT(to_json, from_struct, _element) \
-    cJSON_AddIntToObject(to_json, #_element,(long long)(from_struct)->_element);
+    cJSON_AddIntToObject(to_json, #_element, (long long)(from_struct)->_element);
 
 #define S2J_JSON_SET_double_ELEMENT(to_json, from_struct, _element) \
     cJSON_AddNumberToObject(to_json, #_element, (double)(from_struct)->_element);
+
+#define S2J_JSON_SET__Bool_ELEMENT(to_json, from_struct, _element) \
+    cJSON_AddBoolToObject(to_json, #_element, (from_struct)->_element);
 
 #define S2J_JSON_SET_string_ELEMENT(to_json, from_struct, _element) \
     (from_struct)->_element[sizeof((from_struct)->_element)-1] = '\0'; \
