@@ -19,7 +19,7 @@ HARDWARE_UART uart_protobuf;
 struct ev_loop *loop;
 ev_io uart_watcher;
 
-static const pb_msgdesc_t *decode_unionmessage_type(pb_istream_t *stream)
+static const pb_msgdesc_t *decode_response_unionmessage_type(pb_istream_t *stream)
 {
     pb_wire_type_t wire_type;
     uint32_t tag;
@@ -59,9 +59,11 @@ static bool decode_unionmessage_contents(pb_istream_t *stream, const pb_msgdesc_
 
 static int protobuf_response_rpc(uint8_t *data, size_t size)
 {
+    if (size < 0)
+        return -1;
     pb_istream_t stream = pb_istream_from_buffer(data, size);
 
-    const pb_msgdesc_t *type = decode_unionmessage_type(&stream);
+    const pb_msgdesc_t *type = decode_response_unionmessage_type(&stream);
     bool status = false;
 
     if (type == DepthResponse_fields)
@@ -96,6 +98,7 @@ static int protobuf_commu_intf_init(void)
 
 static void uart_read_cb(struct ev_loop *loop, ev_io *watcher, int revents)
 {
+    log_debug("uart EV_READ event");
     uint8_t data[NAVI_MASTER_PB_H_MAX_SIZE];
     int len = read(watcher->fd, data, sizeof(data));
     protobuf_response_rpc(data, len);
@@ -167,10 +170,11 @@ int protobuf_commu_send_cmd(const pb_msgdesc_t *messagetype, void *message)
         return -1;
     }
 
-    if (navi_uart_write(uart_protobuf, data, stream.bytes_written) != 0)
+    if (navi_uart_write(uart_protobuf, data, stream.bytes_written) < 0)
     {
         log_warn("protobuf uart write failed.");
         return -1;
     }
+    log_debug("protobuf uart send cmd success.");
     return 0;
 }

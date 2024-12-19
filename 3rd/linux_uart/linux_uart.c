@@ -295,6 +295,6 @@ uint8_t navi_uart_Set(HARDWARE_UART *dev, int databits, int stopbits, int parity
         log_error("Setting terminal parameters failed");
         return 0;
     }
-    log_error("Set terminal parameters successfully");
+    log_debug("Set terminal parameters successfully");
     return 1;
 }

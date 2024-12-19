@@ -10,7 +10,7 @@
 
 #define SUB_NAVI_CONFIG_RPC_SERVER_PORT             8888
 
-#define SUB_NAVI_CONFIG_PROTOBUF_UART_PATH          "/dev/ttyS0"
+#define SUB_NAVI_CONFIG_PROTOBUF_UART_PATH          "/dev/ttyS5"
 #define SUB_NAVI_CONFIG_PROTOBUF_UART_BAUDRATE      115200
 
 #define SUB_NAVI_CONFIG_JY901_UART_PATH             "/dev/ttyS1"
