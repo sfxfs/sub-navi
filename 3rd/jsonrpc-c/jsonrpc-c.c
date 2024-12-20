@@ -18,6 +18,7 @@
 #include <arpa/inet.h>
 
 #include "mjsonrpc.h"
+
 #include "jsonrpc-c.h"
 
 static char *_strstr(const char *p1, int len, const char *p2)

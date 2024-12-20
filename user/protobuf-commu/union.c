@@ -67,16 +67,16 @@ static int protobuf_response_rpc(uint8_t *data, size_t size)
     const pb_msgdesc_t *type = decode_response_unionmessage_type(&stream);
     bool status = false;
 
-    if (type == DepthResponse_fields)
+    if (type == DepthSensorResponse_fields)
     {
         ThrusterCommand msg = {};
-        status = decode_unionmessage_contents(&stream, DepthResponse_fields, &msg);
+        status = decode_unionmessage_contents(&stream, DepthSensorResponse_fields, &msg);
         log_debug("Got MsgType1");
     }
-    else if (type == CleanPressureResponse_fields)
+    else if (type == PressureSensorResponse_fields)
     {
-        ArmCommand msg = {};
-        status = decode_unionmessage_contents(&stream, CleanPressureResponse_fields, &msg);
+        PWMDevCommand msg = {};
+        status = decode_unionmessage_contents(&stream, PressureSensorResponse_fields, &msg);
         log_debug("Got MsgType2");
     }
 

@@ -2,39 +2,54 @@ syntax = "proto2";
 
 message ThrusterCommand
 {
-    optional int32 throttle0 = 1;
-    optional int32 throttle1 = 2;
-    optional int32 throttle2 = 3;
-    optional int32 throttle3 = 4;
-    optional int32 throttle4 = 5;
-    optional int32 throttle5 = 6;
-    optional int32 throttle6 = 7;
-    optional int32 throttle7 = 8;
+    optional uint32 throttle0 = 1;
+    optional uint32 throttle1 = 2;
+    optional uint32 throttle2 = 3;
+    optional uint32 throttle3 = 4;
+    optional uint32 throttle4 = 5;
+    optional uint32 throttle5 = 6;
+    optional uint32 throttle6 = 7;
+    optional uint32 throttle7 = 8;
 }
 
-message ArmCommand
+message PWMDevCommand
 {
-    required int32 value = 1;
+    optional uint32 duty0 = 1;
+    optional uint32 duty1 = 2;
+    optional uint32 duty2 = 3;
+    optional uint32 duty3 = 4;
+    optional uint32 duty4 = 5;
+    optional uint32 duty5 = 6;
+    optional uint32 duty6 = 7;
+    optional uint32 duty7 = 8;
+    optional uint32 duty8 = 9;
+    optional uint32 duty9 = 10;
+    optional uint32 duty10 = 11;
+    optional uint32 duty11 = 12;
+    optional uint32 duty12 = 13;
+    optional uint32 duty13 = 14;
+    optional uint32 duty14 = 15;
+    optional uint32 duty15 = 16;
 }
 
 message Commands
 {
     optional ThrusterCommand msgTC = 1;
-    optional ArmCommand msgAC = 2;
+    optional PWMDevCommand msgPDC = 2;
 }
 
-message DepthResponse
+message DepthSensorResponse
 {
     required float depth = 1;
 }
 
-message CleanPressureResponse
+message PressureSensorResponse
 {
     required int32 pressure = 1;
 }
 
 message Responses
 {
-    optional DepthResponse msgDR = 1;
-    optional CleanPressureResponse msgCPR = 2;
+    optional DepthSensorResponse msgDSR = 1;
+    optional PressureSensorResponse msgPSR = 2;
 }

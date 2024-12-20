@@ -12,47 +12,78 @@
 /* Struct definitions */
 typedef struct _ThrusterCommand {
     bool has_throttle0;
-    int32_t throttle0;
+    uint32_t throttle0;
     bool has_throttle1;
-    int32_t throttle1;
+    uint32_t throttle1;
     bool has_throttle2;
-    int32_t throttle2;
+    uint32_t throttle2;
     bool has_throttle3;
-    int32_t throttle3;
+    uint32_t throttle3;
     bool has_throttle4;
-    int32_t throttle4;
+    uint32_t throttle4;
     bool has_throttle5;
-    int32_t throttle5;
+    uint32_t throttle5;
     bool has_throttle6;
-    int32_t throttle6;
+    uint32_t throttle6;
     bool has_throttle7;
-    int32_t throttle7;
+    uint32_t throttle7;
 } ThrusterCommand;
 
-typedef struct _ArmCommand {
-    int32_t value;
-} ArmCommand;
+typedef struct _PWMDevCommand {
+    bool has_duty0;
+    uint32_t duty0;
+    bool has_duty1;
+    uint32_t duty1;
+    bool has_duty2;
+    uint32_t duty2;
+    bool has_duty3;
+    uint32_t duty3;
+    bool has_duty4;
+    uint32_t duty4;
+    bool has_duty5;
+    uint32_t duty5;
+    bool has_duty6;
+    uint32_t duty6;
+    bool has_duty7;
+    uint32_t duty7;
+    bool has_duty8;
+    uint32_t duty8;
+    bool has_duty9;
+    uint32_t duty9;
+    bool has_duty10;
+    uint32_t duty10;
+    bool has_duty11;
+    uint32_t duty11;
+    bool has_duty12;
+    uint32_t duty12;
+    bool has_duty13;
+    uint32_t duty13;
+    bool has_duty14;
+    uint32_t duty14;
+    bool has_duty15;
+    uint32_t duty15;
+} PWMDevCommand;
 
 typedef struct _Commands {
     bool has_msgTC;
     ThrusterCommand msgTC;
-    bool has_msgAC;
-    ArmCommand msgAC;
+    bool has_msgPDC;
+    PWMDevCommand msgPDC;
 } Commands;
 
-typedef struct _DepthResponse {
+typedef struct _DepthSensorResponse {
     float depth;
-} DepthResponse;
+} DepthSensorResponse;
 
-typedef struct _CleanPressureResponse {
+typedef struct _PressureSensorResponse {
     int32_t pressure;
-} CleanPressureResponse;
+} PressureSensorResponse;
 
 typedef struct _Responses {
-    bool has_msgDR;
-    DepthResponse msgDR;
-    bool has_msgCPR;
-    CleanPressureResponse msgCPR;
+    bool has_msgDSR;
+    DepthSensorResponse msgDSR;
+    bool has_msgPSR;
+    PressureSensorResponse msgPSR;
 } Responses;
 
 
@@ -62,17 +93,17 @@ extern "C" {
 
 /* Initializer values for message structs */
 #define ThrusterCommand_init_default             {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
-#define ArmCommand_init_default                  {0}
-#define Commands_init_default                    {false, ThrusterCommand_init_default, false, ArmCommand_init_default}
-#define DepthResponse_init_default               {0}
-#define CleanPressureResponse_init_default       {0}
-#define Responses_init_default                   {false, DepthResponse_init_default, false, CleanPressureResponse_init_default}
+#define PWMDevCommand_init_default               {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
+#define Commands_init_default                    {false, ThrusterCommand_init_default, false, PWMDevCommand_init_default}
+#define DepthSensorResponse_init_default         {0}
+#define PressureSensorResponse_init_default      {0}
+#define Responses_init_default                   {false, DepthSensorResponse_init_default, false, PressureSensorResponse_init_default}
 #define ThrusterCommand_init_zero                {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
-#define ArmCommand_init_zero                     {0}
-#define Commands_init_zero                       {false, ThrusterCommand_init_zero, false, ArmCommand_init_zero}
-#define DepthResponse_init_zero                  {0}
-#define CleanPressureResponse_init_zero          {0}
-#define Responses_init_zero                      {false, DepthResponse_init_zero, false, CleanPressureResponse_init_zero}
+#define PWMDevCommand_init_zero                  {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
+#define Commands_init_zero                       {false, ThrusterCommand_init_zero, false, PWMDevCommand_init_zero}
+#define DepthSensorResponse_init_zero            {0}
+#define PressureSensorResponse_init_zero         {0}
+#define Responses_init_zero                      {false, DepthSensorResponse_init_zero, false, PressureSensorResponse_init_zero}
 
 /* Field tags (for use in manual encoding/decoding) */
 #define ThrusterCommand_throttle0_tag            1
@@ -83,81 +114,111 @@ extern "C" {
 #define ThrusterCommand_throttle5_tag            6
 #define ThrusterCommand_throttle6_tag            7
 #define ThrusterCommand_throttle7_tag            8
-#define ArmCommand_value_tag                     1
+#define PWMDevCommand_duty0_tag                  1
+#define PWMDevCommand_duty1_tag                  2
+#define PWMDevCommand_duty2_tag                  3
+#define PWMDevCommand_duty3_tag                  4
+#define PWMDevCommand_duty4_tag                  5
+#define PWMDevCommand_duty5_tag                  6
+#define PWMDevCommand_duty6_tag                  7
+#define PWMDevCommand_duty7_tag                  8
+#define PWMDevCommand_duty8_tag                  9
+#define PWMDevCommand_duty9_tag                  10
+#define PWMDevCommand_duty10_tag                 11
+#define PWMDevCommand_duty11_tag                 12
+#define PWMDevCommand_duty12_tag                 13
+#define PWMDevCommand_duty13_tag                 14
+#define PWMDevCommand_duty14_tag                 15
+#define PWMDevCommand_duty15_tag                 16
 #define Commands_msgTC_tag                       1
-#define Commands_msgAC_tag                       2
-#define DepthResponse_depth_tag                  1
-#define CleanPressureResponse_pressure_tag       1
-#define Responses_msgDR_tag                      1
-#define Responses_msgCPR_tag                     2
+#define Commands_msgPDC_tag                      2
+#define DepthSensorResponse_depth_tag            1
+#define PressureSensorResponse_pressure_tag      1
+#define Responses_msgDSR_tag                     1
+#define Responses_msgPSR_tag                     2
 
 /* Struct field encoding specification for nanopb */
 #define ThrusterCommand_FIELDLIST(X, a) \
-X(a, STATIC,   OPTIONAL, INT32,    throttle0,         1) \
-X(a, STATIC,   OPTIONAL, INT32,    throttle1,         2) \
-X(a, STATIC,   OPTIONAL, INT32,    throttle2,         3) \
-X(a, STATIC,   OPTIONAL, INT32,    throttle3,         4) \
-X(a, STATIC,   OPTIONAL, INT32,    throttle4,         5) \
-X(a, STATIC,   OPTIONAL, INT32,    throttle5,         6) \
-X(a, STATIC,   OPTIONAL, INT32,    throttle6,         7) \
-X(a, STATIC,   OPTIONAL, INT32,    throttle7,         8)
+X(a, STATIC,   OPTIONAL, UINT32,   throttle0,         1) \
+X(a, STATIC,   OPTIONAL, UINT32,   throttle1,         2) \
+X(a, STATIC,   OPTIONAL, UINT32,   throttle2,         3) \
+X(a, STATIC,   OPTIONAL, UINT32,   throttle3,         4) \
+X(a, STATIC,   OPTIONAL, UINT32,   throttle4,         5) \
+X(a, STATIC,   OPTIONAL, UINT32,   throttle5,         6) \
+X(a, STATIC,   OPTIONAL, UINT32,   throttle6,         7) \
+X(a, STATIC,   OPTIONAL, UINT32,   throttle7,         8)
 #define ThrusterCommand_CALLBACK NULL
 #define ThrusterCommand_DEFAULT NULL
 
-#define ArmCommand_FIELDLIST(X, a) \
-X(a, STATIC,   REQUIRED, INT32,    value,             1)
-#define ArmCommand_CALLBACK NULL
-#define ArmCommand_DEFAULT NULL
+#define PWMDevCommand_FIELDLIST(X, a) \
+X(a, STATIC,   OPTIONAL, UINT32,   duty0,             1) \
+X(a, STATIC,   OPTIONAL, UINT32,   duty1,             2) \
+X(a, STATIC,   OPTIONAL, UINT32,   duty2,             3) \
+X(a, STATIC,   OPTIONAL, UINT32,   duty3,             4) \
+X(a, STATIC,   OPTIONAL, UINT32,   duty4,             5) \
+X(a, STATIC,   OPTIONAL, UINT32,   duty5,             6) \
+X(a, STATIC,   OPTIONAL, UINT32,   duty6,             7) \
+X(a, STATIC,   OPTIONAL, UINT32,   duty7,             8) \
+X(a, STATIC,   OPTIONAL, UINT32,   duty8,             9) \
+X(a, STATIC,   OPTIONAL, UINT32,   duty9,            10) \
+X(a, STATIC,   OPTIONAL, UINT32,   duty10,           11) \
+X(a, STATIC,   OPTIONAL, UINT32,   duty11,           12) \
+X(a, STATIC,   OPTIONAL, UINT32,   duty12,           13) \
+X(a, STATIC,   OPTIONAL, UINT32,   duty13,           14) \
+X(a, STATIC,   OPTIONAL, UINT32,   duty14,           15) \
+X(a, STATIC,   OPTIONAL, UINT32,   duty15,           16)
+#define PWMDevCommand_CALLBACK NULL
+#define PWMDevCommand_DEFAULT NULL
 
 #define Commands_FIELDLIST(X, a) \
 X(a, STATIC,   OPTIONAL, MESSAGE,  msgTC,             1) \
-X(a, STATIC,   OPTIONAL, MESSAGE,  msgAC,             2)
+X(a, STATIC,   OPTIONAL, MESSAGE,  msgPDC,            2)
 #define Commands_CALLBACK NULL
 #define Commands_DEFAULT NULL
 #define Commands_msgTC_MSGTYPE ThrusterCommand
-#define Commands_msgAC_MSGTYPE ArmCommand
+#define Commands_msgPDC_MSGTYPE PWMDevCommand
 
-#define DepthResponse_FIELDLIST(X, a) \
+#define DepthSensorResponse_FIELDLIST(X, a) \
 X(a, STATIC,   REQUIRED, FLOAT,    depth,             1)
-#define DepthResponse_CALLBACK NULL
-#define DepthResponse_DEFAULT NULL
+#define DepthSensorResponse_CALLBACK NULL
+#define DepthSensorResponse_DEFAULT NULL
 
-#define CleanPressureResponse_FIELDLIST(X, a) \
+#define PressureSensorResponse_FIELDLIST(X, a) \
 X(a, STATIC,   REQUIRED, INT32,    pressure,          1)
-#define CleanPressureResponse_CALLBACK NULL
-#define CleanPressureResponse_DEFAULT NULL
+#define PressureSensorResponse_CALLBACK NULL
+#define PressureSensorResponse_DEFAULT NULL
 
 #define Responses_FIELDLIST(X, a) \
-X(a, STATIC,   OPTIONAL, MESSAGE,  msgDR,             1) \
-X(a, STATIC,   OPTIONAL, MESSAGE,  msgCPR,            2)
+X(a, STATIC,   OPTIONAL, MESSAGE,  msgDSR,            1) \
+X(a, STATIC,   OPTIONAL, MESSAGE,  msgPSR,            2)
 #define Responses_CALLBACK NULL
 #define Responses_DEFAULT NULL
-#define Responses_msgDR_MSGTYPE DepthResponse
-#define Responses_msgCPR_MSGTYPE CleanPressureResponse
+#define Responses_msgDSR_MSGTYPE DepthSensorResponse
+#define Responses_msgPSR_MSGTYPE PressureSensorResponse
 
 extern const pb_msgdesc_t ThrusterCommand_msg;
-extern const pb_msgdesc_t ArmCommand_msg;
+extern const pb_msgdesc_t PWMDevCommand_msg;
 extern const pb_msgdesc_t Commands_msg;
-extern const pb_msgdesc_t DepthResponse_msg;
-extern const pb_msgdesc_t CleanPressureResponse_msg;
+extern const pb_msgdesc_t DepthSensorResponse_msg;
+extern const pb_msgdesc_t PressureSensorResponse_msg;
 extern const pb_msgdesc_t Responses_msg;
 
 /* Defines for backwards compatibility with code written before nanopb-0.4.0 */
 #define ThrusterCommand_fields &ThrusterCommand_msg
-#define ArmCommand_fields &ArmCommand_msg
+#define PWMDevCommand_fields &PWMDevCommand_msg
 #define Commands_fields &Commands_msg
-#define DepthResponse_fields &DepthResponse_msg
-#define CleanPressureResponse_fields &CleanPressureResponse_msg
+#define DepthSensorResponse_fields &DepthSensorResponse_msg
+#define PressureSensorResponse_fields &PressureSensorResponse_msg
 #define Responses_fields &Responses_msg
 
 /* Maximum encoded size of messages (where known) */
-#define ArmCommand_size                          11
-#define CleanPressureResponse_size               11
-#define Commands_size                            103
-#define DepthResponse_size                       5
+#define Commands_size                            149
+#define DepthSensorResponse_size                 5
 #define NAVI_MASTER_PB_H_MAX_SIZE                Commands_size
+#define PWMDevCommand_size                       97
+#define PressureSensorResponse_size              11
 #define Responses_size                           20
-#define ThrusterCommand_size                     88
+#define ThrusterCommand_size                     48
 
 #ifdef __cplusplus
 } /* extern "C" */

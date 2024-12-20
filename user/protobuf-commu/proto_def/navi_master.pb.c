@@ -9,16 +9,16 @@
 PB_BIND(ThrusterCommand, ThrusterCommand, AUTO)
 
 
-PB_BIND(ArmCommand, ArmCommand, AUTO)
+PB_BIND(PWMDevCommand, PWMDevCommand, AUTO)
 
 
 PB_BIND(Commands, Commands, AUTO)
 
 
-PB_BIND(DepthResponse, DepthResponse, AUTO)
+PB_BIND(DepthSensorResponse, DepthSensorResponse, AUTO)
 
 
-PB_BIND(CleanPressureResponse, CleanPressureResponse, AUTO)
+PB_BIND(PressureSensorResponse, PressureSensorResponse, AUTO)
 
 
 PB_BIND(Responses, Responses, AUTO)

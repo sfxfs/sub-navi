@@ -8,8 +8,9 @@
 #ifndef JSONRPCC_H_
 #define JSONRPCC_H_
 
-#include "mjsonrpc.h"
 #include <ev.h>
+
+#include "mjsonrpc.h"
 
 struct jrpc_server {
 	int port_number;
