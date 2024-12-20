@@ -16,4 +16,6 @@
 #define SUB_NAVI_CONFIG_JY901_UART_PATH             "/dev/ttyS1"
 #define SUB_NAVI_CONFIG_JY901_UART_BAUDRATE         115200
 
+#define SUB_NAVI_CONFIG_CONTROL_RUN_EVERY_SECOND    0.02    // 20ms
+
 #endif

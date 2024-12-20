@@ -13,6 +13,8 @@ add_executable(subnavi
     ${control_srcs}
     )
 
+target_include_directories(subnavi PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
 file(COPY ${PROJECT_SOURCE_DIR}/user/csv-json-config-sys/config-files/frame_factor.csv DESTINATION ${PROJECT_SOURCE_DIR}/output)
 
 target_link_libraries(subnavi
