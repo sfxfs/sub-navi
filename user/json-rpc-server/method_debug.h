@@ -4,5 +4,7 @@
 #include "mjsonrpc.h"
 
 cJSON *get_thruster_config_handler(mjrpc_ctx_t *ctx, cJSON *params, cJSON *id);
+cJSON *set_thruster_config_handler(mjrpc_ctx_t *ctx, cJSON *params, cJSON *id);
+cJSON *save_thruster_config_handler(mjrpc_ctx_t *ctx, cJSON *params, cJSON *id);
 
 #endif

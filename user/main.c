@@ -58,7 +58,7 @@ static int init(void)
     // ...
 
     // 5. json rpc server
-    if (0 != navi_server_init())
+    if (0 != navi_server_init(&thruster_config))
     {
         log_error("jsonrpc server init failed!");
         // peripherals deinit ...

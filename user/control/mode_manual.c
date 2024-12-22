@@ -71,7 +71,7 @@ static uint32_t per_motor_raw_to_throttle(double raw, thruster_attr attr)
     if (raw == 0.)
         return 0;
     raw *= attr.reversed == true ? -1. : 1.;
-    raw += raw < 0 ? attr.deadzone_n : attr.deadzone_p;
+    raw += raw < 0 ? -attr.deadzone_n : attr.deadzone_p;
     raw = constrain(raw, -attr.power_nLimit, attr.power_pLimit);
     return throttle_double_to_uint32(raw);
 }
