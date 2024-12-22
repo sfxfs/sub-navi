@@ -1,7 +1,7 @@
 {
 	"thruster_0":	{
-		"reversed":	0,
-		"enabled":	1,
+		"reversed":	false,
+		"enabled":	true,
 		"channel":	0,
 		"deadzone_p":	0,
 		"deadzone_n":	0,
@@ -9,8 +9,8 @@
 		"power_nLimit":	0.5
 	},
 	"thruster_1":	{
-		"reversed":	0,
-		"enabled":	1,
+		"reversed":	false,
+		"enabled":	true,
 		"channel":	1,
 		"deadzone_p":	0,
 		"deadzone_n":	0,
@@ -18,8 +18,8 @@
 		"power_nLimit":	0.5
 	},
 	"thruster_2":	{
-		"reversed":	0,
-		"enabled":	1,
+		"reversed":	false,
+		"enabled":	true,
 		"channel":	2,
 		"deadzone_p":	0,
 		"deadzone_n":	0,
@@ -27,8 +27,8 @@
 		"power_nLimit":	0.5
 	},
 	"thruster_3":	{
-		"reversed":	0,
-		"enabled":	1,
+		"reversed":	false,
+		"enabled":	true,
 		"channel":	3,
 		"deadzone_p":	0,
 		"deadzone_n":	0,
@@ -36,8 +36,8 @@
 		"power_nLimit":	0.5
 	},
 	"thruster_4":	{
-		"reversed":	0,
-		"enabled":	1,
+		"reversed":	false,
+		"enabled":	true,
 		"channel":	4,
 		"deadzone_p":	0,
 		"deadzone_n":	0,
@@ -45,8 +45,8 @@
 		"power_nLimit":	0.5
 	},
 	"thruster_5":	{
-		"reversed":	0,
-		"enabled":	1,
+		"reversed":	false,
+		"enabled":	true,
 		"channel":	5,
 		"deadzone_p":	0,
 		"deadzone_n":	0,
@@ -54,8 +54,8 @@
 		"power_nLimit":	0.5
 	},
 	"thruster_6":	{
-		"reversed":	0,
-		"enabled":	1,
+		"reversed":	false,
+		"enabled":	true,
 		"channel":	6,
 		"deadzone_p":	0,
 		"deadzone_n":	0,
@@ -63,8 +63,8 @@
 		"power_nLimit":	0.5
 	},
 	"thruster_7":	{
-		"reversed":	0,
-		"enabled":	1,
+		"reversed":	false,
+		"enabled":	true,
 		"channel":	7,
 		"deadzone_p":	0,
 		"deadzone_n":	0,

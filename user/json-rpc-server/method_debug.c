@@ -6,8 +6,8 @@
 
 cJSON *get_thruster_config_handler(mjrpc_ctx_t *ctx, cJSON *params, cJSON *id)
 {
-    thrusters_params * params = thruster_read_from_file();
-    cJSON *json = thruster_s2j(params);
-    free(params);
+    thrusters_params * config = thruster_read_from_file();
+    cJSON *json = thruster_s2j(config);
+    free(config);
     return json;
 }
