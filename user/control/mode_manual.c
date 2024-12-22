@@ -63,13 +63,13 @@ static double *move_data_to_raw_throttle(frame_factor_t *frame_factor,
 
 static uint32_t throttle_double_to_uint32(double raw)
 {
-    if (raw)
-        return (uint32_t)(raw * 1000.); // TODO ... (== 0 means not to update)
-    return 0;
+    return (uint32_t)(raw * 1000.); // TODO ... (== 0 means not to update)
 }
 
 static uint32_t per_motor_raw_to_throttle(double raw, thruster_attr attr)
 {
+    if (raw == 0.)
+        return 0;
     raw *= attr.reversed == true ? -1. : 1.;
     raw += raw < 0 ? attr.deadzone_n : attr.deadzone_p;
     raw = constrain(raw, -attr.power_nLimit, attr.power_pLimit);
@@ -93,6 +93,7 @@ static uint32_t *raw_to_throttle(double *raw, thrusters_params *thruster_config)
     array[6] = per_motor_raw_to_throttle(raw[6], thruster_config->thruster_6);
     array[7] = per_motor_raw_to_throttle(raw[7], thruster_config->thruster_7);
 #endif
+    return array;
 }
 
 static int write_throttle_to_motor(uint32_t *throttle)

@@ -31,7 +31,7 @@ enum frame_factor_row
 
 typedef struct
 {
-    float value[FRAME_FACTOR_ROW_MAX][FRAME_FACTOR_COL_MAX]; // row --, col |
+    double value[FRAME_FACTOR_ROW_MAX][FRAME_FACTOR_COL_MAX]; // row --, col |
 } frame_factor_t;
 
 #define frame_factor_check_file_exist() (access(SUB_NAVI_CONFIG_FRAME_FACTOR_FILE_PATH, F_OK) == 0)

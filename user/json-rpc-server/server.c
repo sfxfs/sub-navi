@@ -24,7 +24,10 @@ int navi_server_init(void)
         return -1;
 
     int ret = 0;
-    // add essential methods
+    // new methods
+    ret += mjrpc_add_method(&server_handle.rpc_handle, get_thruster_config_handler, "get_thruster_config", NULL);
+
+    // add old essential methods
     ret += mjrpc_add_method(&server_handle.rpc_handle, move_handler, "move", NULL);
     ret += mjrpc_add_method(&server_handle.rpc_handle, empty_handler, "catch", NULL);
     ret += mjrpc_add_method(&server_handle.rpc_handle, empty_handler, "light", NULL);
@@ -32,7 +35,7 @@ int navi_server_init(void)
     ret += mjrpc_add_method(&server_handle.rpc_handle, empty_handler, "set_direction_locked", NULL);
     ret += mjrpc_add_method(&server_handle.rpc_handle, empty_handler, "set_depth_locked", NULL);
 
-    // addional methods (configuration, data feedback, etc.)
+    // old addional methods (configuration, data feedback, etc.)
     // ...
     return ret;
 }
