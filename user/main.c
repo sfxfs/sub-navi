@@ -16,7 +16,8 @@ static int init(void)
     // 1. csv config
     if (frame_factor_check_file_exist() != true)
     {
-        log_error("frame factor file not exist!");
+        log_error("frame factor file not exist! path: %s",
+                    SUB_NAVI_CONFIG_FRAME_FACTOR_FILE_PATH);
         return -1;
     }
 
@@ -28,7 +29,8 @@ static int init(void)
     thrusters_params *thruster_config = NULL;
     if (thruster_check_file_exist() != true)
     {
-        log_warn("thruster file not exist!");
+        log_warn("thruster file dose not exist! path: %s",
+                    SUB_NAVI_CONFIG_THRUSTER_CONFIG_FILE_PATH);
         json_file_error = true;
 
         thrusters_params *default_config = thruster_create_with_init_val();
@@ -42,7 +44,8 @@ static int init(void)
 
     if (json_file_error == true)
     {
-        log_error("this is your first time running the program, please modify the config file and restart the program.");
+        log_error("this is your first time running the program. "
+                    "please modify the config file and restart the program.");
         return -1;
     }
 
@@ -76,6 +79,7 @@ static int init(void)
 
 int main(int argc, const char *argv[])
 {
+    log_set_level(SUB_NAVI_CONFIG_LOG_LEVEL);
     if (0 != init())
         exit(EXIT_FAILURE);
     for(;;);

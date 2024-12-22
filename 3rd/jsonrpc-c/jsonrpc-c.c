@@ -135,15 +135,15 @@ static void connection_cb(struct ev_loop *loop, ev_io *w, int revents) {
 
 		if ((root = cJSON_ParseWithOpts(body, &end_ptr, false)) != NULL) {
 			if (server->debug_level > 1) {
-				char * str_result = cJSON_Print(root);
-				printf("Valid JSON Received:\n%s\n", str_result);
+				char * str_result = cJSON_PrintUnformatted(root);
+				printf("\nValid JSON Received:\n%s\n", str_result);
 				free(str_result);
 			}
 
 			int ret_code;
 			cJSON *ret_json = mjrpc_process_cjson(&server->rpc_handle, root, &ret_code);
 			if (server->debug_level > 1)
-				printf("Return Code: %d, ret json == NULL?%s\n", ret_code,
+				printf("Return Code: %d, (ret json == NULL) == %s\n", ret_code,
 												ret_json == NULL ? "true" : "false");
 			if (ret_json) {
 				char *ret_str = cJSON_PrintUnformatted(ret_json);

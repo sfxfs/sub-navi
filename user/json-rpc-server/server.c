@@ -22,6 +22,7 @@ int navi_server_init(void)
 {
     if (jrpc_server_init(&server_handle, SUB_NAVI_CONFIG_RPC_SERVER_PORT, SERVER_DEBUG_LEVEL) != 0)
         return -1;
+    server_handle.debug_level = SUB_NAVI_CONFIG_LOG_LEVEL <= 1 ? 2 : 0;
 
     int ret = 0;
     // new methods

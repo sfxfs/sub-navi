@@ -1,6 +1,8 @@
 #ifndef SUB_NAVI_GLOBAL_CONFIG_H
 #define SUB_NAVI_GLOBAL_CONFIG_H
 
+#define SUB_NAVI_CONFIG_LOG_LEVEL                   0   // 0 == LOG_TRACE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, LOG_FATAL
+
 #define SUB_NAVI_CONFIG_USE_EIGHT_THRUSTERS         1   // 0 is for 6 thrusters
 
 #define SUB_NAVI_CONFIG_PID_CONFIG_FILE_PATH        "./pid_config.json"
