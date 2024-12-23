@@ -17,6 +17,8 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 
+#include "log.h"
+
 #include "mjsonrpc.h"
 
 #include "jsonrpc-c.h"
@@ -71,8 +73,7 @@ static void *get_in_addr(struct sockaddr *sa) {
 static int send_response(struct jrpc_connection * conn, char *response) {
 	ssize_t ret = 0;
 	int fd = conn->fd;
-	if (conn->debug_level > 1)
-		printf("JSON Response:\n%s\n", response);
+	log_debug("JSON Response:\n%s", response);
 	int jresp_len = strlen(response);
 	char *resp = calloc(jresp_len + HTTP_HEADER_BUF_SIZE, sizeof(char));
 	sprintf(resp,
@@ -120,8 +121,7 @@ static void connection_cb(struct ev_loop *loop, ev_io *w, int revents) {
 	}
 	if (!bytes_read) {
 		// client closed the sending half of the connection
-		if (server->debug_level)
-			printf("Client closed connection.\n");
+		log_info("Client closed connection.");
 		return close_connection(loop, w);
 	} else {
 		cJSON *root;
@@ -134,17 +134,14 @@ static void connection_cb(struct ev_loop *loop, ev_io *w, int revents) {
 			body += 4;    // "\r\n\r\n"
 
 		if ((root = cJSON_ParseWithOpts(body, &end_ptr, false)) != NULL) {
-			if (server->debug_level > 1) {
-				char * str_result = cJSON_PrintUnformatted(root);
-				printf("\nValid JSON Received:\n%s\n", str_result);
-				free(str_result);
-			}
+			char * str_result = cJSON_PrintUnformatted(root);
+			log_debug("Valid JSON Received:\n%s", str_result);
+			free(str_result);
 
 			int ret_code;
 			cJSON *ret_json = mjrpc_process_cjson(&server->rpc_handle, root, &ret_code);
-			if (server->debug_level > 1)
-				printf("Return Code: %d, (ret json == NULL) == %s\n", ret_code,
-												ret_json == NULL ? "true" : "false");
+			log_debug("Return Code: %d, (ret json == NULL) == %s", ret_code,
+											ret_json == NULL ? "true" : "false");
 			if (ret_json) {
 				char *ret_str = cJSON_PrintUnformatted(ret_json);
 				if (ret_str) {
@@ -165,11 +162,8 @@ static void connection_cb(struct ev_loop *loop, ev_io *w, int revents) {
 			// did we parse the entire buffer? If so, just wait for more.
 			// else there was an error before the buffer's end
 			if (end_ptr != (conn->buffer + conn->pos)) {
-				if (server->debug_level) {
-					printf("INVALID JSON Received:\n---\n%s\n---\n",
-							conn->buffer);
-				}
-
+				log_warn("INVALID JSON Received:\n---\n%s\n---",
+						conn->buffer);
 				char *ret_str = cJSON_PrintUnformatted(
 					mjrpc_response_error(JSON_RPC_CODE_INVALID_REQUEST,
                                     strdup("Valid request received."), cJSON_CreateNull()));
@@ -197,11 +191,9 @@ static void accept_cb(struct ev_loop *loop, ev_io *w, int revents) {
 		perror("accept");
 		free(connection_watcher);
 	} else {
-		if (((struct jrpc_server *) w->data)->debug_level) {
-			inet_ntop(their_addr.ss_family,
-					get_in_addr((struct sockaddr *) &their_addr), s, sizeof s);
-			printf("server: got connection from %s\n", s);
-		}
+		inet_ntop(their_addr.ss_family,
+				get_in_addr((struct sockaddr *) &their_addr), s, sizeof s);
+		log_info("server: got connection from %s", s);
 		ev_io_init(&connection_watcher->io, connection_cb,
 				connection_watcher->fd, EV_READ);
 		//copy pointer to struct jrpc_server
@@ -210,20 +202,14 @@ static void accept_cb(struct ev_loop *loop, ev_io *w, int revents) {
 		connection_watcher->buffer = malloc(1500);
 		memset(connection_watcher->buffer, 0, 1500);
 		connection_watcher->pos = 0;
-		//copy debug_level, struct jrpc_connection has no pointer to struct jrpc_server
-		connection_watcher->debug_level =
-				((struct jrpc_server *) w->data)->debug_level;
 		ev_io_start(loop, &connection_watcher->io);
 	}
 }
 
-int jrpc_server_init(struct jrpc_server *server, int port_number, int debug_level) {
+int jrpc_server_init(struct jrpc_server *server, int port_number) {
     memset(server, 0, sizeof(struct jrpc_server));
 	server->loop = EV_DEFAULT;
 	server->port_number = port_number;
-	server->debug_level = debug_level;
-	if (server->debug_level)
-		printf("JSONRPC-C Debug level %d\n", server->debug_level);
 	return __jrpc_server_start(server);
 }
 
@@ -288,8 +274,7 @@ static int __jrpc_server_start(struct jrpc_server *server) {
 		perror("listen");
 		return -1;
 	}
-	if (server->debug_level)
-		printf("server: waiting for connections...\n");
+	log_info("server: waiting for connections...");
 
 	ev_io_init(&server->listen_watcher, accept_cb, sockfd, EV_READ);
 	server->listen_watcher.data = server;

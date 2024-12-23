@@ -186,6 +186,7 @@ static void sigint_cb(EV_P_ ev_signal *w, int revents)
 
 int main(int argc, const char *argv[])
 {
+    log_set_level(SUB_NAVI_CONFIG_LOG_LEVEL);
     if (argc > 1)
         return parseArguments(argc, argv);
 
@@ -195,7 +196,6 @@ int main(int argc, const char *argv[])
            " |___/\\___/|___/   |_|\\_/_/ \\_\\_/ |___|\n"
            "                                       \n");
 
-    log_set_level(SUB_NAVI_CONFIG_LOG_LEVEL);
     if (0 != init())
         return 1;
 

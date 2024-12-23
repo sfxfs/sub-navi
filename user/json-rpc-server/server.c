@@ -16,7 +16,7 @@ static cJSON *empty_handler(mjrpc_ctx_t *ctx, cJSON *params, cJSON *id)
 
 int navi_server_init(thrusters_params *thruster_config)
 {
-    if (jrpc_server_init(&server_handle, SUB_NAVI_CONFIG_RPC_SERVER_PORT, SUB_NAVI_CONFIG_LOG_LEVEL <= 1 ? 2 : 0) != 0)
+    if (jrpc_server_init(&server_handle, SUB_NAVI_CONFIG_RPC_SERVER_PORT) != 0)
         return -1;
 
     int ret = 0;
