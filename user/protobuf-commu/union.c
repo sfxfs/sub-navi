@@ -7,7 +7,6 @@
 #include "log.h"
 #include "pb_decode.h"
 #include "pb_encode.h"
-#include "linux_uart.h"
 #include "navi-config.h"
 
 #include "message_resp.h"
@@ -97,6 +96,14 @@ static int protobuf_commu_intf_init(void)
     return -1;
 }
 
+int protobuf_commu_intf_init_cust(HARDWARE_UART *dev, const char *uart_path, uint32_t baudrate)
+{
+    if (navi_uart_begin(dev, uart_path) == 0)
+        if (navi_uart_setBaudrate(dev, baudrate) == 0)
+            return 0;
+    return -1;
+}
+
 static void uart_read_cb(struct ev_loop *loop, ev_io *watcher, int revents)
 {
     log_debug("uart EV_READ event");
@@ -107,7 +114,7 @@ static void uart_read_cb(struct ev_loop *loop, ev_io *watcher, int revents)
 
 static void *protobuf_routine(void *arg)
 {
-    ev_run((struct ev_loop *)arg, 0);
+    ev_loop((struct ev_loop *)arg, 0);
     return NULL;
 }
 
@@ -155,6 +162,27 @@ static bool encode_unionmessage_cmd(pb_ostream_t *stream, const pb_msgdesc_t *me
 
     /* Didn't find the field for messagetype */
     return false;
+}
+
+int protobuf_commu_send_cmd_cust(HARDWARE_UART *dev, const pb_msgdesc_t *messagetype, void *message)
+{
+    uint8_t data[NAVI_MASTER_PB_H_MAX_SIZE];
+    pb_ostream_t stream = pb_ostream_from_buffer(data, sizeof(data));
+
+    bool status = encode_unionmessage_cmd(&stream, messagetype, &message);
+    if (!status)
+    {
+        log_warn("Encoding failed!");
+        return -1;
+    }
+
+    if (navi_uart_write((*dev), data, stream.bytes_written) < 0)
+    {
+        log_warn("protobuf uart write failed.");
+        return -1;
+    }
+    log_debug("protobuf uart send cmd success.");
+    return 0;
 }
 
 int protobuf_commu_send_cmd(const pb_msgdesc_t *messagetype, void *message)
