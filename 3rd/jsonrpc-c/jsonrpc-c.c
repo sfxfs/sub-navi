@@ -296,11 +296,3 @@ static int __jrpc_server_start(struct jrpc_server *server) {
 	ev_io_start(server->loop, &server->listen_watcher);
 	return 0;
 }
-
-void jrpc_server_run(struct jrpc_server *server){
-	ev_loop(server->loop, 0);
-}
-
-void jrpc_server_stop(struct jrpc_server *server) {
-	ev_unloop(server->loop, EVUNLOOP_ALL);
-}

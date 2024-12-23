@@ -1,5 +1,3 @@
-#include <pthread.h>
-
 #include "jsonrpc-c.h"
 #include "navi-config.h"
 
@@ -40,23 +38,7 @@ int navi_server_init(thrusters_params **thruster_config)
     return ret;
 }
 
-static void *server_routine(void *arg)
+int navi_server_deinit(void)
 {
-    jrpc_server_run(&server_handle);
-    return NULL;
-}
-
-int navi_server_start_thread(void)
-{
-    pthread_t server_tid;
-    if (pthread_create(&server_tid, NULL, server_routine, NULL) == 0)
-        if (pthread_detach(server_tid) == 0)
-            return 0;
-    return -1;
-}
-
-int navi_server_stop(void)
-{
-    jrpc_server_stop(&server_handle);
     return mjrpc_del_method(&server_handle.rpc_handle, NULL);
 }

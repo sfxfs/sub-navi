@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <pthread.h>
 
 #include "ev.h"
 #include "log.h"
@@ -104,21 +103,15 @@ int protobuf_commu_intf_init_cust(HARDWARE_UART *dev, const char *uart_path, uin
     return -1;
 }
 
-static void uart_read_cb(struct ev_loop *loop, ev_io *watcher, int revents)
+static void uart_read_cb (EV_P_ ev_io *w, int revents)
 {
     log_debug("uart EV_READ event");
     uint8_t data[NAVI_MASTER_PB_H_MAX_SIZE];
-    int len = read(watcher->fd, data, sizeof(data));
+    int len = read(w->fd, data, sizeof(data));
     protobuf_response_rpc(data, len);
 }
 
-static void *protobuf_routine(void *arg)
-{
-    ev_loop((struct ev_loop *)arg, 0);
-    return NULL;
-}
-
-int protobuf_commu_start_thread(void)
+int protobuf_commu_init(void)
 {
     if (protobuf_commu_intf_init() != 0)
     {
@@ -126,19 +119,12 @@ int protobuf_commu_start_thread(void)
         return -1;
     }
 
-    struct ev_loop *loop = EV_DEFAULT;
+    EV_P = EV_DEFAULT;
     ev_io_init(&uart_watcher, uart_read_cb, uart_protobuf.fd, EV_READ);
-    ev_io_start(loop, &uart_watcher);
+    ev_io_start(EV_A_ &uart_watcher);
+    log_info("protobuf commu watcher on uart %s.", SUB_NAVI_CONFIG_PROTOBUF_UART_PATH);
 
-    pthread_t server_tid;
-    if (pthread_create(&server_tid, NULL, protobuf_routine, loop) == 0)
-        if (pthread_detach(server_tid) == 0)
-        {
-            log_info("protobuf commu thread started on uart %s.", SUB_NAVI_CONFIG_PROTOBUF_UART_PATH);
-            return 0;
-        }
-    log_error("protobuf commu thread create failed.");
-    return -1;
+    return 0;
 }
 
 static bool encode_unionmessage_cmd(pb_ostream_t *stream, const pb_msgdesc_t *messagetype, void *message)
@@ -169,7 +155,7 @@ int protobuf_commu_send_cmd_cust(HARDWARE_UART *dev, const pb_msgdesc_t *message
     uint8_t data[NAVI_MASTER_PB_H_MAX_SIZE];
     pb_ostream_t stream = pb_ostream_from_buffer(data, sizeof(data));
 
-    bool status = encode_unionmessage_cmd(&stream, messagetype, &message);
+    bool status = encode_unionmessage_cmd(&stream, messagetype, message);
     if (!status)
     {
         log_warn("Encoding failed!");
@@ -190,7 +176,7 @@ int protobuf_commu_send_cmd(const pb_msgdesc_t *messagetype, void *message)
     uint8_t data[NAVI_MASTER_PB_H_MAX_SIZE];
     pb_ostream_t stream = pb_ostream_from_buffer(data, sizeof(data));
 
-    bool status = encode_unionmessage_cmd(&stream, messagetype, &message);
+    bool status = encode_unionmessage_cmd(&stream, messagetype, message);
     if (!status)
     {
         log_warn("Encoding failed!");

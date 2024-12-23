@@ -5,8 +5,6 @@
 
 int navi_server_init(thrusters_params **thruster_config);
 
-int navi_server_start_thread(void);
-
-int navi_server_stop(void);
+int navi_server_deinit(void);
 
 #endif

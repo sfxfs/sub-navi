@@ -1,4 +1,4 @@
-#include <pthread.h>
+#include <stdlib.h>
 
 #include "ev.h"
 #include "log.h"
@@ -159,12 +159,6 @@ static void routine_cb(struct ev_loop *loop, ev_timer *w, int revents)
     }
 }
 
-static void *control_manual_routine(void *arg)
-{
-    ev_run((struct ev_loop *)arg, 0);
-    return NULL;
-}
-
 int control_manual_start_thread(frame_factor_t *frame_factor,
                                 thrusters_params *thruster_config)
 {
@@ -174,18 +168,13 @@ int control_manual_start_thread(frame_factor_t *frame_factor,
     arg->frame_factor = frame_factor;
     arg->thruster_config = thruster_config;
 
-    struct ev_loop *loop = EV_DEFAULT;
+    EV_P = EV_DEFAULT;
     ev_timer_init(&routine_watcher, routine_cb,
                     SUB_NAVI_CONFIG_CONTROL_RUN_EVERY_SECOND,
                     SUB_NAVI_CONFIG_CONTROL_RUN_EVERY_SECOND);
     routine_watcher.data = arg;
-    ev_timer_start(loop, &routine_watcher);
+    ev_timer_start(EV_A_ &routine_watcher);
 
-    log_info("control thread starting.");
-    pthread_t control_tid;
-    if (pthread_create(&control_tid, NULL, control_manual_routine, loop) == 0)
-        if (pthread_detach(control_tid) == 0)
-            return 0;
-    log_error("control thread create failed.");
-    return -1;
+    log_info("control watcher registered.");
+    return 0;
 }

@@ -1,4 +1,6 @@
 #include <stdlib.h>
+
+#include "ev.h"
 #include "log.h"
 
 #include "protobuf-commu/union.h"
@@ -223,7 +225,7 @@ static int init(void)
     // ...
 
     // 5. protobuf rpc p2p
-    if (0 != protobuf_commu_start_thread())
+    if (0 != protobuf_commu_init())
     {
         log_error("protobuf rpc server init failed!");
         // peripherals deinit ...
@@ -237,14 +239,7 @@ static int init(void)
         // peripherals deinit ...
         return -1;
     }
-    if (navi_server_start_thread() == 0)
-        log_info("rpc server started on port %d.", SUB_NAVI_CONFIG_RPC_SERVER_PORT);
-    else
-    {
-        log_error("rpc server start failed!");
-        // peripherals deinit ...
-        return -1;
-    }
+    log_info("rpc server will start on port %d.", SUB_NAVI_CONFIG_RPC_SERVER_PORT);
 
     // end ...
     return 0;
@@ -258,7 +253,9 @@ int main(int argc, const char *argv[])
     log_set_level(SUB_NAVI_CONFIG_LOG_LEVEL);
     if (0 != init())
         return 1;
-    for (;;)
-        ;
+
+    EV_P = EV_DEFAULT;
+    ev_loop(EV_A_ 0);
+
     return 0;
 }

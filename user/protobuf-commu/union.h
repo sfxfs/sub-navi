@@ -5,7 +5,7 @@
 #include "linux_uart.h"
 
 // main
-int protobuf_commu_start_thread(void);
+int protobuf_commu_init(void);
 int protobuf_commu_send_cmd(const pb_msgdesc_t *messagetype, void *message);
 
 // tools
