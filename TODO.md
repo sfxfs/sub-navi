@@ -2,10 +2,10 @@
 
 ### 必要的
 
-- [ ] jsonrpc 必要 method 的实现
-- [ ] protobuf rpc 能正常使用
+- [x] jsonrpc 必要 method 的实现
+- [x] protobuf rpc 能正常使用
 - [ ] JY901 驱动
-- [ ] 手动控制算法的编写
+- [x] 手动控制算法的编写
 
 ### 额外的
 

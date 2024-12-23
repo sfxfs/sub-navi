@@ -3,6 +3,7 @@
 #include "ev.h"
 #include "log.h"
 
+#include "control/mode_manual.h"
 #include "protobuf-commu/union.h"
 #include "protobuf-commu/proto_def/navi_master.pb.h"
 #include "json-rpc-server/server.h"
@@ -38,40 +39,15 @@ static int parseArguments(int argc, const char *argv[])
         ThrusterCommand msg = {0};
         switch (channel)
         {
-        case 0:
-            msg.has_throttle0 = true;
-            msg.throttle0 = value;
-            break;
-        case 1:
-            msg.has_throttle1 = true;
-            msg.throttle1 = value;
-            break;
-        case 2:
-            msg.has_throttle2 = true;
-            msg.throttle2 = value;
-            break;
-        case 3:
-            msg.has_throttle3 = true;
-            msg.throttle3 = value;
-            break;
-        case 4:
-            msg.has_throttle4 = true;
-            msg.throttle4 = value;
-            break;
-        case 5:
-            msg.has_throttle5 = true;
-            msg.throttle5 = value;
-            break;
-        case 6:
-            msg.has_throttle6 = true;
-            msg.throttle6 = value;
-            break;
-        case 7:
-            msg.has_throttle7 = true;
-            msg.throttle7 = value;
-            break;
-        default:
-            break;
+        case 0:msg.has_throttle0 = true; msg.throttle0 = value;break;
+        case 1:msg.has_throttle1 = true; msg.throttle1 = value;break;
+        case 2:msg.has_throttle2 = true; msg.throttle2 = value;break;
+        case 3:msg.has_throttle3 = true; msg.throttle3 = value;break;
+        case 4:msg.has_throttle4 = true; msg.throttle4 = value;break;
+        case 5:msg.has_throttle5 = true; msg.throttle5 = value;break;
+        case 6:msg.has_throttle6 = true; msg.throttle6 = value;break;
+        case 7:msg.has_throttle7 = true; msg.throttle7 = value;break;
+        default:break;
         }
         if (0 != protobuf_commu_send_cmd_cust(&uart, ThrusterCommand_fields, &msg))
         {
@@ -88,72 +64,23 @@ static int parseArguments(int argc, const char *argv[])
         PWMDevCommand msg = {0};
         switch (channel)
         {
-        case 0:
-            msg.has_duty0 = true;
-            msg.duty0 = value;
-            break;
-        case 1:
-            msg.has_duty1 = true;
-            msg.duty1 = value;
-            break;
-        case 2:
-            msg.has_duty2 = true;
-            msg.duty2 = value;
-            break;
-        case 3:
-            msg.has_duty3 = true;
-            msg.duty3 = value;
-            break;
-        case 4:
-            msg.has_duty4 = true;
-            msg.duty4 = value;
-            break;
-        case 5:
-            msg.has_duty5 = true;
-            msg.duty5 = value;
-            break;
-        case 6:
-            msg.has_duty6 = true;
-            msg.duty6 = value;
-            break;
-        case 7:
-            msg.has_duty7 = true;
-            msg.duty7 = value;
-            break;
-        case 8:
-            msg.has_duty8 = true;
-            msg.duty8 = value;
-            break;
-        case 9:
-            msg.has_duty9 = true;
-            msg.duty9 = value;
-            break;
-        case 10:
-            msg.has_duty10 = true;
-            msg.duty10 = value;
-            break;
-        case 11:
-            msg.has_duty11 = true;
-            msg.duty11 = value;
-            break;
-        case 12:
-            msg.has_duty12 = true;
-            msg.duty12 = value;
-            break;
-        case 13:
-            msg.has_duty13 = true;
-            msg.duty13 = value;
-            break;
-        case 14:
-            msg.has_duty14 = true;
-            msg.duty14 = value;
-            break;
-        case 15:
-            msg.has_duty15 = true;
-            msg.duty15 = value;
-            break;
-        default:
-            break;
+        case 0:msg.has_duty0 = true; msg.duty0 = value;break;
+        case 1:msg.has_duty1 = true; msg.duty1 = value;break;
+        case 2:msg.has_duty2 = true; msg.duty2 = value;break;
+        case 3:msg.has_duty3 = true; msg.duty3 = value;break;
+        case 4:msg.has_duty4 = true; msg.duty4 = value;break;
+        case 5:msg.has_duty5 = true; msg.duty5 = value;break;
+        case 6:msg.has_duty6 = true; msg.duty6 = value;break;
+        case 7:msg.has_duty7 = true; msg.duty7 = value;break;
+        case 8:msg.has_duty8 = true; msg.duty8 = value;break;
+        case 9:msg.has_duty9 = true; msg.duty9 = value;break;
+        case 10:msg.has_duty10 = true; msg.duty10 = value;break;
+        case 11:msg.has_duty11 = true; msg.duty11 = value;break;
+        case 12:msg.has_duty12 = true; msg.duty12 = value;break;
+        case 13:msg.has_duty13 = true; msg.duty13 = value;break;
+        case 14:msg.has_duty14 = true; msg.duty14 = value;break;
+        case 15:msg.has_duty15 = true; msg.duty15 = value;break;
+        default:break;
         }
         if (0 != protobuf_commu_send_cmd_cust(&uart, PWMDevCommand_fields, &msg))
         {
@@ -222,7 +149,12 @@ static int init(void)
 
     // 4. control algorithm
 
-    // ...
+    if (0 != control_manual_init(frame_factor, thruster_config))
+    {
+        log_error("control manual init failed!");
+        // peripherals deinit ...
+        return -1;
+    }
 
     // 5. protobuf rpc p2p
     if (0 != protobuf_commu_init())
@@ -233,7 +165,7 @@ static int init(void)
     }
 
     // 6. json rpc server
-    if (0 != navi_server_init(&thruster_config))
+    if (0 != navi_server_init(thruster_config))
     {
         log_error("jsonrpc server init failed!");
         // peripherals deinit ...
@@ -245,16 +177,33 @@ static int init(void)
     return 0;
 }
 
+static void sigint_cb(EV_P_ ev_signal *w, int revents)
+{
+    log_debug("catch SIGINT, signal number %d.\n", w->signum);
+    // peripherals deinit ...
+    exit(EXIT_SUCCESS);
+}
+
 int main(int argc, const char *argv[])
 {
     if (argc > 1)
         return parseArguments(argc, argv);
+
+    printf("  ___ _   _ ___     _  _   ___   _____ \n"
+           " / __| | | | _ )___| \\| | /_\\ \\ / /_ _|\n"
+           " \\__ \\ |_| | _ \\___| .` |/ _ \\ V / | | \n"
+           " |___/\\___/|___/   |_|\\_/_/ \\_\\_/ |___|\n"
+           "                                       \n");
 
     log_set_level(SUB_NAVI_CONFIG_LOG_LEVEL);
     if (0 != init())
         return 1;
 
     EV_P = EV_DEFAULT;
+    ev_signal wsig;
+    ev_signal_init(&wsig, sigint_cb, SIGINT);
+    ev_signal_start(EV_A_ &wsig);
+
     ev_loop(EV_A_ 0);
 
     return 0;
