@@ -5,6 +5,8 @@
  *      Author: hmng
  */
 
+#define TAG "jsonrpc-c"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -23,39 +25,37 @@
 
 #include "jsonrpc-c.h"
 
-static char *_strstr(const char *p1, int len, const char *p2)
+struct jrpc_connection {
+	struct ev_io io;
+	int fd;
+	int pos;
+	unsigned int buffer_size;
+	char * buffer;
+};
+
+/*
+ * This function from FreeBSD
+ * Find the first occurrence of find in s, where the search is limited to the
+ * first slen characters of s.
+ */
+static inline char *strnstr(const char *s, const char *find, size_t slen)
 {
-    if (p1 == NULL || p2 == NULL)
-        return NULL;
-    if (*p2 == '\0' || *p1 == '\0')
-        return (char *)p1;
+	char c, sc;
+	size_t len;
 
-    char *s1 = NULL;
-    char *s2 = NULL;
-    char *current = (char *)p1;
-
-    for (; *current != '\0'; current++)
-    {
-        if (len == 0)
-            return NULL;
-
-        s1 = current;
-        s2 = (char *)p2;
-
-        while ((*s1 != '\0') && (*s2 != '\0') && (*s1 == *s2))
-        {
-            s1++;
-            s2++;
-        }
-
-        if (*s2 == '\0')
-            return current;
-        if (*s1 == '\0')
-            return NULL;
-
-        len--;
-    }
-    return NULL;
+	if ((c = *find++) != '\0') {
+		len = strlen(find);
+		do {
+			do {
+				if (slen-- < 1 || (sc = *s++) == '\0')
+					return (NULL);
+			} while (sc != c);
+			if (len > slen)
+				return (NULL);
+		} while (strncmp(s, find, len) != 0);
+		s--;
+	}
+	return ((char *)s);
 }
 
 static int __jrpc_server_start(struct jrpc_server *server);
@@ -128,10 +128,10 @@ static void connection_cb(struct ev_loop *loop, ev_io *w, int revents) {
 		const char *end_ptr = NULL;
 		conn->pos += bytes_read;
 
-		/* get body */
-		char *body = _strstr(conn->buffer, conn->buffer_size, "\r\n\r\n");
+		/* get the body */
+		char *body = strnstr(conn->buffer, "\r\n\r\n", conn->buffer_size);
 		if (body != NULL)
-			body += 4;    // "\r\n\r\n"
+			body += 4;    // len of "\r\n\r\n"
 
 		if ((root = cJSON_ParseWithOpts(body, &end_ptr, false)) != NULL) {
 			char * str_result = cJSON_PrintUnformatted(root);
@@ -208,7 +208,6 @@ static void accept_cb(struct ev_loop *loop, ev_io *w, int revents) {
 
 int jrpc_server_init(struct jrpc_server *server, int port_number) {
     memset(server, 0, sizeof(struct jrpc_server));
-	server->loop = EV_DEFAULT;
 	server->port_number = port_number;
 	return __jrpc_server_start(server);
 }
@@ -276,8 +275,9 @@ static int __jrpc_server_start(struct jrpc_server *server) {
 	}
 	log_info("server: waiting for connections...");
 
+	EV_P = EV_DEFAULT;
 	ev_io_init(&server->listen_watcher, accept_cb, sockfd, EV_READ);
 	server->listen_watcher.data = server;
-	ev_io_start(server->loop, &server->listen_watcher);
+	ev_io_start(EV_A_ &server->listen_watcher);
 	return 0;
 }

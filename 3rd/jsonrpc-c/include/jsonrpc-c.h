@@ -14,17 +14,8 @@
 
 struct jrpc_server {
 	int port_number;
-	struct ev_loop *loop;
-	ev_io listen_watcher;
-	mjrpc_handle_t rpc_handle;
-};
-
-struct jrpc_connection {
-	struct ev_io io;
-	int fd;
-	int pos;
-	unsigned int buffer_size;
-	char * buffer;
+	ev_io listen_watcher;		// ev.h
+	mjrpc_handle_t rpc_handle;	// mjsonrpc.h
 };
 
 #define jrpc_get_rpc_handle(server_ptr) ((server_ptr)->rpc_handle)

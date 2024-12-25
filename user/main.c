@@ -1,3 +1,5 @@
+#define TAG "main"
+
 #include <stdlib.h>
 
 #include "ev.h"
@@ -138,7 +140,7 @@ static int init(void)
 
     if (json_file_error == true)
     {
-        log_error("this is your first time running the program. "
+        log_info("this is your first time running the program. "
                   "please modify the config file and restart the program.");
         return -1;
     }

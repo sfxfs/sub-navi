@@ -29,6 +29,8 @@
 #
 ******************************************************************************/
 
+#define TAG "uart"
+
 #include "linux_uart.h"
 
 #include <stdlib.h>
@@ -127,6 +129,7 @@ uint8_t navi_uart_setBaudrate(HARDWARE_UART *dev, uint32_t Baudrate)
         log_error("Setting the terminal baud rate failed");
         return 1;
     }
+    log_debug("Baud rate set to %ld", Baudrate);
     return 0;
 }
 
