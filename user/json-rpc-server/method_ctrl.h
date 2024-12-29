@@ -13,7 +13,7 @@ struct method_move
     double r;
     bool updated;
 };
-extern struct method_move move_data;
+extern struct method_move g_move_data;
 cJSON *move_handler(mjrpc_ctx_t *ctx, cJSON *params, cJSON *id);
 
 #endif

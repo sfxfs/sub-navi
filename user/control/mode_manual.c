@@ -148,11 +148,12 @@ static int write_throttle_to_motor(uint32_t *throttle)
 
 static void routine_cb(struct ev_loop *loop, ev_timer *w, int revents)
 {
-    if (move_data.updated)
+    if (g_move_data.updated)
     {
-        move_data.updated = false;
+        log_debug("move_data updated.");
+        g_move_data.updated = false;
         struct mode_manual_arg *arg = w->data;
-        double *raw = move_data_to_raw_throttle(arg->frame_factor, move_data);
+        double *raw = move_data_to_raw_throttle(arg->frame_factor, g_move_data);
         uint32_t *throttle = raw_to_throttle(raw, arg->thruster_config);
         if (0 != write_throttle_to_motor(throttle))
             log_error("send command to sub-master failed.");

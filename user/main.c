@@ -49,7 +49,7 @@ static int parseArguments(int argc, const char *argv[])
         case 5:msg.has_throttle5 = true; msg.throttle5 = value;break;
         case 6:msg.has_throttle6 = true; msg.throttle6 = value;break;
         case 7:msg.has_throttle7 = true; msg.throttle7 = value;break;
-        default:break;
+        default:log_error("Invalid channel number!");return 1;break;
         }
         if (0 != protobuf_commu_send_cmd_cust(&uart, ThrusterCommand_fields, &msg))
         {
@@ -82,7 +82,7 @@ static int parseArguments(int argc, const char *argv[])
         case 13:msg.has_duty13 = true; msg.duty13 = value;break;
         case 14:msg.has_duty14 = true; msg.duty14 = value;break;
         case 15:msg.has_duty15 = true; msg.duty15 = value;break;
-        default:break;
+        default:log_error("Invalid channel number!");return 1;break;
         }
         if (0 != protobuf_commu_send_cmd_cust(&uart, PWMDevCommand_fields, &msg))
         {

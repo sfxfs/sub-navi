@@ -1,6 +1,6 @@
 #include "method_ctrl.h"
 
-struct method_move move_data;
+struct method_move g_move_data;
 
 static double cjson_value_analysis_double(cJSON *params,const char *str)
 {
@@ -17,10 +17,10 @@ static double cjson_value_analysis_double(cJSON *params,const char *str)
 
 cJSON *move_handler(mjrpc_ctx_t *ctx, cJSON *params, cJSON *id)
 {
-    move_data.x = cjson_value_analysis_double(params, "x");
-    move_data.y = cjson_value_analysis_double(params, "y");
-    move_data.z = cjson_value_analysis_double(params, "z");
-    move_data.r = cjson_value_analysis_double(params, "rot");
-    move_data.updated = true;
+    g_move_data.x = cjson_value_analysis_double(params, "x");
+    g_move_data.y = cjson_value_analysis_double(params, "y");
+    g_move_data.z = cjson_value_analysis_double(params, "z");
+    g_move_data.r = cjson_value_analysis_double(params, "rot");
+    g_move_data.updated = true;
     return cJSON_CreateNull();
 }

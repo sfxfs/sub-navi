@@ -47,7 +47,7 @@ parameter:
     UART_device : Device name
 Info:
     /dev/ttyTHS*
-    The default baud rate is 9600, 8-bit data, 1 stop bit, no parity
+    The default baud rate is 115200, 8-bit data, 1 stop bit, no parity
 ******************************************************************************/
 uint8_t navi_uart_begin(HARDWARE_UART *dev, const char *UART_device)
 {

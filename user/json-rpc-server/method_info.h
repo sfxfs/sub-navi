@@ -10,7 +10,7 @@ struct method_get_info
     float depth;
     float temp;
 };
-extern struct method_get_info get_info_data;
+extern struct method_get_info g_get_info_data;
 cJSON *get_info_handler(mjrpc_ctx_t *ctx, cJSON *params, cJSON *id);
 
 #endif
