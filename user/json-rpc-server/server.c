@@ -1,9 +1,13 @@
+#define TAG "json-rpc-server"
+
+#include "log.h"
 #include "jsonrpc-c.h"
-#include "navi-config.h"
 
 #include "method_info.h"
 #include "method_ctrl.h"
 #include "method_debug.h"
+
+#include "navi-config.h"
 
 #include "server.h"
 
@@ -35,6 +39,7 @@ int navi_server_init(thrusters_params *thruster_config)
 
     // old addional methods (configuration, data feedback, etc.)
     // ...
+    log_info("rpc server will start on port %d.", SUB_NAVI_CONFIG_RPC_SERVER_PORT);
     return ret;
 }
 

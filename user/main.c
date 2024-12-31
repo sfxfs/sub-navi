@@ -26,8 +26,8 @@ static int parseArguments(int argc, const char *argv[])
     int value = atoi(argv[4]);
 
     log_info("Serial Port: %d", serialPort);
-    HARDWARE_UART uart = {0};
-    if (0 != protobuf_commu_intf_init_cust(&uart, serialPort, SUB_NAVI_CONFIG_PROTOBUF_UART_BAUDRATE))
+    int uart = protobuf_commu_intf_init_cust(serialPort, SUB_NAVI_CONFIG_PROTOBUF_UART_BAUDRATE);
+    if (uart < 0)
     {
         log_error("Serial Port init failed!");
         return -1;
@@ -51,10 +51,10 @@ static int parseArguments(int argc, const char *argv[])
         case 7:msg.has_throttle7 = true; msg.throttle7 = value;break;
         default:log_error("Invalid channel number!");return 1;break;
         }
-        if (0 != protobuf_commu_send_cmd_cust(&uart, ThrusterCommand_fields, &msg))
+        if (0 != protobuf_commu_send_cmd_cust(uart, ThrusterCommand_fields, &msg))
         {
             log_error("protobuf_commu_send_cmd_cust failed!");
-            close(uart.fd);
+            close(uart);
             return 1;
         }
     }
@@ -84,17 +84,17 @@ static int parseArguments(int argc, const char *argv[])
         case 15:msg.has_duty15 = true; msg.duty15 = value;break;
         default:log_error("Invalid channel number!");return 1;break;
         }
-        if (0 != protobuf_commu_send_cmd_cust(&uart, PWMDevCommand_fields, &msg))
+        if (0 != protobuf_commu_send_cmd_cust(uart, PWMDevCommand_fields, &msg))
         {
             log_error("protobuf_commu_send_cmd_cust failed!");
-            close(uart.fd);
+            close(uart);
             return 1;
         }
     }
     else
     {
         log_error("Invalid communication mode. Use 'dshot' or 'pwm'.");
-        close(uart.fd);
+        close(uart);
         return 1;
     }
     return 0;
@@ -173,7 +173,6 @@ static int init(void)
         // peripherals deinit ...
         return -1;
     }
-    log_info("rpc server will start on port %d.", SUB_NAVI_CONFIG_RPC_SERVER_PORT);
 
     // end ...
     return 0;

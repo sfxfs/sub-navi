@@ -27,8 +27,7 @@ target_link_libraries(${PROJECT_NAME}
     s2j
     csv_parser
     nanopb
-    linux_uart
-    wiringpi_i2c
+    wiringpi
     wit_c_sdk
     ${ev})
 

@@ -20,6 +20,9 @@
 #define SUB_NAVI_CONFIG_PROTOBUF_UART_PATH          "/dev/ttyS5"
 #define SUB_NAVI_CONFIG_PROTOBUF_UART_BAUDRATE      115200
 
+#define SUB_NAVI_CONFIG_JY901_IIC_ENABLE            1       // 0 is for uart, 1 is for iic
+#define SUB_NAVI_CONFIG_JY901_IIC_PATH              "/dev/i2c-0"
+#define SUB_NAVI_CONFIG_JY901_IIC_ADDR              0x50
 #define SUB_NAVI_CONFIG_JY901_UART_PATH             "/dev/ttyS1"
 #define SUB_NAVI_CONFIG_JY901_UART_BAUDRATE         115200
 
