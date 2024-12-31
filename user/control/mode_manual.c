@@ -166,6 +166,8 @@ int control_manual_init(frame_factor_t *frame_factor,
     if (frame_factor == NULL || thruster_config == NULL)
         return -1;
     struct mode_manual_arg *arg = malloc(sizeof(struct mode_manual_arg));
+    if (arg == NULL)
+        return -1;
     arg->frame_factor = frame_factor;
     arg->thruster_config = thruster_config;
 
@@ -176,6 +178,6 @@ int control_manual_init(frame_factor_t *frame_factor,
     routine_watcher.data = arg;
     ev_timer_start(EV_A_ &routine_watcher);
 
-    log_info("control watcher registered.");
+    log_info("control routine watcher registered.");
     return 0;
 }

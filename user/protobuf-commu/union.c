@@ -88,11 +88,6 @@ static int protobuf_response_rpc(uint8_t *data, size_t size)
     return 0;
 }
 
-static int protobuf_commu_intf_init(void)
-{
-    return serialOpen(SUB_NAVI_CONFIG_PROTOBUF_UART_PATH, SUB_NAVI_CONFIG_PROTOBUF_UART_BAUDRATE);
-}
-
 static void uart_read_cb (EV_P_ ev_io *w, int revents)
 {
     log_debug("uart EV_READ event");
@@ -103,7 +98,8 @@ static void uart_read_cb (EV_P_ ev_io *w, int revents)
 
 int protobuf_commu_init(void)
 {
-    if (protobuf_commu_intf_init() != 0)
+    uart_protobuf = serialOpen(SUB_NAVI_CONFIG_PROTOBUF_UART_PATH, SUB_NAVI_CONFIG_PROTOBUF_UART_BAUDRATE);
+    if (uart_protobuf < 0)
     {
         log_error("protobuf uart interface init failed.");
         return -1;

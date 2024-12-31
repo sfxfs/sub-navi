@@ -159,7 +159,7 @@ static int init(void)
     // 5. protobuf rpc p2p
     if (0 != protobuf_commu_init())
     {
-        log_error("protobuf rpc server init failed!");
+        log_error("protobuf rpc init failed!");
         // peripherals deinit ...
         return -1;
     }
@@ -186,6 +186,10 @@ static void sigint_cb(EV_P_ ev_signal *w, int revents)
 int main(int argc, const char *argv[])
 {
     log_set_level(SUB_NAVI_CONFIG_LOG_LEVEL);
+    // log save to file
+    FILE *logfile = fopen(SUB_NAVI_CONFIG_LOG_OUTPUT_FILE_PATH, "a+");
+    log_add_fp(logfile, LOG_WARN);
+
     if (argc > 1)
         return parseArguments(argc, argv);
 
@@ -194,9 +198,15 @@ int main(int argc, const char *argv[])
            " \\__ \\ |_| | _ \\___| .` |/ _ \\ V / | | \n"
            " |___/\\___/|___/   |_|\\_/_/ \\_\\_/ |___|\n"
            "                                       \n");
+    printf("SUB-NAVI log level set to: %s, log history save to: %s\n\n",
+            log_level_string(SUB_NAVI_CONFIG_LOG_LEVEL),
+            SUB_NAVI_CONFIG_LOG_OUTPUT_FILE_PATH);
 
     if (0 != init())
+    {
+        log_error("sub-navi init failed!");
         return 1;
+    }
 
     EV_P = EV_DEFAULT;
     ev_signal wsig;
