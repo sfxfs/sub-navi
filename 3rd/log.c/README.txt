@@ -1,0 +1,1 @@
+A simple logging library implemented in C99, site https://github.com/rxi/log.c

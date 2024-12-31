@@ -1,0 +1,2 @@
+JSON-RPC in C (server), remove all the json parser code, only keep libev related code, site https://github.com/hmng/jsonrpc-c
+A lightweight server program based on cJSON for JSON-RPC 2.0, site https://github.com/sfxfs/mjsonrpc

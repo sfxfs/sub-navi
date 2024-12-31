@@ -1,4 +1,4 @@
-project(s2j)
+project(struct2json)
 
 add_library(${PROJECT_NAME} s2j.c)
 

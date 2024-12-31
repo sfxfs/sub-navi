@@ -1,0 +1,1 @@
+wit JY series attitude sensor SDK in C, site https://github.com/WITMOTION/WitStandardProtocol_JY901

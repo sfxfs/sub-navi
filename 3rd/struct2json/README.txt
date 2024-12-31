@@ -1,0 +1,1 @@
+A fast convert library between the JSON and C structure. Implement structure serialization and deserialization for C, site https://github.com/armink/struct2json

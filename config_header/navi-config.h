@@ -16,10 +16,11 @@
 // tcp server configs
 #define SUB_NAVI_CONFIG_RPC_SERVER_PORT             8888
 
-// uart interface configs
+// protbuf configs
 #define SUB_NAVI_CONFIG_PROTOBUF_UART_PATH          "/dev/ttyS5"
 #define SUB_NAVI_CONFIG_PROTOBUF_UART_BAUDRATE      115200
 
+// jy901 configs
 #define SUB_NAVI_CONFIG_JY901_IIC_ENABLE            1       // 0 is for uart, 1 is for iic
 #define SUB_NAVI_CONFIG_JY901_IIC_PATH              "/dev/i2c-0"
 #define SUB_NAVI_CONFIG_JY901_IIC_ADDR              0x50

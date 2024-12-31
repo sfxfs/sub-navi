@@ -281,3 +281,15 @@ static int __jrpc_server_start(struct jrpc_server *server) {
 	ev_io_start(EV_A_ &server->listen_watcher);
 	return 0;
 }
+
+void jrpc_server_start(void)
+{
+	EV_P = EV_DEFAULT;
+	ev_run(EV_A_ 0);
+}
+
+void jrpc_server_stop(void)
+{
+	EV_P = EV_DEFAULT;
+	ev_break(EV_A_ EVBREAK_ALL);
+}

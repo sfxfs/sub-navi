@@ -23,8 +23,8 @@ target_link_libraries(${PROJECT_NAME}
     pthread
     cjson
     jsonrpc-c
-    clog
-    s2j
+    log.c
+    struct2json
     csv_parser
     nanopb
     wiringpi

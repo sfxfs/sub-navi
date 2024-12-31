@@ -1,5 +1,5 @@
 # Set the project name
-project (clog)
+project (log.c)
 
 # Add a library with the above sources
 add_library(${PROJECT_NAME} log.c)

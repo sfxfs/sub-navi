@@ -1,0 +1,1 @@
+this is a modified version of cjson v1.7.15 that supports the 'cJSON_Int'. The original version can be found at https://github.com/DaveGamble/cJSON

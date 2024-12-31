@@ -22,4 +22,8 @@ struct jrpc_server {
 
 int jrpc_server_init(struct jrpc_server *server, int port_number);
 
+void jrpc_server_start(void);
+
+void jrpc_server_stop(void);
+
 #endif
