@@ -1,5 +1,3 @@
-#define TAG "json-rpc-server"
-
 #include "log.h"
 #include "jsonrpc-c.h"
 

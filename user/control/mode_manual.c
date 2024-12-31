@@ -1,5 +1,3 @@
-#define TAG "manual-control"
-
 #include <stdlib.h>
 
 #include "ev.h"

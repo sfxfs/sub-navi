@@ -1,5 +1,3 @@
-#define TAG "main"
-
 #include <stdlib.h>
 
 #include "ev.h"

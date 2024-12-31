@@ -23,7 +23,7 @@ target_link_libraries(${PROJECT_NAME}
     pthread
     cjson
     jsonrpc-c
-    log.c
+    log_c
     struct2json
     csv_parser
     nanopb

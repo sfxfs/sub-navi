@@ -1,5 +1,3 @@
-#define TAG "json-file"
-
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>

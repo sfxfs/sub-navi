@@ -5,8 +5,6 @@
  *      Author: hmng
  */
 
-#define TAG "jsonrpc-c"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
