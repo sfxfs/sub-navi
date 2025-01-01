@@ -10,12 +10,12 @@
 #include "csv-json-config-sys/json_thruster.h"
 #include "csv-json-config-sys/csv_frame_factor.h"
 
-static int parseArguments(int argc, const char *argv[])
+static navi_ret_t parseArguments(int argc, const char *argv[])
 {
     if (argc != 5)
     {
         log_info("Usage: %s <serial_port_path> <communication_mode> <channel> <value>", argv[0]);
-        return 1;
+        return NAVI_RET_ARG_ERROR;
     }
 
     const char *serialPort = argv[1];
@@ -28,7 +28,7 @@ static int parseArguments(int argc, const char *argv[])
     if (uart < 0)
     {
         log_error("Serial Port init failed!");
-        return -1;
+        return NAVI_RET_FAIL;
     }
 
     if (strncmp(mode, "dshot", 4) == 0)
@@ -53,7 +53,7 @@ static int parseArguments(int argc, const char *argv[])
         {
             log_error("protobuf_commu_send_cmd_cust failed!");
             close(uart);
-            return 1;
+            return NAVI_RET_FAIL;
         }
     }
     else if (strncmp(mode, "pwm", 3) == 0)
@@ -86,16 +86,16 @@ static int parseArguments(int argc, const char *argv[])
         {
             log_error("protobuf_commu_send_cmd_cust failed!");
             close(uart);
-            return 1;
+            return NAVI_RET_FAIL;
         }
     }
     else
     {
         log_error("Invalid communication mode. Use 'dshot' or 'pwm'.");
         close(uart);
-        return 1;
+        return NAVI_RET_FAIL;
     }
-    return 0;
+    return NAVI_RET_SUCCESS;
 }
 
 // init order
@@ -112,7 +112,7 @@ static int init(void)
     {
         log_error("frame factor file not exist! path: %s",
                   SUB_NAVI_CONFIG_FRAME_FACTOR_FILE_PATH);
-        return -1;
+        return NAVI_RET_FAIL;
     }
 
     frame_factor_t *frame_factor = frame_factor_get_from_file();
@@ -140,7 +140,7 @@ static int init(void)
     {
         log_info("this is your first time running the program. "
                   "please modify the config file and restart the program.");
-        return -1;
+        return NAVI_RET_FAIL;
     }
 
     // 3. peripherals
@@ -153,7 +153,7 @@ static int init(void)
     {
         log_error("control manual init failed!");
         // peripherals deinit ...
-        return -1;
+        return NAVI_RET_FAIL;
     }
 
     // 5. protobuf rpc p2p
@@ -161,7 +161,7 @@ static int init(void)
     {
         log_error("protobuf rpc init failed!");
         // peripherals deinit ...
-        return -1;
+        return NAVI_RET_FAIL;
     }
 
     // 6. json rpc server
@@ -169,11 +169,11 @@ static int init(void)
     {
         log_error("jsonrpc server init failed!");
         // peripherals deinit ...
-        return -1;
+        return NAVI_RET_FAIL;
     }
 
     // end ...
-    return 0;
+    return NAVI_RET_SUCCESS;
 }
 
 static void sigint_cb(EV_P_ ev_signal *w, int revents)
@@ -202,7 +202,7 @@ int main(int argc, const char *argv[])
             log_level_string(SUB_NAVI_CONFIG_LOG_LEVEL),
             SUB_NAVI_CONFIG_LOG_OUTPUT_FILE_PATH);
 
-    if (0 != init())
+    if (NAVI_RET_SUCCESS != init())
     {
         log_error("sub-navi init failed!");
         return 1;

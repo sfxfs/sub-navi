@@ -164,10 +164,10 @@ int control_manual_init(frame_factor_t *frame_factor,
                         thrusters_params *thruster_config)
 {
     if (frame_factor == NULL || thruster_config == NULL)
-        return -1;
+        return NAVI_RET_ARG_ERROR;
     struct mode_manual_arg *arg = malloc(sizeof(struct mode_manual_arg));
     if (arg == NULL)
-        return -1;
+        return NAVI_RET_MEM_ALLOC_FAIL;
     arg->frame_factor = frame_factor;
     arg->thruster_config = thruster_config;
 
@@ -179,5 +179,5 @@ int control_manual_init(frame_factor_t *frame_factor,
     ev_timer_start(EV_A_ &routine_watcher);
 
     log_info("control routine watcher registered.");
-    return 0;
+    return NAVI_RET_SUCCESS;
 }

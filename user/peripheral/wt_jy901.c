@@ -91,18 +91,18 @@ int navi_jy901_init(void)
     jy901_iic = wiringPiI2CSetupInterface(SUB_NAVI_CONFIG_JY901_IIC_PATH, SUB_NAVI_CONFIG_JY901_IIC_ADDR);
     if (jy901_iic < 0)
     {
-        return -1;
+        return NAVI_RET_FAIL;
     }
 
     // wit sdk init
     if (WIT_HAL_OK != WitInit(WIT_PROTOCOL_I2C, SUB_NAVI_CONFIG_JY901_IIC_ADDR)) // 0x50 is 7 bit iic address of jy901
     {
-        return -1;
+        return NAVI_RET_FAIL;
     }
     WitDelayMsRegister(jy901_delay_ms);
     WitRegisterCallBack(jy901_data_update);
     WitI2cFuncRegister(jy901_i2c_write, jy901_i2c_read); // register iic read/write callback
-    return 0;
+    return NAVI_RET_SUCCESS;
 }
 
 
@@ -135,13 +135,13 @@ int navi_jy901_init(void)
     jy901_uart = serialOpen(SUB_NAVI_CONFIG_JY901_UART_PATH, SUB_NAVI_CONFIG_JY901_UART_BAUDRATE);
     if (jy901_uart < 0)
     {
-        return -1;
+        return NAVI_RET_FAIL;
     }
 
     // wit sdk init
     if (WIT_HAL_OK != WitInit(WIT_PROTOCOL_NORMAL, 0x50)) // 0x50 is 7 bit iic address of jy901
     {
-        return -1;
+        return NAVI_RET_FAIL;
     }
     WitDelayMsRegister(jy901_delay_ms);
     WitRegisterCallBack(jy901_data_update);
@@ -151,7 +151,7 @@ int navi_jy901_init(void)
     ev_io_init(&uart_watcher, uart_read_cb, jy901_uart, EV_READ);
     ev_io_start(EV_A_ &uart_watcher);
     log_info("jy901 data watcher on uart %s.", SUB_NAVI_CONFIG_JY901_UART_PATH);
-    return 0;
+    return NAVI_RET_SUCCESS;
 }
 
 

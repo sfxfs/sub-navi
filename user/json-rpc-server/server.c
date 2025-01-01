@@ -19,9 +19,9 @@ static cJSON *empty_handler(mjrpc_ctx_t *ctx, cJSON *params, cJSON *id)
 int navi_server_init(thrusters_params *thruster_config)
 {
     if (jrpc_server_init(&server_handle, SUB_NAVI_CONFIG_RPC_SERVER_PORT) != 0)
-        return -1;
+        return NAVI_RET_FAIL;
 
-    int ret = 0;
+    int ret = NAVI_RET_SUCCESS;
     // new methods
     ret += mjrpc_add_method(&server_handle.rpc_handle, get_thruster_config_handler, "get_thruster_config", thruster_config);
     ret += mjrpc_add_method(&server_handle.rpc_handle, set_thruster_config_handler, "set_thruster_config", thruster_config);

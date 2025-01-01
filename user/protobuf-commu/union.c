@@ -45,7 +45,8 @@ static const pb_msgdesc_t *decode_response_unionmessage_type(pb_istream_t *strea
     return NULL;
 }
 
-static bool decode_unionmessage_contents(pb_istream_t *stream, const pb_msgdesc_t *messagetype, void *dest_struct)
+static bool decode_unionmessage_contents(pb_istream_t *stream,
+                                        const pb_msgdesc_t *messagetype, void *dest_struct)
 {
     pb_istream_t substream;
     bool status;
@@ -57,10 +58,10 @@ static bool decode_unionmessage_contents(pb_istream_t *stream, const pb_msgdesc_
     return status;
 }
 
-static int protobuf_response_rpc(uint8_t *data, size_t size)
+static navi_ret_t protobuf_response_rpc(uint8_t *data, size_t size)
 {
     if (size <= 0)
-        return -1;
+        return NAVI_RET_ARG_ERROR;
     pb_istream_t stream = pb_istream_from_buffer(data, size);
 
     const pb_msgdesc_t *type = decode_response_unionmessage_type(&stream);
@@ -82,10 +83,10 @@ static int protobuf_response_rpc(uint8_t *data, size_t size)
     if (!status)
     {
         log_warn("Decode failed: %s", PB_GET_ERROR(&stream));
-        return 1;
+        return NAVI_RET_FAIL;
     }
 
-    return 0;
+    return NAVI_RET_SUCCESS;
 }
 
 static void uart_read_cb (EV_P_ ev_io *w, int revents)
@@ -98,11 +99,12 @@ static void uart_read_cb (EV_P_ ev_io *w, int revents)
 
 int protobuf_commu_init(void)
 {
-    uart_protobuf = serialOpen(SUB_NAVI_CONFIG_PROTOBUF_UART_PATH, SUB_NAVI_CONFIG_PROTOBUF_UART_BAUDRATE);
+    uart_protobuf = serialOpen(SUB_NAVI_CONFIG_PROTOBUF_UART_PATH,
+                                SUB_NAVI_CONFIG_PROTOBUF_UART_BAUDRATE);
     if (uart_protobuf < 0)
     {
         log_error("protobuf uart interface init failed.");
-        return -1;
+        return NAVI_RET_FAIL;
     }
 
     EV_P = EV_DEFAULT;
@@ -110,10 +112,11 @@ int protobuf_commu_init(void)
     ev_io_start(EV_A_ &uart_watcher);
     log_info("protobuf commu watcher on uart %s.", SUB_NAVI_CONFIG_PROTOBUF_UART_PATH);
 
-    return 0;
+    return NAVI_RET_SUCCESS;
 }
 
-static bool encode_unionmessage_cmd(pb_ostream_t *stream, const pb_msgdesc_t *messagetype, void *message)
+static bool encode_unionmessage_cmd(pb_ostream_t *stream, const pb_msgdesc_t *messagetype,
+                                    void *message)
 {
     pb_field_iter_t iter;
 
@@ -145,16 +148,16 @@ int protobuf_commu_send_cmd_cust(int uart_fd, const pb_msgdesc_t *messagetype, v
     if (!status)
     {
         log_warn("Encoding failed!");
-        return -1;
+        return NAVI_RET_FAIL;
     }
 
     if (write(uart_fd, data, stream.bytes_written) < 0)
     {
         log_warn("protobuf uart write failed.");
-        return -1;
+        return NAVI_RET_FAIL;
     }
     log_debug("protobuf uart send cmd success.");
-    return 0;
+    return NAVI_RET_SUCCESS;
 }
 
 int protobuf_commu_send_cmd(const pb_msgdesc_t *messagetype, void *message)
@@ -166,14 +169,14 @@ int protobuf_commu_send_cmd(const pb_msgdesc_t *messagetype, void *message)
     if (!status)
     {
         log_warn("Encoding failed!");
-        return -1;
+        return NAVI_RET_FAIL;
     }
 
     if (write(uart_protobuf, data, stream.bytes_written) < 0)
     {
         log_warn("protobuf uart write failed.");
-        return -1;
+        return NAVI_RET_FAIL;
     }
     log_debug("protobuf uart send cmd success.");
-    return 0;
+    return NAVI_RET_SUCCESS;
 }
