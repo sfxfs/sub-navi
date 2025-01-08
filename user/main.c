@@ -3,6 +3,8 @@
 #include "ev.h"
 #include "log.h"
 
+#include "navi-type.h"
+
 #include "control/mode_manual.h"
 #include "protobuf-commu/union.h"
 #include "protobuf-commu/proto_def/navi_master.pb.h"

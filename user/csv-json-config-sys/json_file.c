@@ -4,6 +4,8 @@
 
 #include "log.h"
 
+#include "navi-type.h"
+
 #include "json_file.h"
 
 void *navi_read_from_file(const char *file_path)
@@ -56,10 +58,10 @@ void *navi_read_from_file(const char *file_path)
     return buffer;
 }
 
-int navi_write_to_file(const char *file_path, const void *content)
+navi_ret_t navi_write_to_file(const char *file_path, const void *content)
 {
     if (content == NULL || file_path == NULL)
-        return -1;
+        return NAVI_RET_ARG_ERROR;
     FILE *file;
 
     // 打开文件以进行写入
@@ -70,7 +72,7 @@ int navi_write_to_file(const char *file_path, const void *content)
         if (file == NULL)
         {
             log_error("Unable to open config file.");
-            return -1;
+            return NAVI_RET_FAIL;
         }
     }
 
@@ -82,5 +84,5 @@ int navi_write_to_file(const char *file_path, const void *content)
 
     // 关闭文件
     fclose(file);
-    return 0;
+    return NAVI_RET_SUCCESS;
 }

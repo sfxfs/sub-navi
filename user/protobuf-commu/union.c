@@ -7,6 +7,8 @@
 #include "log.h"
 #include "pb_decode.h"
 #include "pb_encode.h"
+
+#include "navi-type.h"
 #include "navi-config.h"
 
 #include "message_resp.h"
@@ -97,7 +99,7 @@ static void uart_read_cb (EV_P_ ev_io *w, int revents)
     protobuf_response_rpc(data, len);
 }
 
-int protobuf_commu_init(void)
+navi_ret_t protobuf_commu_init(void)
 {
     uart_protobuf = serialOpen(SUB_NAVI_CONFIG_PROTOBUF_UART_PATH,
                                 SUB_NAVI_CONFIG_PROTOBUF_UART_BAUDRATE);
@@ -139,7 +141,7 @@ static bool encode_unionmessage_cmd(pb_ostream_t *stream, const pb_msgdesc_t *me
     return false;
 }
 
-int protobuf_commu_send_cmd_cust(int uart_fd, const pb_msgdesc_t *messagetype, void *message)
+navi_ret_t protobuf_commu_send_cmd_cust(int uart_fd, const pb_msgdesc_t *messagetype, void *message)
 {
     uint8_t data[NAVI_MASTER_PB_H_MAX_SIZE];
     pb_ostream_t stream = pb_ostream_from_buffer(data, sizeof(data));
@@ -160,7 +162,7 @@ int protobuf_commu_send_cmd_cust(int uart_fd, const pb_msgdesc_t *messagetype, v
     return NAVI_RET_SUCCESS;
 }
 
-int protobuf_commu_send_cmd(const pb_msgdesc_t *messagetype, void *message)
+navi_ret_t protobuf_commu_send_cmd(const pb_msgdesc_t *messagetype, void *message)
 {
     uint8_t data[NAVI_MASTER_PB_H_MAX_SIZE];
     pb_ostream_t stream = pb_ostream_from_buffer(data, sizeof(data));

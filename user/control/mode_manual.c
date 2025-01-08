@@ -160,7 +160,7 @@ static void routine_cb(struct ev_loop *loop, ev_timer *w, int revents)
     }
 }
 
-int control_manual_init(frame_factor_t *frame_factor,
+navi_ret_t control_manual_init(frame_factor_t *frame_factor,
                         thrusters_params *thruster_config)
 {
     if (frame_factor == NULL || thruster_config == NULL)

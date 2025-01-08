@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "navi-type.h"
 #include "navi-config.h"
 
 // all the parameters are > 0
@@ -54,7 +55,7 @@ thrusters_params *thruster_j2s(void *json);
 /// @brief write config to file
 /// @param params config struct
 /// @return 0 if success
-int thruster_write_to_file(thrusters_params *params);
+navi_ret_t thruster_write_to_file(thrusters_params *params);
 
 /// @brief read config from file
 /// @return config struct (need to free)

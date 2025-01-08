@@ -86,7 +86,7 @@ static int32_t jy901_i2c_write(uint8_t ucAddr, uint8_t ucReg, uint8_t *p_ucVal, 
     return WIT_HAL_OK; // 1 on success, 0 on failure
 }
 
-int navi_jy901_init(void)
+navi_ret_t navi_jy901_init(void)
 {
     jy901_iic = wiringPiI2CSetupInterface(SUB_NAVI_CONFIG_JY901_IIC_PATH, SUB_NAVI_CONFIG_JY901_IIC_ADDR);
     if (jy901_iic < 0)
@@ -129,7 +129,7 @@ static void uart_read_cb (EV_P_ ev_io *w, int revents)
     }
 }
 
-int navi_jy901_init(void)
+navi_ret_t navi_jy901_init(void)
 {
     // interface init
     jy901_uart = serialOpen(SUB_NAVI_CONFIG_JY901_UART_PATH, SUB_NAVI_CONFIG_JY901_UART_BAUDRATE);

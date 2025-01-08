@@ -60,7 +60,11 @@ cJSON *mjrpc_response_error(int code, char *message, cJSON *id)
         return NULL;
     }
 
+#ifdef cJSON_Int
     cJSON_AddIntToObject(error_root, "code", code);
+#else
+    cJSON_AddNumberToObject(error_root, "code", code);
+#endif
     if (message)
     {
         cJSON_AddStringToObject(error_root, "message", message);
@@ -111,14 +115,23 @@ static cJSON *rpc_handle_obj_req(mjrpc_handle_t *handle, cJSON *request)
     if (id == NULL)
         // No id, this is a notification
         return NULL;
+#ifdef cJSON_Int
     if (id->type == cJSON_NULL || id->type == cJSON_String || id->type == cJSON_Int)
+#else
+    if (id->type == cJSON_NULL || id->type == cJSON_String || id->type == cJSON_Number)
+#endif
     {
         cJSON *id_copy = NULL;
         if (id->type == cJSON_NULL)
             id_copy = cJSON_CreateNull();
         else
             id_copy = (id->type == cJSON_String) ?
-                    cJSON_CreateString(id->valuestring) : cJSON_CreateInt(id->valueint);
+                    cJSON_CreateString(id->valuestring) :
+#ifdef cJSON_Int
+                    cJSON_CreateInt(id->valueint);
+#else
+                    cJSON_CreateNumber(id->valueint);
+#endif
 
         version = cJSON_GetObjectItem(request, "jsonrpc");
         if (version == NULL || version->type != cJSON_String || strcmp("2.0", version->valuestring) != 0)

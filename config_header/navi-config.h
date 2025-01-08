@@ -1,16 +1,6 @@
 #ifndef SUB_NAVI_GLOBAL_CONFIG_H
 #define SUB_NAVI_GLOBAL_CONFIG_H
 
-typedef int navi_ret_t;
-
-enum NAVI_RET_CODE
-{
-    NAVI_RET_SUCCESS = 0,
-    NAVI_RET_FAIL,
-    NAVI_RET_MEM_ALLOC_FAIL,
-    NAVI_RET_ARG_ERROR,
-};
-
 // 0=LOG_TRACE, 1=LOG_DEBUG, 2=LOG_INFO, 3=LOG_WARN, 4=LOG_ERROR, 5=LOG_FATAL, 6=LOG_OFF
 #define SUB_NAVI_CONFIG_LOG_LEVEL                   2
 #define SUB_NAVI_CONFIG_LOG_OUTPUT_FILE_PATH        "./navi.log"

@@ -182,13 +182,13 @@ thrusters_params *thruster_j2s(void *json)
     return params_struct;
 }
 
-int thruster_write_to_file(thrusters_params *params)
+navi_ret_t thruster_write_to_file(thrusters_params *params)
 {
     if (params == NULL)
         return -1;
     cJSON *json = thruster_s2j(params);
     char *str = cJSON_Print(json);
-    int ret = navi_write_to_file(SUB_NAVI_CONFIG_THRUSTER_CONFIG_FILE_PATH, str);
+    navi_ret_t ret = navi_write_to_file(SUB_NAVI_CONFIG_THRUSTER_CONFIG_FILE_PATH, str);
     if (str)
         free(str);
     if (json)
