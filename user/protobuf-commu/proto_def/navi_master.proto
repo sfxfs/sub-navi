@@ -1,19 +1,22 @@
 syntax = "proto2";
 
+// --- Requests ---
 message ThrusterCommand
 {
-    optional uint32 throttle0 = 1;
-    optional uint32 throttle1 = 2;
-    optional uint32 throttle2 = 3;
-    optional uint32 throttle3 = 4;
-    optional uint32 throttle4 = 5;
-    optional uint32 throttle5 = 6;
-    optional uint32 throttle6 = 7;
-    optional uint32 throttle7 = 8;
+    // support 8 thrusters max, value range -1.0 ~ 1.0
+    optional float throttle0 = 1;
+    optional float throttle1 = 2;
+    optional float throttle2 = 3;
+    optional float throttle3 = 4;
+    optional float throttle4 = 5;
+    optional float throttle5 = 6;
+    optional float throttle6 = 7;
+    optional float throttle7 = 8;
 }
 
 message PWMDevCommand
 {
+    // pca9685 is 16-channel pwm controller
     optional uint32 duty0 = 1;
     optional uint32 duty1 = 2;
     optional uint32 duty2 = 3;
@@ -34,10 +37,13 @@ message PWMDevCommand
 
 message Commands
 {
+    // union message
     optional ThrusterCommand msgTC = 1;
     optional PWMDevCommand msgPDC = 2;
 }
 
+
+// --- Responses ---
 message DepthSensorResponse
 {
     required float depth = 1;
@@ -50,6 +56,7 @@ message PressureSensorResponse
 
 message Responses
 {
+    // union message
     optional DepthSensorResponse msgDSR = 1;
     optional PressureSensorResponse msgPSR = 2;
 }

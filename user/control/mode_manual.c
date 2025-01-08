@@ -61,27 +61,22 @@ static double *move_data_to_raw_throttle(frame_factor_t *frame_factor,
     return array;
 }
 
-static uint32_t throttle_double_to_uint32(double raw)
-{
-    return (uint32_t)(raw * 1000.); // TODO ... (== 0 means not to update)
-}
-
-static uint32_t per_motor_raw_to_throttle(double raw, thruster_attr attr)
+static float per_motor_raw_to_throttle(double raw, thruster_attr attr)
 {
     if (raw == 0.)
         return 0;
     raw *= attr.reversed == true ? -1. : 1.;
     raw += raw < 0 ? -attr.deadzone_n : attr.deadzone_p;
     raw = constrain(raw, -attr.power_nLimit, attr.power_pLimit);
-    return throttle_double_to_uint32(raw);
+    return raw;
 }
 
-static uint32_t *raw_to_throttle(double *raw, thrusters_params *thruster_config)
+static float *raw_to_throttle(double *raw, thrusters_params *thruster_config)
 {
 #if SUB_NAVI_CONFIG_USE_EIGHT_THRUSTERS
-    uint32_t *array = malloc(sizeof(uint32_t) * 8);
+    float *array = malloc(sizeof(float) * 8);
 #else
-    uint32_t *array = malloc(sizeof(uint32_t) * 6);
+    float *array = malloc(sizeof(float) * 6);
 #endif
     array[0] = per_motor_raw_to_throttle(raw[0], thruster_config->thruster_0);
     array[1] = per_motor_raw_to_throttle(raw[1], thruster_config->thruster_1);
@@ -96,7 +91,7 @@ static uint32_t *raw_to_throttle(double *raw, thrusters_params *thruster_config)
     return array;
 }
 
-static int write_throttle_to_motor(uint32_t *throttle)
+static int write_throttle_to_motor(float *throttle)
 {
     ThrusterCommand msg = {0};
     if (throttle[0])
@@ -152,7 +147,7 @@ static void routine_cb(struct ev_loop *loop, ev_timer *w, int revents)
         g_move_data.updated = false;
         struct mode_manual_arg *arg = w->data;
         double *raw = move_data_to_raw_throttle(arg->frame_factor, g_move_data);
-        uint32_t *throttle = raw_to_throttle(raw, arg->thruster_config);
+        float *throttle = raw_to_throttle(raw, arg->thruster_config);
         if (0 != write_throttle_to_motor(throttle))
             log_error("send command to sub-master failed.");
         free(throttle);

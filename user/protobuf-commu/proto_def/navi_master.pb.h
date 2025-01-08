@@ -10,26 +10,29 @@
 #endif
 
 /* Struct definitions */
+/* --- Requests --- */
 typedef struct _ThrusterCommand {
+    /* support 8 thrusters max, value range -1.0 ~ 1.0 */
     bool has_throttle0;
-    uint32_t throttle0;
+    float throttle0;
     bool has_throttle1;
-    uint32_t throttle1;
+    float throttle1;
     bool has_throttle2;
-    uint32_t throttle2;
+    float throttle2;
     bool has_throttle3;
-    uint32_t throttle3;
+    float throttle3;
     bool has_throttle4;
-    uint32_t throttle4;
+    float throttle4;
     bool has_throttle5;
-    uint32_t throttle5;
+    float throttle5;
     bool has_throttle6;
-    uint32_t throttle6;
+    float throttle6;
     bool has_throttle7;
-    uint32_t throttle7;
+    float throttle7;
 } ThrusterCommand;
 
 typedef struct _PWMDevCommand {
+    /* pca9685 is 16-channel pwm controller */
     bool has_duty0;
     uint32_t duty0;
     bool has_duty1;
@@ -65,12 +68,14 @@ typedef struct _PWMDevCommand {
 } PWMDevCommand;
 
 typedef struct _Commands {
+    /* union message */
     bool has_msgTC;
     ThrusterCommand msgTC;
     bool has_msgPDC;
     PWMDevCommand msgPDC;
 } Commands;
 
+/* --- Responses --- */
 typedef struct _DepthSensorResponse {
     float depth;
 } DepthSensorResponse;
@@ -80,6 +85,7 @@ typedef struct _PressureSensorResponse {
 } PressureSensorResponse;
 
 typedef struct _Responses {
+    /* union message */
     bool has_msgDSR;
     DepthSensorResponse msgDSR;
     bool has_msgPSR;
@@ -139,14 +145,14 @@ extern "C" {
 
 /* Struct field encoding specification for nanopb */
 #define ThrusterCommand_FIELDLIST(X, a) \
-X(a, STATIC,   OPTIONAL, UINT32,   throttle0,         1) \
-X(a, STATIC,   OPTIONAL, UINT32,   throttle1,         2) \
-X(a, STATIC,   OPTIONAL, UINT32,   throttle2,         3) \
-X(a, STATIC,   OPTIONAL, UINT32,   throttle3,         4) \
-X(a, STATIC,   OPTIONAL, UINT32,   throttle4,         5) \
-X(a, STATIC,   OPTIONAL, UINT32,   throttle5,         6) \
-X(a, STATIC,   OPTIONAL, UINT32,   throttle6,         7) \
-X(a, STATIC,   OPTIONAL, UINT32,   throttle7,         8)
+X(a, STATIC,   OPTIONAL, FLOAT,    throttle0,         1) \
+X(a, STATIC,   OPTIONAL, FLOAT,    throttle1,         2) \
+X(a, STATIC,   OPTIONAL, FLOAT,    throttle2,         3) \
+X(a, STATIC,   OPTIONAL, FLOAT,    throttle3,         4) \
+X(a, STATIC,   OPTIONAL, FLOAT,    throttle4,         5) \
+X(a, STATIC,   OPTIONAL, FLOAT,    throttle5,         6) \
+X(a, STATIC,   OPTIONAL, FLOAT,    throttle6,         7) \
+X(a, STATIC,   OPTIONAL, FLOAT,    throttle7,         8)
 #define ThrusterCommand_CALLBACK NULL
 #define ThrusterCommand_DEFAULT NULL
 
@@ -212,13 +218,13 @@ extern const pb_msgdesc_t Responses_msg;
 #define Responses_fields &Responses_msg
 
 /* Maximum encoded size of messages (where known) */
-#define Commands_size                            149
+#define Commands_size                            141
 #define DepthSensorResponse_size                 5
 #define NAVI_MASTER_PB_H_MAX_SIZE                Commands_size
 #define PWMDevCommand_size                       97
 #define PressureSensorResponse_size              11
 #define Responses_size                           20
-#define ThrusterCommand_size                     48
+#define ThrusterCommand_size                     40
 
 #ifdef __cplusplus
 } /* extern "C" */
