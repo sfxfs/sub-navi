@@ -41,10 +41,10 @@ static void jy901_data_update(uint32_t uiReg, uint32_t uiRegNum)
         case HZ:
             break;
         case Roll:
-            g_jy901_data.Angle[2] = sReg[Roll] / 32768.0f * 180.0f;
+            g_jy901_data.Angle[0] = sReg[Roll] / 32768.0f * 180.0f;
             break;
         case Pitch:
-            g_jy901_data.Angle[2] = sReg[Pitch] / 32768.0f * 180.0f;
+            g_jy901_data.Angle[1] = sReg[Pitch] / 32768.0f * 180.0f;
             break;
         case Yaw:
             g_jy901_data.Angle[2] = sReg[Yaw] / 32768.0f * 180.0f;

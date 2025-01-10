@@ -25,7 +25,7 @@ static navi_ret_t parseArguments(int argc, const char *argv[])
     int channel = atoi(argv[3]);
     int value = atoi(argv[4]);
 
-    log_info("Serial Port: %d", serialPort);
+    log_info("Serial Port: %s", serialPort);
     int uart = protobuf_commu_intf_init_cust(serialPort, SUB_NAVI_CONFIG_PROTOBUF_UART_BAUDRATE);
     if (uart < 0)
     {
@@ -187,6 +187,13 @@ static void sigint_cb(EV_P_ ev_signal *w, int revents)
 
 int main(int argc, const char *argv[])
 {
+    // check whether the program is run as root
+    if (geteuid() != 0)
+    {
+        printf("error: please run as root user...\n");
+        exit(EXIT_FAILURE);
+    }
+
     log_set_level(SUB_NAVI_CONFIG_LOG_LEVEL);
     // log save to file
     FILE *logfile = fopen(SUB_NAVI_CONFIG_LOG_OUTPUT_FILE_PATH, "a+");
