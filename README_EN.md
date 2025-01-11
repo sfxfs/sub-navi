@@ -1,53 +1,57 @@
 # SUB-NAVI
 
+***[中文](README.md) | English***
+
 ## Introduction
 
-This project (SUB-NAVI) is a general-purpose underwater robot control program based on the Linux platform. It is designed to work in conjunction with [ESP-SUB-MASTER](https://github.com/sfxfs/esp-sub-master) and [ROV-HOST](https://github.com/bohonghuang/rov-host).
+This project (SUB-NAVI) is a general-purpose underwater robot control program based on the Linux platform. It is designed to work together with [ESP-SUB-MASTER](https://github.com/sfxfs/esp-sub-master) and [ROV-HOST](https://github.com/bohonghuang/rov-host). The software has been tested on the hardware platform [Underwater-Vehicle-Electrical-Control-System](https://github.com/SFerret/Underwater-Vehicle-Electrical-Control-System).
 
-![](./doc/arch.png)
+The system architecture connection diagram is shown below:
 
-SUB-NAVI can achieve the following functionalities:
+<img src="./doc/arch.png" style="zoom: 67%;" />
 
-- Communication with a PC-based host (ROV-HOST) using HTTP protocol and JSON-RPC 2.0 (using IO listening for improved performance)
-- Serial communication with SUB-MASTER based on Protocol Buffers (for controlling underlying peripherals, thrusters, robotic arms, etc.)
-- External connection of sensors and other peripherals via serial port
-- Configuration management based on the file system (csv, json)
-- Motion control algorithms
+The SUB-NAVI project provides the following features:
+
+- Communication with the PC-based upper-level host (ROV-HOST) using the JSON-RPC 2.0 protocol over HTTP (IO event listening is used to enhance performance).
+- Serial communication with SUB-MASTER using Protocol Buffers (for controlling peripherals, thrusters, robotic arms, etc.).
+- Support for external sensors and other peripherals via serial communication.
+- Configuration management based on the filesystem (CSV, JSON).
+- Motion control algorithms.
 
 ## Compilation
 
-This project is built on `Rockchip rv1103` with an `armhf` architecture. Please use the `arm-rockchip830-linux-uclibcgnueabihf` compiler.
+This project is tested on the `Rockchip rv1103` platform, with an `armhf` architecture. It should be compiled using the `arm-rockchip830-linux-uclibcgnueabihf` compiler.
 
-Compile using Linux and ensure the following are installed:
+To compile, use a Linux environment and ensure the following are installed:
 
-- Cross-compiler (added to PATH)
-- `cmake`
+- Cross-compilation toolchain (ensure it is added to PATH).
+- `cmake`.
 
-Navigate to the project root directory and enter the following command to compile:
+Navigate to the project root directory and run the following command to compile:
 
 ```shell
 cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=arm-rockchip830-linux-uclibcgnueabihf-gcc -DCMAKE_CXX_COMPILER=arm-rockchip830-linux-uclibcgnueabihf-g++ && cmake --build build --config Release
 ```
 
-If you are using VSCode for compilation, you also need to install:
+If using VSCode for compilation, also ensure the following are installed:
 
-- The corresponding CMake project compilation plugin
-- `ninja-build`
+- CMake project build-related extensions.
+- `ninja-build`.
 
-Open the project files in VSCode, select the appropriate toolchain in the pop-up dialog, and choose "Build" in the bottom bar to compile.
+Open the project with VSCode. When prompted, select the appropriate toolchain in the configuration dialog. Then, use the bottom toolbar to build the project.
 
 ## Development
 
-The project mainly consists of three root directory folders:
+The project is organized into three main directories at the root level:
 
-- `3rd`: Contains third-party libraries and common code
-- `config-header`: Contains global configuration header files
-- `user`: Contains user project source code
+- **`3rd`**: Contains third-party libraries and general-purpose code.
+- **`config-header`**: Contains global configuration header files.
+- **`user`**: Contains the user project source code.
 
-The `user` folder primarily includes several functional modules:
+The `user` folder includes several key functional modules:
 
-- `control`: Robot control algorithms
-- `csv-json-config-sys`: Program configuration system code
-- `json-rpc-server`: JSON-RPC server application code
-- `peripheral`: Drivers for related peripherals
-- `protobuf-commu`: Communication code with SUB-MASTER
+- **`control`**: Contains the robot control algorithms.
+- **`csv-json-config-sys`**: Contains the program's configuration management system code.
+- **`json-rpc-server`**: Contains the JSON-RPC server application code.
+- **`peripheral`**: Contains the drivers for peripherals.
+- **`protobuf-commu`**: Contains the code for communication with SUB-MASTER.
