@@ -8,6 +8,8 @@ aux_source_directory(control control_srcs)
 # 创建可执行文件
 add_executable(${PROJECT_NAME} 
     main.c
+    arg_parse.c
+    jsonrpc_server.c
     ${cfg_sys_srcs}
     ${jsonrpc_srcs}
     ${protobuf_srcs}

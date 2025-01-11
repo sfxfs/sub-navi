@@ -6,7 +6,7 @@
 
 #include "navi-type.h"
 
-#include "json_file.h"
+#include "file_rw.h"
 
 void *navi_read_from_file(const char *file_path)
 {
