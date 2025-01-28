@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "s2j.h"
-#include "json_file.h"
+#include "file_rw.h"
 
 #include "json_thruster.h"
 

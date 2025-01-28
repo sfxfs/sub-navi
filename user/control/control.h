@@ -6,9 +6,9 @@
 #include "pid.h"
 #include "mjsonrpc.h"
 
+#include "protobuf-commu/navi_master.pb.h"
 #include "csv-json-config-sys/json_thruster.h"
 #include "csv-json-config-sys/csv_frame_factor.h"
-#include "protobuf-commu/proto_def/navi_master.pb.h"
 
 typedef struct _dir_t
 {
@@ -22,7 +22,7 @@ typedef struct _dir_t
 
 typedef struct _input_data_t
 {
-    float x, y, z, r;
+    float lx, ly, rx, ry, lt, rt;
     float roll, pitch, yaw, depth;
 } input_data_t;
 
