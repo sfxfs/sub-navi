@@ -9,7 +9,7 @@
  * @param message ptr to message
  * @return byte array
  */
-const uint8_t * msg2byte(const pb_msgdesc_t *messagetype, void *message);
+const size_t msg2byte(const pb_msgdesc_t *messagetype, void *message, uint8_t *buffer, size_t bf_size);
 
 /**
  * @brief raw byte array to Protocol Buffer message

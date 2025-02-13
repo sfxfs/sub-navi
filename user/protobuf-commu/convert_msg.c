@@ -9,24 +9,20 @@
 
 #include "convert_msg.h"
 
-const uint8_t * msg2byte(const pb_msgdesc_t *messagetype, void *message)
+const size_t msg2byte(const pb_msgdesc_t *messagetype, void *message, uint8_t *buffer, size_t bf_size)
 {
-    // 分配内存空间，用于存储字节数组
-    uint8_t *data = calloc(NAVI_MASTER_PB_H_MAX_SIZE, sizeof(uint8_t));
     // 创建输出流，用于将protobuf消息写入字节数组
-    pb_ostream_t stream = pb_ostream_from_buffer(data, sizeof(data));
+    pb_ostream_t stream = pb_ostream_from_buffer(buffer, bf_size);
 
     // 将protobuf消息编码为字节数组
     bool status = encode_cmd_unionmessage(&stream, messagetype, message);
-    // 如果编码失败，则释放内存并返回NULL
     if (!status)
     {
         log_warn("Encoding failed!");
-        free(data);
-        return NULL;
+        return 0;
     }
-    // 返回字节数组
-    return data;
+
+    return stream.bytes_written;
 }
 
 void * byte2msg(const uint8_t *buffer, size_t size, const pb_msgdesc_t **messagetype)
@@ -51,6 +47,7 @@ void * byte2msg(const uint8_t *buffer, size_t size, const pb_msgdesc_t **message
         status = decode_unionmessage_contents(&stream, PressureSensorResponse_fields, message);
         log_debug("Got PressureSensorResponse");
     }
+    // ... other message types
 
     if (!status)
     {
