@@ -1,6 +1,8 @@
 #ifndef SUB_NAVI_CFG_CSV_FRAME_FACTOR_H
 #define SUB_NAVI_CFG_CSV_FRAME_FACTOR_H
 
+#include <fcntl.h>
+
 #include "navi-config.h"
 
 enum frame_factor_col

@@ -1,5 +1,5 @@
-#ifndef SUB_NAVI_CFG_JSON_FILE_READ_H
-#define SUB_NAVI_CFG_JSON_FILE_READ_H
+#ifndef SUB_NAVI_CFG_FILE_RW_H
+#define SUB_NAVI_CFG_FILE_RW_H
 
 #include "navi-type.h"
 

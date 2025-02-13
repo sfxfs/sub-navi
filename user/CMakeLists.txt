@@ -1,13 +1,13 @@
 # 搜索对应目录下的所有文件
-aux_source_directory(csv-json-config-sys cfg_sys_srcs)
-aux_source_directory(json-rpc-server jsonrpc_srcs)
-aux_source_directory(protobuf-commu protobuf_srcs)
-aux_source_directory(peripheral peripheral_srcs)
 aux_source_directory(control control_srcs)
+aux_source_directory(peripheral peripheral_srcs)
+aux_source_directory(protobuf-commu protobuf_srcs)
+aux_source_directory(csv-json-config-sys cfg_sys_srcs)
 
 # 创建可执行文件
 add_executable(${PROJECT_NAME} 
     main.c
+    arg_parse.c
     ${cfg_sys_srcs}
     ${jsonrpc_srcs}
     ${protobuf_srcs}
