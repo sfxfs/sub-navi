@@ -15,7 +15,7 @@ const size_t msg2byte(const pb_msgdesc_t *messagetype, void *message, uint8_t *b
     pb_ostream_t stream = pb_ostream_from_buffer(buffer, bf_size);
 
     // 将protobuf消息编码为字节数组
-    bool status = encode_cmd_unionmessage(&stream, messagetype, message);
+    bool status = encode_command_unionmessage(&stream, messagetype, message);
     if (!status)
     {
         log_warn("Encoding failed!");

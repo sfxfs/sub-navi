@@ -8,7 +8,7 @@ const pb_msgdesc_t *decode_response_unionmessage_type(pb_istream_t *stream);
 bool decode_unionmessage_contents(pb_istream_t *stream,
                                     const pb_msgdesc_t *messagetype, void *dest_struct);
 
-bool encode_cmd_unionmessage(pb_ostream_t *stream,
+bool encode_command_unionmessage(pb_ostream_t *stream,
                                 const pb_msgdesc_t *messagetype, void *message);
 
 #endif

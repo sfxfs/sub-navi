@@ -62,7 +62,7 @@ static void jy901_delay_ms(uint16_t ucMs)
 }
 
 
-#if SUB_NAVI_CONFIG_JY901_IIC_ENABLE
+#if SUB_NAVI_CONFIG_JY901_USE_IIC
 
 #include "wiringPiI2C.h"
 
