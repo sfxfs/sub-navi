@@ -8,6 +8,8 @@ aux_source_directory(csv-json-config-sys cfg_sys_srcs)
 add_executable(${PROJECT_NAME} 
     main.c
     arg_parse.c
+    jrpc_server.c
+    ctrl_routine.c
     ${cfg_sys_srcs}
     ${jsonrpc_srcs}
     ${protobuf_srcs}

@@ -26,7 +26,7 @@
 
 // jy901 configs
 #define SUB_NAVI_CONFIG_JY901_ENABLE                TRUE
-#define SUB_NAVI_CONFIG_JY901_USE_IIC               TRUE       // 0 is for uart, 1 is for iic
+#define SUB_NAVI_CONFIG_JY901_USE_IIC               TRUE        // 0 is for uart, 1 is for iic
 #if SUB_NAVI_CONFIG_JY901_USE_IIC
 #define SUB_NAVI_CONFIG_JY901_IIC_PATH              "/dev/i2c-0"
 #define SUB_NAVI_CONFIG_JY901_IIC_ADDR              0x50
@@ -36,8 +36,8 @@
 #endif
 
 // control configs
-#define SUB_NAVI_CONFIG_CONTROL_RUN_EVERY_SECOND    0.02    // 20ms
-#define SUB_NAVI_CONFIG_CONTROL_THROTTLE_MID        1500.    // means stop
+#define SUB_NAVI_CONFIG_CONTROL_RUN_EVERY_SECOND    0.02        // 20ms
+#define SUB_NAVI_CONFIG_CONTROL_THROTTLE_MID        1500.       // means stop
 #define SUB_NAVI_CONFIG_CONTROL_THROTTLE_MAX_OFFSET 500.
 
 #endif
