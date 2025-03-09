@@ -7,6 +7,8 @@
 #include "navi-config.h"
 
 #include "arg_parse.h"
+#include "jrpc_server.h"
+#include "ctrl_routine.h"
 
 #include "csv-json-config-sys/json_thruster.h"
 #include "csv-json-config-sys/csv_frame_factor.h"
@@ -70,7 +72,11 @@ static int init(void)
 
     // 6. json rpc server
 
-    // ...
+    if (navi_jrpc_server_start() != NAVI_RET_SUCCESS)
+    {
+        log_error("navi jsonrpc server start failed!");
+        return NAVI_RET_FAIL;
+    }
 
     // end ...
     return NAVI_RET_SUCCESS;

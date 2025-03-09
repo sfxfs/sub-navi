@@ -1,6 +1,7 @@
 project(wiringpi)
 
 add_library(${PROJECT_NAME}
+            wiringPiSPI.c
             wiringPiI2C.c
             wiringSerial.c)
 

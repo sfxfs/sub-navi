@@ -26,7 +26,7 @@ navi_ret_t navi_jrpc_server_start(void)
 
     // ...
 
-    log_info("json rpc server started on 'localhost:%d'.", SUB_NAVI_CONFIG_RPC_SERVER_PORT);
+    log_info("json rpc server started on \"http://localhost:%d\".", SUB_NAVI_CONFIG_RPC_SERVER_PORT);
     return NAVI_RET_SUCCESS;
 }
 
