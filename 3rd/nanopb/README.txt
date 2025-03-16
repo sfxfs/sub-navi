@@ -1,1 +1,0 @@
-Protocol Buffers with small code size, site https://github.com/nanopb/nanopb

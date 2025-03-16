@@ -1,7 +1,6 @@
 add_subdirectory(PID)
 add_subdirectory(cJSON)
 add_subdirectory(log.c)
-add_subdirectory(nanopb)
 add_subdirectory(wit_c_sdk)
 add_subdirectory(jsonrpc-c)
 add_subdirectory(csv_parser)

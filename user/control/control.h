@@ -6,7 +6,6 @@
 #include "pid.h"
 #include "mjsonrpc.h"
 
-#include "protobuf-commu/navi_master.pb.h"
 #include "csv-json-config-sys/json_thruster.h"
 #include "csv-json-config-sys/csv_frame_factor.h"
 
@@ -79,12 +78,5 @@ void dir2output_get(double output[MOTOR_NUM_MAX],
                     frame_factor_t *frame_factor,
                     thrusters_params *thruster_config,
                     dir_t dir);
-
-/**
- * @brief 
- * @param[out] msg 
- * @param[in] output 
- */
-void output2send_get(ThrusterCommand *msg, double output[MOTOR_NUM_MAX]);
 
 #endif /* SUB_NAVI_CONTROL_H */

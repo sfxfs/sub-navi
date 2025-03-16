@@ -1,7 +1,6 @@
 # 搜索对应目录下的所有文件
 aux_source_directory(control control_srcs)
 aux_source_directory(peripheral peripheral_srcs)
-aux_source_directory(protobuf-commu protobuf_srcs)
 aux_source_directory(csv-json-config-sys cfg_sys_srcs)
 
 # 创建可执行文件
@@ -11,8 +10,6 @@ add_executable(${PROJECT_NAME}
     jrpc_server.c
     ctrl_routine.c
     ${cfg_sys_srcs}
-    ${jsonrpc_srcs}
-    ${protobuf_srcs}
     ${peripheral_srcs}
     ${control_srcs})
 
@@ -29,7 +26,6 @@ target_link_libraries(${PROJECT_NAME}
     log_c
     struct2json
     csv_parser
-    nanopb
     wiringPi
     wit_c_sdk
     ev)
