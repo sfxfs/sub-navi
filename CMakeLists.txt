@@ -16,7 +16,5 @@ endif()
 set(CMAKE_C_FLAGS_DEBUG   "-O0 -g -Wall")
 set(CMAKE_C_FLAGS_RELEASE "-O3 -w -DNDEBUG")
 
-include_directories(3rd/libev/include)
-
 add_subdirectory(3rd)
 add_subdirectory(user)

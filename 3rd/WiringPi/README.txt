@@ -1,1 +1,0 @@
-The arguably fastest GPIO Library for the Raspberry Pi, site https://github.com/WiringPi/WiringPi

@@ -1,1 +1,0 @@
-libev, version 4.33, architecture armhf, compiled with arm-rockchip830-linux-uclibcgnueabihf

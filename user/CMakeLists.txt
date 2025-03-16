@@ -30,9 +30,9 @@ target_link_libraries(${PROJECT_NAME}
     struct2json
     csv_parser
     nanopb
-    wiringpi
+    wiringPi
     wit_c_sdk
-    ${ev})
+    ev)
 
 # 拷贝框架因数配置文件
 file(COPY ${PROJECT_SOURCE_DIR}/user/csv-json-config-sys/config-files/frame_factor.csv DESTINATION ${PROJECT_SOURCE_DIR}/output)

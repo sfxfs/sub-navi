@@ -116,7 +116,7 @@ static ev_io uart_watcher;
 
 static void jy901_uart_write(uint8_t *p_ucData, uint32_t uiLen)
 {
-    serialPutslen(jy901_uart, (char *)p_ucData, uiLen);
+    write(jy901_uart, p_ucData, uiLen);
 }
 
 static void uart_read_cb (EV_P_ ev_io *w, int revents)
