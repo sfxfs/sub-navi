@@ -25,7 +25,7 @@ static int init(void)
     // 1. csv config
     if (frame_factor_check_file_exist() != true)
     {
-        log_error("frame factor file not exist! path: %s",
+        log_error("frame factor file does not exist! path: %s",
                   SUB_NAVI_CONFIG_FRAME_FACTOR_FILE_PATH);
         return NAVI_RET_FAIL;
     }
@@ -43,7 +43,8 @@ static int init(void)
         json_file_error = true;
 
         thrusters_params *default_config = thruster_create_with_init_val();
-        thruster_write_to_file(default_config);
+        if (thruster_write_to_file(default_config) == 0)
+            log_info("default thruster config file generated successfully.");
         free(default_config);
     }
     else
@@ -53,8 +54,8 @@ static int init(void)
 
     if (json_file_error == true)
     {
-        log_info("this is your first time running the program. "
-                  "please modify the config file and restart the program.");
+        log_warn("this is your first time running the program. "
+                 "please modify the config file and restart the program.");
         return NAVI_RET_FAIL;
     }
 
@@ -112,8 +113,8 @@ int main(int argc, const char *argv[])
            " |___/\\___/|___/   |_|\\_/_/ \\_\\_/ |___|\n"
            "                                       \n");
     printf("SUB-NAVI log level set to: %s, log history save to: %s\n\n",
-            log_level_string(SUB_NAVI_CONFIG_LOG_LEVEL),
-            SUB_NAVI_CONFIG_LOG_OUTPUT_FILE_PATH);
+           log_level_string(SUB_NAVI_CONFIG_LOG_LEVEL),
+           SUB_NAVI_CONFIG_LOG_OUTPUT_FILE_PATH);
 
     if (NAVI_RET_SUCCESS != init())
     {
@@ -124,7 +125,7 @@ int main(int argc, const char *argv[])
     EV_P = EV_DEFAULT;
     ev_signal wsig;
     ev_signal_init(&wsig, sigint_cb, SIGINT);
-    ev_signal_start(EV_A_ &wsig);
+    ev_signal_start(EV_A_ & wsig);
 
     ev_loop(EV_A_ 0);
 

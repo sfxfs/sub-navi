@@ -10,11 +10,10 @@ add_executable(${PROJECT_NAME}
     arg_parse.c
     jrpc_server.c
     ctrl_routine.c
+    ${control_srcs}
     ${cfg_sys_srcs}
-    ${jsonrpc_srcs}
     ${protobuf_srcs}
-    ${peripheral_srcs}
-    ${control_srcs})
+    ${peripheral_srcs})
 
 # 添加头文件搜索路径
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/config_header)

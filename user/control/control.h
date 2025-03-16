@@ -22,8 +22,8 @@ typedef struct _dir_t
 
 typedef struct _input_data_t
 {
-    float lx, ly, rx, ry, lt, rt;
-    float roll, pitch, yaw, depth;
+    float lx, ly, rx, ry, lt, rt;   // controller input
+    float roll, pitch, yaw, depth;  // sensor input
 } input_data_t;
 
 typedef struct _lock_flags_t
