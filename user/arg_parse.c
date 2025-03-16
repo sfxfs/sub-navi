@@ -3,16 +3,34 @@
 #include <string.h>
 
 #include "log.h"
-#include "wiringSerial.h"
+
+#include "peripheral/nxp_pca9685.h"
 
 #include "navi-type.h"
 #include "navi-config.h"
 
 #include "arg_parse.h"
 
-// {uart} {channel} {value}
+// {channel} {value}
 static navi_ret_t pwm_cmd_callback(const char *args[], int arg_count)
 {
+    if (arg_count != 2)
+        return NAVI_RET_ARG_ERROR;
+
+    int channel = atoi(args[0]);
+    int value = atoi(args[1]);
+
+    int pca9685_fd = pca9685Setup(SUB_NAVI_CONFIG_PCA9685_PINBASE,
+                                  SUB_NAVI_CONFIG_PCA9685_IIC_PATH,
+                                  SUB_NAVI_CONFIG_PCA9685_IIC_ADDR,
+                                  SUB_NAVI_CONFIG_PCA9685_PIN_OE,
+                                  SUB_NAVI_CONFIG_PCA9685_PWM_FREQ);
+    if (pca9685_fd < 0)
+    {
+        log_error("PCA9685 init failed!");
+        return NAVI_RET_FAIL;
+    }
+    pca9685PWMWrite(pca9685_fd, channel, 0, value);
     return NAVI_RET_SUCCESS;
 }
 
@@ -21,7 +39,7 @@ navi_ret_t navi_parse_arguments(int argc, const char *argv[])
     // 提取命令和参数
     const char *cmd = argv[1];
     const char **args = NULL; // 参数数组起始位置
-    int arg_count = 0;  // 参数个数
+    int arg_count = 0;        // 参数个数
     if (argc > 2)
     {
         args = &argv[2];

@@ -20,9 +20,12 @@
 // tcp server configs
 #define SUB_NAVI_CONFIG_RPC_SERVER_PORT             8888
 
-// protbuf configs
-#define SUB_NAVI_CONFIG_PROTOBUF_UART_PATH          "/dev/ttyS5"
-#define SUB_NAVI_CONFIG_PROTOBUF_UART_BAUDRATE      115200
+// pca9685 configs
+#define SUB_NAVI_CONFIG_PCA9685_PINBASE             300
+#define SUB_NAVI_CONFIG_PCA9685_IIC_PATH            "/dev/i2c-1"
+#define SUB_NAVI_CONFIG_PCA9685_IIC_ADDR            0x40
+#define SUB_NAVI_CONFIG_PCA9685_PIN_OE              19
+#define SUB_NAVI_CONFIG_PCA9685_PWM_FREQ            50.f
 
 // jy901 configs
 #define SUB_NAVI_CONFIG_JY901_ENABLE                TRUE

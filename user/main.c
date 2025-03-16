@@ -2,6 +2,7 @@
 
 #include "ev.h"
 #include "log.h"
+#include <wiringPi.h>
 
 #include "navi-type.h"
 #include "navi-config.h"
@@ -9,6 +10,9 @@
 #include "arg_parse.h"
 #include "jrpc_server.h"
 #include "ctrl_routine.h"
+
+#include "peripheral/wt_jy901.h"
+#include "peripheral/nxp_pca9685.h"
 
 #include "csv-json-config-sys/json_thruster.h"
 #include "csv-json-config-sys/csv_frame_factor.h"
@@ -25,7 +29,7 @@ static int init(void)
     // 1. csv config
     if (frame_factor_check_file_exist() != true)
     {
-        log_error("frame factor file not exist! path: %s",
+        log_error("frame factor file does not exist! path: %s",
                   SUB_NAVI_CONFIG_FRAME_FACTOR_FILE_PATH);
         return NAVI_RET_FAIL;
     }
@@ -43,7 +47,8 @@ static int init(void)
         json_file_error = true;
 
         thrusters_params *default_config = thruster_create_with_init_val();
-        thruster_write_to_file(default_config);
+        if (thruster_write_to_file(default_config) == 0)
+            log_info("default thruster config file generated successfully.");
         free(default_config);
     }
     else
@@ -53,20 +58,29 @@ static int init(void)
 
     if (json_file_error == true)
     {
-        log_info("this is your first time running the program. "
-                  "please modify the config file and restart the program.");
+        log_warn("this is your first time running the program. "
+                 "please modify the config file and restart the program.");
         return NAVI_RET_FAIL;
     }
 
     // 3. peripherals
 
-    // ...
+    if (navi_jy901_init() != NAVI_RET_SUCCESS)
+    {
+        log_error("JY901 init failed!");
+    }
+    int pca9685_fd = pca9685Setup(SUB_NAVI_CONFIG_PCA9685_PINBASE,
+                                  SUB_NAVI_CONFIG_PCA9685_IIC_PATH,
+                                  SUB_NAVI_CONFIG_PCA9685_IIC_ADDR,
+                                  SUB_NAVI_CONFIG_PCA9685_PIN_OE,
+                                  SUB_NAVI_CONFIG_PCA9685_PWM_FREQ);
+    if (pca9685_fd < 0)
+    {
+        log_error("PCA9685 init failed!");
+        return NAVI_RET_FAIL;
+    }
 
     // 4. control algorithm
-
-    // ...
-
-    // 5. protobuf rpc p2p
 
     // ...
 
@@ -103,6 +117,12 @@ int main(int argc, const char *argv[])
     FILE *logfile = fopen(SUB_NAVI_CONFIG_LOG_OUTPUT_FILE_PATH, "a+");
     log_add_fp(logfile, LOG_WARN);
 
+    if (wiringPiSetup() < 0)
+    {
+        log_error("wiringPi init failed!");
+        return 1;
+    }
+
     if (argc > 1)
         return navi_parse_arguments(argc, argv);
 
@@ -112,8 +132,8 @@ int main(int argc, const char *argv[])
            " |___/\\___/|___/   |_|\\_/_/ \\_\\_/ |___|\n"
            "                                       \n");
     printf("SUB-NAVI log level set to: %s, log history save to: %s\n\n",
-            log_level_string(SUB_NAVI_CONFIG_LOG_LEVEL),
-            SUB_NAVI_CONFIG_LOG_OUTPUT_FILE_PATH);
+           log_level_string(SUB_NAVI_CONFIG_LOG_LEVEL),
+           SUB_NAVI_CONFIG_LOG_OUTPUT_FILE_PATH);
 
     if (NAVI_RET_SUCCESS != init())
     {
@@ -124,7 +144,7 @@ int main(int argc, const char *argv[])
     EV_P = EV_DEFAULT;
     ev_signal wsig;
     ev_signal_init(&wsig, sigint_cb, SIGINT);
-    ev_signal_start(EV_A_ &wsig);
+    ev_signal_start(EV_A_ & wsig);
 
     ev_loop(EV_A_ 0);
 
