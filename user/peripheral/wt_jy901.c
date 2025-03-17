@@ -135,12 +135,14 @@ navi_ret_t navi_jy901_init(void)
     jy901_uart = serialOpen(SUB_NAVI_CONFIG_JY901_UART_PATH, SUB_NAVI_CONFIG_JY901_UART_BAUDRATE);
     if (jy901_uart < 0)
     {
+        log_error("jy901 uart %s open failed.", SUB_NAVI_CONFIG_JY901_UART_PATH);
         return NAVI_RET_FAIL;
     }
 
     // wit sdk init
     if (WIT_HAL_OK != WitInit(WIT_PROTOCOL_NORMAL, 0x50)) // 0x50 is 7 bit iic address of jy901
     {
+        log_error("wit sdk init failed.");
         return NAVI_RET_FAIL;
     }
     WitDelayMsRegister(jy901_delay_ms);

@@ -15,10 +15,15 @@
 static navi_ret_t pwm_cmd_callback(const char *args[], int arg_count)
 {
     if (arg_count != 2)
+    {
+        log_error("Invalid arguments, use the format: pwm { channel(0~15) } { value(us) }");
         return NAVI_RET_ARG_ERROR;
+    }
 
     int channel = atoi(args[0]);
-    int value = atoi(args[1]);
+    if (channel < 0)
+        channel = 0;
+    int us = atoi(args[1]);
 
     int pca9685_fd = pca9685Setup(SUB_NAVI_CONFIG_PCA9685_PINBASE,
                                   SUB_NAVI_CONFIG_PCA9685_IIC_PATH,
@@ -30,7 +35,11 @@ static navi_ret_t pwm_cmd_callback(const char *args[], int arg_count)
         log_error("PCA9685 init failed!");
         return NAVI_RET_FAIL;
     }
-    pca9685PWMWrite(pca9685_fd, channel, 0, value);
+
+    float percent = (float)us / (1000.f * 1000.f / SUB_NAVI_CONFIG_PCA9685_PWM_FREQ);
+    log_debug("PWM channel %d set to %f%%", channel, percent);
+
+    pca9685PWMWrite(pca9685_fd, channel, 0, percent * 0xFFF);
     return NAVI_RET_SUCCESS;
 }
 

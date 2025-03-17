@@ -131,7 +131,8 @@ int main(int argc, const char *argv[])
            " \\__ \\ |_| | _ \\___| .` |/ _ \\ V / | | \n"
            " |___/\\___/|___/   |_|\\_/_/ \\_\\_/ |___|\n"
            "                                       \n");
-    printf("SUB-NAVI log level set to: %s, log history save to: %s\n\n",
+    printf("This is H3 (NanoPi) version of SUB-NAVI.\n"
+           "SUB-NAVI log level set to: %s, log history save to: %s\n\n",
            log_level_string(SUB_NAVI_CONFIG_LOG_LEVEL),
            SUB_NAVI_CONFIG_LOG_OUTPUT_FILE_PATH);
 
