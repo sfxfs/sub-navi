@@ -1,15 +1,14 @@
 #ifndef SUB_NAVI_GLOBAL_CONFIG_H
 #define SUB_NAVI_GLOBAL_CONFIG_H
 
-#define TRUE    1
-#define FALSE   0
+#include "log.h"
+#include <stdbool.h>
 
-// 0=LOG_TRACE, 1=LOG_DEBUG, 2=LOG_INFO, 3=LOG_WARN, 4=LOG_ERROR, 5=LOG_FATAL, 6=LOG_OFF
-#define SUB_NAVI_CONFIG_LOG_LEVEL                   2
+#define SUB_NAVI_CONFIG_LOG_LEVEL                   LOG_INFO
 #define SUB_NAVI_CONFIG_LOG_OUTPUT_FILE_PATH        "./navi.log"
 
 // 0 is for 6 thrusters, 1 is for 8 thrusters
-#define SUB_NAVI_CONFIG_USE_EIGHT_THRUSTERS         TRUE
+#define SUB_NAVI_CONFIG_USE_EIGHT_THRUSTERS         true
 
 // configuration file path
 #define SUB_NAVI_CONFIG_PID_CONFIG_FILE_PATH        "./pid_config.json"
@@ -28,8 +27,8 @@
 #define SUB_NAVI_CONFIG_PCA9685_PWM_FREQ            50.f
 
 // jy901 configs
-#define SUB_NAVI_CONFIG_JY901_ENABLE                TRUE
-#define SUB_NAVI_CONFIG_JY901_USE_IIC               FALSE        // 0 is for uart, 1 is for iic
+#define SUB_NAVI_CONFIG_JY901_ENABLE                true
+#define SUB_NAVI_CONFIG_JY901_USE_IIC               false        // 0 is for uart, 1 is for iic
 #if SUB_NAVI_CONFIG_JY901_USE_IIC
 #define SUB_NAVI_CONFIG_JY901_IIC_PATH              "/dev/i2c-0"
 #define SUB_NAVI_CONFIG_JY901_IIC_ADDR              0x50
