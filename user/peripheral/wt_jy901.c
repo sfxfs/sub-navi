@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include <fcntl.h>
 
 #include "log.h"
 #include "wit_c_sdk.h"
@@ -138,6 +139,7 @@ navi_ret_t navi_jy901_init(void)
         log_error("jy901 uart %s open failed.", SUB_NAVI_CONFIG_JY901_UART_PATH);
         return NAVI_RET_FAIL;
     }
+    fcntl(jy901_uart, F_SETFL, O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK);
 
     // wit sdk init
     if (WIT_HAL_OK != WitInit(WIT_PROTOCOL_NORMAL, 0x50)) // 0x50 is 7 bit iic address of jy901
