@@ -64,7 +64,6 @@ static int init(void)
     }
 
     // 3. peripherals
-
     if (navi_jy901_init() != NAVI_RET_SUCCESS)
     {
         log_error("JY901 init failed!");
@@ -81,12 +80,25 @@ static int init(void)
     }
 
     // 4. control algorithm
+    input_data_t *input_data = calloc(1, sizeof(input_data_t));
+    lock_flags_t *flags = calloc(1, sizeof(lock_flags_t));
 
-    // ...
+    ctrl_routine_arg_t *routine_arg = calloc(1, sizeof(ctrl_routine_arg_t));
+    routine_arg->frame_factor = frame_factor;
+    routine_arg->thruster_config = thruster_config;
+    routine_arg->input_data = input_data;
+    routine_arg->lock_flags = flags;
+
+    if (navi_ctrl_routine_start(routine_arg) != NAVI_RET_SUCCESS)
+    {
+        log_error("navi control routine start failed!");
+        return NAVI_RET_FAIL;
+    }
 
     // 6. json rpc server
+    jrpc_server_arg_t *jrpc_arg = calloc(1, sizeof(jrpc_server_arg_t));
 
-    if (navi_jrpc_server_start() != NAVI_RET_SUCCESS)
+    if (navi_jrpc_server_start(jrpc_arg) != NAVI_RET_SUCCESS)
     {
         log_error("navi jsonrpc server start failed!");
         return NAVI_RET_FAIL;

@@ -16,12 +16,12 @@ static cJSON *empty_handler(mjrpc_ctx_t *ctx, cJSON *params, cJSON *id)
     return cJSON_CreateNull();
 }
 
-navi_ret_t navi_jrpc_server_start(void)
+navi_ret_t navi_jrpc_server_start(jrpc_server_arg_t *arg)
 {
     if (jrpc_server_init(&server_handle, SUB_NAVI_CONFIG_RPC_SERVER_PORT) != 0)
         return NAVI_RET_FAIL;
 
-    if (MJRPC_RET_OK != mjrpc_add_method(&server_handle.rpc_handle, axis_handler, "axis", NULL))
+    if (MJRPC_RET_OK != mjrpc_add_method(&server_handle.rpc_handle, axis_handler, "axis", arg->input_data))
         return NAVI_RET_FAIL;
 
     // ...
