@@ -12,14 +12,14 @@
 
 #include "arg_parse.h"
 
-// {uart} {channel} {value}
+// {channel} {value}
 static navi_ret_t pwm_cmd_callback(const char *args[], int arg_count)
 {
-    if (arg_count != 3)
+    if (arg_count != 2)
         return NAVI_RET_ARG_ERROR;
 
-    int channel = atoi(args[1]);
-    int value = atoi(args[2]);
+    int channel = atoi(args[0]);
+    int value = atoi(args[1]);
     PWMDevCommand msg = PWMDevCommand_init_default;
     switch (channel)
     {
@@ -52,10 +52,10 @@ static navi_ret_t pwm_cmd_callback(const char *args[], int arg_count)
         return NAVI_RET_FAIL;
     }
 
-    int uart_fd = serialOpen(args[0], SUB_NAVI_CONFIG_PROTOBUF_UART_BAUDRATE);
+    int uart_fd = serialOpen(SUB_NAVI_CONFIG_PROTOBUF_UART_PATH, SUB_NAVI_CONFIG_PROTOBUF_UART_BAUDRATE);
     if (uart_fd < 0)
     {
-        log_error("Error: Unable to open UART device '%s'", args[0]);
+        log_error("Error: Unable to open UART device '%s'", SUB_NAVI_CONFIG_PROTOBUF_UART_PATH);
         return NAVI_RET_FAIL;
     }
 
@@ -72,11 +72,11 @@ static navi_ret_t pwm_cmd_callback(const char *args[], int arg_count)
 
 static navi_ret_t shot_cmd_callback(const char *args[], int arg_count)
 {
-    if (arg_count != 3)
+    if (arg_count != 2)
         return NAVI_RET_ARG_ERROR;
 
-    int channel = atoi(args[1]);
-    int value = atoi(args[2]);
+    int channel = atoi(args[0]);
+    int value = atoi(args[1]);
     ThrusterCommand msg = ThrusterCommand_init_default;
     switch (channel)
     {
@@ -101,10 +101,10 @@ static navi_ret_t shot_cmd_callback(const char *args[], int arg_count)
         return NAVI_RET_FAIL;
     }
 
-    int uart_fd = serialOpen(args[0], SUB_NAVI_CONFIG_PROTOBUF_UART_BAUDRATE);
+    int uart_fd = serialOpen(SUB_NAVI_CONFIG_PROTOBUF_UART_PATH, SUB_NAVI_CONFIG_PROTOBUF_UART_BAUDRATE);
     if (uart_fd < 0)
     {
-        log_error("Error: Unable to open UART device '%s'", args[0]);
+        log_error("Error: Unable to open UART device '%s'", SUB_NAVI_CONFIG_PROTOBUF_UART_PATH);
         return NAVI_RET_FAIL;
     }
 

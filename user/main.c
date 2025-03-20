@@ -105,7 +105,16 @@ int main(int argc, const char *argv[])
     log_add_fp(logfile, LOG_WARN);
 
     if (argc > 1)
-        return navi_parse_arguments(argc, argv);
+        if (navi_parse_arguments(argc, argv) != NAVI_RET_SUCCESS)
+        {
+            log_error("parse arguments failed!");
+            return 1;
+        }
+        else
+        {
+            log_info("cmd send successfully!");
+            return 0;
+        }
 
     printf("  ___ _   _ ___     _  _   ___   _____ \n"
            " / __| | | | _ )___| \\| | /_\\ \\ / /_ _|\n"

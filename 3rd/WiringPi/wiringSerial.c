@@ -87,8 +87,6 @@ int serialOpen (const char *device, const int baud)
   if ((fd = open (device, O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK)) == -1)
     return -1 ;
 
-  fcntl (fd, F_SETFL, O_RDWR) ;
-
 // Get and modify current options:
 
   tcgetattr (fd, &options) ;
