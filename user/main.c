@@ -99,23 +99,24 @@ int main(int argc, const char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    log_set_level(SUB_NAVI_CONFIG_LOG_LEVEL);
     // log save to file
+    log_set_level(SUB_NAVI_CONFIG_LOG_LEVEL);
     FILE *logfile = fopen(SUB_NAVI_CONFIG_LOG_OUTPUT_FILE_PATH, "a+");
     log_add_fp(logfile, LOG_WARN);
 
+    // parse arguments (if have)
     if (argc > 1)
+    {
         if (navi_parse_arguments(argc, argv) != NAVI_RET_SUCCESS)
         {
             log_error("parse arguments failed!");
             return 1;
         }
-        else
-        {
-            log_info("cmd send successfully!");
-            return 0;
-        }
+        log_info("cmd send successfully!");
+        return 0;
+    }
 
+    // welcome info
     printf("  ___ _   _ ___     _  _   ___   _____ \n"
            " / __| | | | _ )___| \\| | /_\\ \\ / /_ _|\n"
            " \\__ \\ |_| | _ \\___| .` |/ _ \\ V / | | \n"
@@ -125,17 +126,20 @@ int main(int argc, const char *argv[])
            log_level_string(SUB_NAVI_CONFIG_LOG_LEVEL),
            SUB_NAVI_CONFIG_LOG_OUTPUT_FILE_PATH);
 
+    // init sub-navi
     if (NAVI_RET_SUCCESS != init())
     {
         log_error("sub-navi init failed!");
         return 1;
     }
 
+    // signal ev handle
     EV_P = EV_DEFAULT;
     ev_signal wsig;
     ev_signal_init(&wsig, sigint_cb, SIGINT);
     ev_signal_start(EV_A_ & wsig);
 
+    // event loop
     ev_loop(EV_A_ 0);
 
     return 0;
