@@ -37,7 +37,7 @@ static navi_ret_t pwm_cmd_callback(const char *args[], int arg_count)
     }
 
     float percent = (float)us / (1000.f * 1000.f / SUB_NAVI_CONFIG_PCA9685_PWM_FREQ);
-    log_debug("PWM channel %d set to %f%%", channel, percent);
+    log_info("PWM channel %d set to %f%%", channel, percent);
 
     pca9685PWMWrite(pca9685_fd, channel, 0, percent * 0xFFF);
     return NAVI_RET_SUCCESS;

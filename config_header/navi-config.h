@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #define SUB_NAVI_CONFIG_LOG_LEVEL                   LOG_INFO
+#define SUB_NAVI_CONFIG_LOG_OUTPUT_FILE_LEVEL       LOG_WARN
 #define SUB_NAVI_CONFIG_LOG_OUTPUT_FILE_PATH        "./navi.log"
 
 // 0 is for 6 thrusters, 1 is for 8 thrusters
@@ -20,7 +21,7 @@
 #define SUB_NAVI_CONFIG_RPC_SERVER_PORT             8888
 
 // pca9685 configs
-#define SUB_NAVI_CONFIG_PCA9685_PINBASE             300
+#define SUB_NAVI_CONFIG_PCA9685_PINBASE             300         // WiringPi pin base
 #define SUB_NAVI_CONFIG_PCA9685_IIC_PATH            "/dev/i2c-1"
 #define SUB_NAVI_CONFIG_PCA9685_IIC_ADDR            0x40
 #define SUB_NAVI_CONFIG_PCA9685_PIN_OE              19
@@ -38,7 +39,7 @@
 #endif
 
 // control configs
-#define SUB_NAVI_CONFIG_CONTROL_RUN_EVERY_SECOND    0.02        // 20ms
+#define SUB_NAVI_CONFIG_CONTROL_RUN_EVERY_SECOND    0.01        // 10ms (100Hz)
 #define SUB_NAVI_CONFIG_CONTROL_THROTTLE_MID        1500.       // means stop
 #define SUB_NAVI_CONFIG_CONTROL_THROTTLE_MAX_OFFSET 500.
 

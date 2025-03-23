@@ -111,7 +111,10 @@ static int init(void)
 static void sigint_cb(EV_P_ ev_signal *w, int revents)
 {
     log_debug("catch SIGINT, signal number %d.\n", w->signum);
+
     // peripherals deinit ...
+    digitalWrite(SUB_NAVI_CONFIG_PCA9685_PIN_OE, HIGH);
+
     exit(EXIT_SUCCESS);
 }
 
@@ -127,7 +130,7 @@ int main(int argc, const char *argv[])
     log_set_level(SUB_NAVI_CONFIG_LOG_LEVEL);
     // log save to file
     FILE *logfile = fopen(SUB_NAVI_CONFIG_LOG_OUTPUT_FILE_PATH, "a+");
-    log_add_fp(logfile, LOG_WARN);
+    log_add_fp(logfile, SUB_NAVI_CONFIG_LOG_OUTPUT_FILE_LEVEL);
 
     if (wiringPiSetup() < 0)
     {
@@ -143,7 +146,7 @@ int main(int argc, const char *argv[])
            " \\__ \\ |_| | _ \\___| .` |/ _ \\ V / | | \n"
            " |___/\\___/|___/   |_|\\_/_/ \\_\\_/ |___|\n"
            "                                       \n");
-    printf("This is H3 (NanoPi) version of SUB-NAVI.\n"
+    printf("This is H3 (NanoPi) version of SUB-NAVI.\n\n"
            "SUB-NAVI log level set to: %s, log history save to: %s\n\n",
            log_level_string(SUB_NAVI_CONFIG_LOG_LEVEL),
            SUB_NAVI_CONFIG_LOG_OUTPUT_FILE_PATH);
