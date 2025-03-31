@@ -31,6 +31,7 @@ target_link_libraries(${PROJECT_NAME}
     nanopb
     wiringpi
     wit_c_sdk
+    luckfox_gpio
     ${ev})
 
 # 拷贝框架因数配置文件

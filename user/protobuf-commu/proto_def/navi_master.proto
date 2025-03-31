@@ -47,16 +47,19 @@ message Commands
 message DepthSensorResponse
 {
     required float depth = 1;
+    required float pressure = 2;
 }
 
-message PressureSensorResponse
+message MotionSensorResponse
 {
-    required int32 pressure = 1;
+    required float roll = 1;
+    required float pitch = 2;
+    required float yaw = 3;
 }
 
 message Responses
 {
     // union message
     optional DepthSensorResponse msgDSR = 1;
-    optional PressureSensorResponse msgPSR = 2;
+    optional MotionSensorResponse msgMSR = 2;
 }

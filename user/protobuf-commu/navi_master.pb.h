@@ -78,18 +78,21 @@ typedef struct _Commands {
 /* --- Responses --- */
 typedef struct _DepthSensorResponse {
     float depth;
+    float pressure;
 } DepthSensorResponse;
 
-typedef struct _PressureSensorResponse {
-    int32_t pressure;
-} PressureSensorResponse;
+typedef struct _MotionSensorResponse {
+    float roll;
+    float pitch;
+    float yaw;
+} MotionSensorResponse;
 
 typedef struct _Responses {
     /* union message */
     bool has_msgDSR;
     DepthSensorResponse msgDSR;
-    bool has_msgPSR;
-    PressureSensorResponse msgPSR;
+    bool has_msgMSR;
+    MotionSensorResponse msgMSR;
 } Responses;
 
 
@@ -101,15 +104,15 @@ extern "C" {
 #define ThrusterCommand_init_default             {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
 #define PWMDevCommand_init_default               {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
 #define Commands_init_default                    {false, ThrusterCommand_init_default, false, PWMDevCommand_init_default}
-#define DepthSensorResponse_init_default         {0}
-#define PressureSensorResponse_init_default      {0}
-#define Responses_init_default                   {false, DepthSensorResponse_init_default, false, PressureSensorResponse_init_default}
+#define DepthSensorResponse_init_default         {0, 0}
+#define MotionSensorResponse_init_default        {0, 0, 0}
+#define Responses_init_default                   {false, DepthSensorResponse_init_default, false, MotionSensorResponse_init_default}
 #define ThrusterCommand_init_zero                {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
 #define PWMDevCommand_init_zero                  {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
 #define Commands_init_zero                       {false, ThrusterCommand_init_zero, false, PWMDevCommand_init_zero}
-#define DepthSensorResponse_init_zero            {0}
-#define PressureSensorResponse_init_zero         {0}
-#define Responses_init_zero                      {false, DepthSensorResponse_init_zero, false, PressureSensorResponse_init_zero}
+#define DepthSensorResponse_init_zero            {0, 0}
+#define MotionSensorResponse_init_zero           {0, 0, 0}
+#define Responses_init_zero                      {false, DepthSensorResponse_init_zero, false, MotionSensorResponse_init_zero}
 
 /* Field tags (for use in manual encoding/decoding) */
 #define ThrusterCommand_throttle0_tag            1
@@ -139,9 +142,12 @@ extern "C" {
 #define Commands_msgTC_tag                       1
 #define Commands_msgPDC_tag                      2
 #define DepthSensorResponse_depth_tag            1
-#define PressureSensorResponse_pressure_tag      1
+#define DepthSensorResponse_pressure_tag         2
+#define MotionSensorResponse_roll_tag            1
+#define MotionSensorResponse_pitch_tag           2
+#define MotionSensorResponse_yaw_tag             3
 #define Responses_msgDSR_tag                     1
-#define Responses_msgPSR_tag                     2
+#define Responses_msgMSR_tag                     2
 
 /* Struct field encoding specification for nanopb */
 #define ThrusterCommand_FIELDLIST(X, a) \
@@ -185,28 +191,31 @@ X(a, STATIC,   OPTIONAL, MESSAGE,  msgPDC,            2)
 #define Commands_msgPDC_MSGTYPE PWMDevCommand
 
 #define DepthSensorResponse_FIELDLIST(X, a) \
-X(a, STATIC,   REQUIRED, FLOAT,    depth,             1)
+X(a, STATIC,   REQUIRED, FLOAT,    depth,             1) \
+X(a, STATIC,   REQUIRED, FLOAT,    pressure,          2)
 #define DepthSensorResponse_CALLBACK NULL
 #define DepthSensorResponse_DEFAULT NULL
 
-#define PressureSensorResponse_FIELDLIST(X, a) \
-X(a, STATIC,   REQUIRED, INT32,    pressure,          1)
-#define PressureSensorResponse_CALLBACK NULL
-#define PressureSensorResponse_DEFAULT NULL
+#define MotionSensorResponse_FIELDLIST(X, a) \
+X(a, STATIC,   REQUIRED, FLOAT,    roll,              1) \
+X(a, STATIC,   REQUIRED, FLOAT,    pitch,             2) \
+X(a, STATIC,   REQUIRED, FLOAT,    yaw,               3)
+#define MotionSensorResponse_CALLBACK NULL
+#define MotionSensorResponse_DEFAULT NULL
 
 #define Responses_FIELDLIST(X, a) \
 X(a, STATIC,   OPTIONAL, MESSAGE,  msgDSR,            1) \
-X(a, STATIC,   OPTIONAL, MESSAGE,  msgPSR,            2)
+X(a, STATIC,   OPTIONAL, MESSAGE,  msgMSR,            2)
 #define Responses_CALLBACK NULL
 #define Responses_DEFAULT NULL
 #define Responses_msgDSR_MSGTYPE DepthSensorResponse
-#define Responses_msgPSR_MSGTYPE PressureSensorResponse
+#define Responses_msgMSR_MSGTYPE MotionSensorResponse
 
 extern const pb_msgdesc_t ThrusterCommand_msg;
 extern const pb_msgdesc_t PWMDevCommand_msg;
 extern const pb_msgdesc_t Commands_msg;
 extern const pb_msgdesc_t DepthSensorResponse_msg;
-extern const pb_msgdesc_t PressureSensorResponse_msg;
+extern const pb_msgdesc_t MotionSensorResponse_msg;
 extern const pb_msgdesc_t Responses_msg;
 
 /* Defines for backwards compatibility with code written before nanopb-0.4.0 */
@@ -214,16 +223,16 @@ extern const pb_msgdesc_t Responses_msg;
 #define PWMDevCommand_fields &PWMDevCommand_msg
 #define Commands_fields &Commands_msg
 #define DepthSensorResponse_fields &DepthSensorResponse_msg
-#define PressureSensorResponse_fields &PressureSensorResponse_msg
+#define MotionSensorResponse_fields &MotionSensorResponse_msg
 #define Responses_fields &Responses_msg
 
 /* Maximum encoded size of messages (where known) */
 #define Commands_size                            141
-#define DepthSensorResponse_size                 5
+#define DepthSensorResponse_size                 10
+#define MotionSensorResponse_size                15
 #define NAVI_MASTER_PB_H_MAX_SIZE                Commands_size
 #define PWMDevCommand_size                       97
-#define PressureSensorResponse_size              11
-#define Responses_size                           20
+#define Responses_size                           29
 #define ThrusterCommand_size                     40
 
 #ifdef __cplusplus

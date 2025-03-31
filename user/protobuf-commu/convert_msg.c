@@ -41,10 +41,10 @@ void * byte2msg(const uint8_t *buffer, size_t size, const pb_msgdesc_t **message
         status = decode_unionmessage_contents(&stream, DepthSensorResponse_fields, message);
         log_debug("Got DepthSensorResponse");
     }
-    else if (type == PressureSensorResponse_fields)
+    else if (type == MotionSensorResponse_fields)
     {
         message = calloc(1, sizeof(PWMDevCommand));
-        status = decode_unionmessage_contents(&stream, PressureSensorResponse_fields, message);
+        status = decode_unionmessage_contents(&stream, MotionSensorResponse_fields, message);
         log_debug("Got PressureSensorResponse");
     }
     // ... other message types
