@@ -1,4 +1,5 @@
 add_subdirectory(PID)
+add_subdirectory(ADRC)
 add_subdirectory(cJSON)
 add_subdirectory(log.c)
 add_subdirectory(libev)
