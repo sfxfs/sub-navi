@@ -1,8 +1,12 @@
-# SUB-NAVI
+<div align="center">
+  <a href="https://github.com/sfxfs/sub-navi"><h1>SUB-NAVI</h2></a>
+</div>
 
-***中文 | [English](README_EN.md)***
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/sfxfs/sub-navi)![GitHub License](https://img.shields.io/github/license/sfxfs/sub-navi)![GitHub repo size](https://img.shields.io/github/repo-size/sfxfs/sub-navi)![GitHub commit activity](https://img.shields.io/github/commit-activity/m/sfxfs/sub-navi)
 
-## 介绍
+[ 中文 | [English](README_EN.md) ]
+
+## 项目介绍
 
 本项目（SUB-NAVI）是基于 Linux 平台的通用型水下机器人控制程序，本项目需要搭配 [ESP-SUB-MASTER](https://github.com/sfxfs/esp-sub-master) 和 [ROV-HOST](https://github.com/bohonghuang/rov-host) 使用，本软件测试基于硬件平台 [Underwater-Vehicle-Electrical-Control-System](https://github.com/SFerret/Underwater-Vehicle-Electrical-Control-System)。
 
@@ -10,7 +14,7 @@
 
 <img src="./doc/arch.png" style="zoom: 67%;" />
 
-本项目 SUB-NAVI 可以实现以下功能：
+SUB-NAVI 可以实现以下功能：
 
 - 与 PC 端上位机 (ROV-HOST) 基于 HTTP 协议的 JSON-RPC 2.0 通信（采用 IO 事件监听提高性能）
 - 与 SUB-MASTER 基于 Protocol Buffer 的串口通信（用于控制底层外设，推进器，机械臂，等）
@@ -18,13 +22,13 @@
 - 基于文件系统的配置管理（CSV、JSON）
 - 运动控制算法
 
-## 编译
+## 程序编译
 
-本项目测试搭载于 `Rockchip rv1103`，架构为 `armhf`，请搭配 `arm-rockchip830-linux-uclibcgnueabihf` 编译器使用。
+本项目测试搭载于 `Rockchip rv1103`，架构为 `armhf`，请搭配 `arm-rockchip830-linux-uclibcgnueabihf` 编译器使用，若使用其他芯片，请自行下载好对应平台的交叉编译器（工具链）。
 
-编译使用 Linux，并确保安装：
+编译推荐在 Linux 环境下，测试使用 `Ubuntu 22.04`，并确保已安装好：
 
-- 交叉编译器（并添加至 PATH）
+- 对应平台的交叉编译器（并添加至 PATH）
 - `cmake`
 
 进入项目根目录并输入命令进行编译：
@@ -33,14 +37,14 @@
 cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=arm-rockchip830-linux-uclibcgnueabihf-gcc -DCMAKE_CXX_COMPILER=arm-rockchip830-linux-uclibcgnueabihf-g++ && cmake --build build --config Release
 ```
 
-如果使用 VSCode 编译，还需安装：
+如果使用 VSCode 进行开发和编译，还需安装：
 
-- 对应 CMake 工程编译插件
-- `ninja-build`
+- `CMake Tools` VSCode 插件
+- `ninja-build` 系统软件包
 
-使用 VSCode 打开项目文件，后在跳出的选框中选择对应工具链，再在底栏选择生成即可编译。
+使用 VSCode 打开项目文件夹后，在弹出的选框中选择对应工具链，再在底栏选择生成即可编译。
 
-## 开发
+## 软件开发
 
 项目主要有三个根目录的文件夹
 

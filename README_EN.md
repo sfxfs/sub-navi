@@ -1,6 +1,9 @@
-# SUB-NAVI
+<div align="center">
+  <a href="https://github.com/sfxfs/sub-navi"><h1>SUB-NAVI</h2></a>
+</div>
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/sfxfs/sub-navi)![GitHub License](https://img.shields.io/github/license/sfxfs/sub-navi)![GitHub repo size](https://img.shields.io/github/repo-size/sfxfs/sub-navi)![GitHub commit activity](https://img.shields.io/github/commit-activity/m/sfxfs/sub-navi)
 
-***[中文](README.md) | English***
+[ [中文](README.md) | English ]
 
 ## Introduction
 
