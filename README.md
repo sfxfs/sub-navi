@@ -1,8 +1,7 @@
 <div align="center">
   <a href="https://github.com/sfxfs/sub-navi"><h1>SUB-NAVI</h2></a>
 </div>
-
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/sfxfs/sub-navi)![GitHub License](https://img.shields.io/github/license/sfxfs/sub-navi)![GitHub repo size](https://img.shields.io/github/repo-size/sfxfs/sub-navi)![GitHub commit activity](https://img.shields.io/github/commit-activity/m/sfxfs/sub-navi)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/sfxfs/sub-navi) ![GitHub License](https://img.shields.io/github/license/sfxfs/sub-navi) ![GitHub repo size](https://img.shields.io/github/repo-size/sfxfs/sub-navi) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/sfxfs/sub-navi)
 
 [ 中文 | [English](README_EN.md) ]
 
@@ -12,7 +11,7 @@
 
 系统架构连接图如下：
 
-<img src="./doc/arch.png" style="zoom: 67%;" />
+<img src="./doc/arch.png" style="zoom:50%;" />
 
 SUB-NAVI 可以实现以下功能：
 
