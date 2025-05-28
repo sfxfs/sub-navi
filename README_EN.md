@@ -1,5 +1,6 @@
 <div align="center">
-  <a href="https://github.com/sfxfs/sub-navi"><h1>SUB-NAVI</h2></a>
+  <a href="https://github.com/sfxfs/sub-navi"><img src="./doc/logo.png" alt="logo"></a>
+  <a href="https://github.com/sfxfs/sub-navi"><h1>SUB-NAVI</h1></a>
 </div>
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/sfxfs/sub-navi) ![GitHub License](https://img.shields.io/github/license/sfxfs/sub-navi) ![GitHub repo size](https://img.shields.io/github/repo-size/sfxfs/sub-navi) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/sfxfs/sub-navi)
